@@ -37,6 +37,9 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.2
   percent_indicator: ^4.2.3
   flutter_screenutil: ^5.9.0
+  intl: ^0.18.1
+  pinput: ^3.0.1
+  syncfusion_flutter_charts: ^23.1.44
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +84,15 @@ flutter:
     - family: Cairo
       fonts:
         - asset: assets/fonts/Cairo-Regular.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+    - family: Segoe
+      fonts:
+        - asset: assets/fonts/Segoe UI.ttf
+    - family: inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
 
   
   # For details regarding fonts from package dependencies,

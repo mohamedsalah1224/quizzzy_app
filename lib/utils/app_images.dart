@@ -23,4 +23,30 @@ class Assets {
   static const String imagesStudent = "assets/images/student.png";
   static const String imagesElan = "assets/images/alan1.png";
   static const String imagesManFace = "assets/images/face.jpg";
+
+  static const String imagesPoints = "assets/images/points.png";
+  static const String imagesMedal = "assets/images/medal.png";
+  static const String imagesFire = "assets/images/fire.png";
+  static const String imagesCorrectansswer = "assets/images/correctansswer.png";
+
+  static const String imagesSendmessage = "assets/images/sendmessage.png";
+  static const String imagesRecievemessage = "assets/images/recievemessage.png";
+  static const String imagesNextArrow = "assets/images/nextarrow.png";
+  static const String imagesAlgebra = "assets/images/algebra.png";
+  static const String imagesChemistry = "assets/images/Chemistry.png";
+  static const String imagesEnglish = "assets/images/english.png";
+  static const String imagesGeography = "assets/images/geography.png";
+  static const String imagesHistory = "assets/images/history.png";
+  static const String imagesPhysics = "assets/images/physics.png";
+
+  static const String imagesRandom = "assets/images/random.png";
+  static const String imagesTeacher = "assets/images/teacher.png";
+  static const String imagesChoose = "assets/images/choose.png";
+  static const String imagesAi = "assets/images/ai.png";
+  static const String imagesSubjectFilter = "assets/images/subjectFilter.png";
+  static const String imagesLogoImage = "assets/images/logo_image.png";
+  static const String imagesLogoText = "assets/images/logo_text.png";
+  static const String imagesGoogle = "assets/images/google.png";
+  static const String imageSucess = "assets/images/sucess.png";
+  static const String imageExam1 = "assets/images/exam1.png";
 }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:quizzy_app/utils/binding.dart';
-import 'package:quizzy_app/view/custom_component/mange_bottom_sheet_view.dart';
+
+import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/utils/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,8 +24,9 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
-          home: const ManageBottomNavigationView(),
-          initialBinding: MyBinding(),
+          initialRoute: Routes.initialRoute,
+          initialBinding: SplashBinding(),
+          getPages: Routes.getPages(),
         );
       },
     );

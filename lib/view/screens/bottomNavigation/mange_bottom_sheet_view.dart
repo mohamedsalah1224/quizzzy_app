@@ -4,7 +4,8 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
-import 'package:quizzy_app/view_model/mange_bottom_navigation_view_model.dart';
+
+import '../../../view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 
 class ManageBottomNavigationView
     extends GetView<ManageBottomNavigationViewModel> {
@@ -13,6 +14,7 @@ class ManageBottomNavigationView
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: GetBuilder<ManageBottomNavigationViewModel>(
         init: ManageBottomNavigationViewModel(),
         builder: (controller) {

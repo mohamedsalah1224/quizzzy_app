@@ -9,12 +9,14 @@ class CustomText extends StatelessWidget {
   final FontWeight? fontWeight;
   final AlignmentGeometry? alignment;
   final TextAlign? textAlign;
+  final int? maxLines;
   const CustomText(
       {super.key,
       required this.text,
       this.alignment,
       this.color,
       this.fontSize,
+      this.maxLines = 4,
       this.textAlign,
       this.fontFamily,
       this.fontWeight});
@@ -26,7 +28,7 @@ class CustomText extends StatelessWidget {
       child: Text(text,
           textAlign: textAlign,
           overflow: TextOverflow.ellipsis,
-          maxLines: 4,
+          maxLines: maxLines,
           style: TextStyle(
               color: color,
               fontSize: fontSize,
