@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 
 import '../../utils/end_point.dart';
 import 'dio_Interceptors.dart';
@@ -8,7 +7,9 @@ import 'dio_Interceptors.dart';
 class DioHelper {
   final dio =
       createDio(); //it help you if another backage want to use it in a Native call
-  final tokenDio = Dio(BaseOptions(baseUrl: EndPoint.baseUrl));
+  final tokenDio = Dio(BaseOptions(
+    baseUrl: EndPoint.baseUrl,
+  ));
 
   DioHelper._internal();
 
@@ -40,21 +41,29 @@ class DioHelper {
     return dio;
   }
 
-  ///Get Method
+//Get Method
   Future<Map<String, dynamic>> get(String path,
       {Map<String, dynamic>? queryParameters,
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onReceiveProgress}) async {
-    final Response response = await dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    return response.data;
+    try {
+      final Response response = await dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      throw "something went wrong";
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   ///Post Method
@@ -65,17 +74,25 @@ class DioHelper {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
-    final Response response = await dio.post(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    return response.data;
+    try {
+      final Response response = await dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data;
+      }
+      throw "something went wrong";
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   ///Put Method
@@ -86,17 +103,26 @@ class DioHelper {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
-    final Response response = await dio.put(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    return response.data;
+    try {
+      final Response response = await dio.put(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      throw "something went wrong";
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      // if the Execption not occur from dio
+      rethrow;
+    }
   }
 
   ///Delete Method
@@ -107,14 +133,22 @@ class DioHelper {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
-    final Response response = await dio.delete(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-    );
-
-    return response.data;
+    try {
+      final Response response = await dio.delete(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+      );
+      if (response.statusCode == 204) {
+        return response.data;
+      }
+      throw "something went wrong";
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

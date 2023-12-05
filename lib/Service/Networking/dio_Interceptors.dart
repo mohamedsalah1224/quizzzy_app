@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 
 class DioInterceptors extends Interceptor {
   final Dio dio;

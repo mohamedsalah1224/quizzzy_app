@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 
 // Updated for Dio Package
 class DioExceptionHelper implements Exception {
