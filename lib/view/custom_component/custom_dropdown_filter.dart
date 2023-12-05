@@ -35,7 +35,7 @@ class CustomDropDownFilter extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 5).w,
             isExpanded: true,
             iconEnabledColor: borderColor,
-            underline: Text(""),
+            underline: const Text(""),
             onChanged: onChanged,
             items: items!
                 .map((e) => DropdownMenuItem(

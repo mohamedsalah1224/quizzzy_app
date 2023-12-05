@@ -22,265 +22,262 @@ class RegisterView extends GetView<RegisterViewModel> {
         body: SingleChildScrollView(
           child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.h),
-              child: Column(children: [
-                Center(
-                  child: Image.asset(
-                    Assets.imagesLogoImage,
-                    cacheHeight: 132,
-                    cacheWidth: 132,
+              child: Form(
+                key: controller.registerFormKey,
+                child: Column(children: [
+                  Center(
+                    child: Image.asset(
+                      Assets.imagesLogoImage,
+                      cacheHeight: 132,
+                      cacheWidth: 132,
+                    ),
                   ),
-                ),
-                CustomText(
-                  text: "انشاء الحساب",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "الاسم رباعي",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: null,
+                  CustomText(
+                    text: "انشاء الحساب",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
                   ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "تاريخ الميلاد",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: Icons.date_range_outlined,
-                    iconColor: Color(0xff077C58),
-                    readOnly: true,
-                    controller: controller.dateController,
-                    onTap: () async {
-                      await controller.showDate(context);
+                  15.verticalSpace,
+                  CustomText(
+                    text: "الاسم رباعي",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  SizedBox(
+                    width: double.infinity.w,
+                    height: 45.h,
+                    child: CustomTextFormField(
+                      icon: null,
+                      validator: (value) =>
+                          controller.validateName(value: value),
+                      controller: controller.nameController,
+                    ),
+                  ),
+                  15.verticalSpace,
+                  CustomText(
+                    text: "تاريخ الميلاد",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  SizedBox(
+                    width: double.infinity.w,
+                    height: 45.h,
+                    child: CustomTextFormField(
+                      icon: Icons.date_range_outlined,
+                      iconColor: Color(0xff077C58),
+                      readOnly: true,
+                      controller: controller.dateController,
+                      validator: (value) =>
+                          controller.validateBirthDate(value: value),
+                      onTap: () async {
+                        await controller.showDate(context);
+                      },
+                    ),
+                  ),
+                  15.verticalSpace,
+                  CustomText(
+                    text: "البريد الإلكتروني/ رقم الهاتف",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  SizedBox(
+                    width: double.infinity.w,
+                    height: 45.h,
+                    child: CustomTextFormField(
+                      icon: Icons.markunread,
+                      hintText:
+                          "من فضلك ادخل ايميلك أو رقم هاتفك مسبوقا بكود الدولة",
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textDirection: TextDirection.ltr,
+                      iconColor: Color(0xff268C6D),
+                      validator: (value) =>
+                          controller.validatePhoneOrEmail(value: value),
+                      controller: controller.emailOrPhoneController,
+                    ),
+                  ),
+                  20.verticalSpace,
+                  CustomText(
+                    text: "المنظقة",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  Container(
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          children: [
+                            CustomText(
+                              text: "قطاع غزة",
+                              fontFamily: "inter",
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            4.horizontalSpace,
+                            Radio(
+                                visualDensity: VisualDensity(
+                                  horizontal: VisualDensity.minimumDensity,
+                                  vertical: VisualDensity.minimumDensity,
+                                ),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                value: 1,
+                                groupValue: 1,
+                                activeColor: Color(0xff268C6D),
+                                onChanged: (value) {
+                                  print(value);
+                                })
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            CustomText(
+                              text: "الضفة الغربية",
+                              fontFamily: "inter",
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            4.horizontalSpace,
+                            Radio(
+                                visualDensity: VisualDensity(
+                                  horizontal: VisualDensity.minimumDensity,
+                                  vertical: VisualDensity.minimumDensity,
+                                ),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                value: 1,
+                                groupValue: 2,
+                                activeColor: Color(0xff268C6D),
+                                onChanged: (value) {
+                                  print(value);
+                                })
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  20.verticalSpace,
+                  CustomText(
+                    text: "المحافظة",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  CustomDropDownFilter(
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      value: null,
+                      defaultValue: "اسم المحافظة",
+                      borderColor: Color(0xff268C6D),
+                      items: ['منوفية', "القاهرة"]),
+                  20.verticalSpace,
+                  CustomText(
+                    text: "منطقة السكن",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  CustomDropDownFilter(
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      value: null,
+                      defaultValue: "منطقة السكن",
+                      borderColor: Color(0xff268C6D),
+                      items: ['غزة', "مخيم"]),
+                  15.verticalSpace,
+                  CustomText(
+                    text: "اسم المنطقة",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  CustomDropDownFilter(
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      value: null,
+                      defaultValue: "اسم المنطقة",
+                      borderColor: Color(0xff268C6D),
+                      items: ['مخيم', "القاهرة"]),
+                  15.verticalSpace,
+                  CustomText(
+                    text: "الصف الدراسي",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  CustomDropDownFilter(
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      value: null,
+                      defaultValue: "الصف الدراسي",
+                      borderColor: Color(0xff268C6D),
+                      items: ['الصف الثاني عشر', "الصف الحادي عشر"]),
+                  15.verticalSpace,
+                  CustomText(
+                    text: "التخصص",
+                    fontFamily: "Segoe",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                    color: Color(0xff077C58),
+                    alignment: AlignmentDirectional.topEnd,
+                  ),
+                  3.verticalSpace,
+                  CustomDropDownFilter(
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      value: null,
+                      defaultValue: "التخصص",
+                      borderColor: Color(0xff268C6D),
+                      items: ['علمي', "ادبي"]),
+                  30.verticalSpace,
+                  CustomButton(
+                    text: "استمرار",
+                    fontFamily: "Poppins",
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    onTap: () {
+                      controller.continueregisterView();
                     },
                   ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "البريد الإلكتروني",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: null,
-                  ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "المنظقة",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Row(
-                        children: [
-                          CustomText(
-                            text: "قطاع غزة",
-                            fontFamily: "inter",
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          4.horizontalSpace,
-                          Radio(
-                              visualDensity: VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity,
-                              ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              value: 1,
-                              groupValue: 1,
-                              activeColor: Color(0xff268C6D),
-                              onChanged: (value) {
-                                print(value);
-                              })
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          CustomText(
-                            text: "الضفة الغربية",
-                            fontFamily: "inter",
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          4.horizontalSpace,
-                          Radio(
-                              visualDensity: VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity,
-                              ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              value: 1,
-                              groupValue: 2,
-                              activeColor: Color(0xff268C6D),
-                              onChanged: (value) {
-                                print(value);
-                              })
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "المحافظة",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: null,
-                  ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "اسم المنطقة",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                CustomDropDownFilter(
-                    onChanged: (value) {
-                      print(value);
-                    },
-                    value: null,
-                    defaultValue: "اسم المنطقة",
-                    borderColor: Color(0xff268C6D),
-                    items: ['مخيم', "القاهرة"]),
-                10.verticalSpace,
-                CustomText(
-                  text: "الصف الدراسي",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                CustomDropDownFilter(
-                    onChanged: (value) {
-                      print(value);
-                    },
-                    value: null,
-                    defaultValue: "الصف الدراسي",
-                    borderColor: Color(0xff268C6D),
-                    items: ['الصف الثاني عشر', "الصف الحادي عشر"]),
-                10.verticalSpace,
-                CustomText(
-                  text: "التخصص",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                CustomDropDownFilter(
-                    onChanged: (value) {
-                      print(value);
-                    },
-                    value: null,
-                    defaultValue: "التخصص",
-                    borderColor: Color(0xff268C6D),
-                    items: ['علمي', "ادبي"]),
-                10.verticalSpace,
-                CustomText(
-                  text: "كلمة السر",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: null,
-                    eyes: true,
-                    obscureText: true,
-                  ),
-                ),
-                10.verticalSpace,
-                CustomText(
-                  text: "تأكيد كلمة السر",
-                  fontFamily: "Segoe",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                  color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
-                ),
-                3.verticalSpace,
-                SizedBox(
-                  width: double.infinity.w,
-                  height: 45.h,
-                  child: CustomTextFormField(
-                    icon: null,
-                    eyes: true,
-                    obscureText: true,
-                  ),
-                ),
-                30.verticalSpace,
-                CustomButton(
-                  text: "استمرار",
-                  fontFamily: "Poppins",
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
-                  onTap: () {
-                    controller.continueRegister();
-                  },
-                ),
-                30.verticalSpace,
-              ])),
+                  30.verticalSpace,
+                ]),
+              )),
         ));
   }
 }

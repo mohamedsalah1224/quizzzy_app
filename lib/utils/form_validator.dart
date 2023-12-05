@@ -7,9 +7,15 @@ class FormValidator {
 
   /// The error message for invalid email input.
   final String _invalidEmailError = 'Please enter a valid email address';
+  final String _invalidPhoneError = 'Please enter a valid phone number';
 
   /// The error message for empty email input.
   final String _emptyEmailInputError = 'Please enter an email';
+  final String _emptyPhoneInputError = 'Please enter an phone';
+  final String _emptyEmailOrPhoneInputError =
+      'Please enter an email or Password';
+  final String _invalidEmailOrPhoneInputError =
+      'Please enter an valid email or Password';
 
   /// The error message for empty password input.
   final String _emptyPasswordInputError = 'Please enter a password';
@@ -25,13 +31,22 @@ class FormValidator {
 
   /// The error message for invalid name input.
   final String _invalidNameError = 'Please enter a valid Name ';
-  final String _invalidAnyTextForm = 'Please enter a valid ';
+  final String _invalidAnyTextForm = 'Please enter a Valid ';
 
   /// A method containing validation logic for email input.
   String? emailValidator(String? email) {
     if (email == null || email.isEmpty) {
       return _emptyEmailInputError;
     } else if (!Validation.instance.isEmail(email: email)) {
+      return _invalidEmailError;
+    }
+    return null;
+  }
+
+  String? contactsValidator(String? contact) {
+    if (contact == null || contact.isEmpty) {
+      return _emptyPhoneInputError;
+    } else if (!Validation.instance.isContacts(contact: contact)) {
       return _invalidEmailError;
     }
     return null;
@@ -72,8 +87,22 @@ class FormValidator {
   }
 
   String? anyTextFormValidator(String? value, String nameOfTextField) {
-    if (value != null) return null;
-    return "$_invalidAnyTextForm $nameOfTextField";
+    if (value == null || value.isEmpty) {
+      return "$_invalidAnyTextForm $nameOfTextField";
+    }
+
+    return null;
+  }
+
+  String? validatePhoneOrEmail(String? value, {bool startPlusCode = false}) {
+    if (value == null || value.isEmpty) {
+      return _emptyEmailOrPhoneInputError;
+    } else if (!(Validation.instance.isEmail(email: value) ||
+        Validation.instance
+            .isContacts(contact: value, startPlusCode: startPlusCode))) {
+      return _invalidEmailOrPhoneInputError;
+    }
+    return null;
   }
 
   void clear() {

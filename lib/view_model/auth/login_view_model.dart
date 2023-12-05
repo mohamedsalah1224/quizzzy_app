@@ -1,9 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/utils/form_validator.dart';
+import 'package:quizzy_app/utils/validation.dart';
 
 import '../../utils/routes.dart';
 
 class LoginViewModel extends GetxController {
   String initViewModel = "";
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
@@ -19,6 +26,15 @@ class LoginViewModel extends GetxController {
     print("close LoginView");
   }
 
+  String? validatePhoneOrEmail({String? value}) {
+    return FormValidator.instance
+        .validatePhoneOrEmail(value, startPlusCode: true);
+  }
+
+  String? validatePasword({String? value}) {
+    return FormValidator.instance.passwordValidator(value);
+  }
+
   void createAccount() {
     Get.toNamed(Routes.registerView);
   }
@@ -28,6 +44,7 @@ class LoginViewModel extends GetxController {
   }
 
   void login() {
-    Get.offAllNamed(Routes.bottomNavgation);
+    if (loginFormKey.currentState!.validate())
+      Get.offAllNamed(Routes.bottomNavgation);
   }
 }

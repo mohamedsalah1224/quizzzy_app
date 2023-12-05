@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:pinput/pinput.dart';
-
-import '../../../view_model/auth/forget_password_view_model.dart';
-
-import '../../custom_component/custom_button.dart';
+import 'package:quizzy_app/view_model/auth/register_view_model.dart';
 import '../../custom_component/custom_text.dart';
 
-class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
-  const IdentifyEmailView({super.key});
+class VerifyPhoneView extends GetView<RegisterViewModel> {
+  const VerifyPhoneView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,46 +20,35 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
             padding: EdgeInsets.symmetric(horizontal: 25.h),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              80.verticalSpace,
+              50.verticalSpace,
               Center(
                 child: CustomText(
-                  text: "من فضلك تأكد من البريد الأكتروني",
+                  text: "تاكيد رقم الهاتف",
                   fontFamily: "Cairo",
                   fontWeight: FontWeight.w500,
                   fontSize: 20.sp,
                   color: Color(0xff077C58),
-                  alignment: AlignmentDirectional.topEnd,
                 ),
               ),
-              25.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CustomText(
-                      maxLines: 1,
-                      text: "loding600@gmail.com",
-                      fontFamily: "Segoe",
-                      alignment: AlignmentDirectional.topEnd,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                      color: Color.fromRGBO(0, 0, 0, 0.7),
-                    ),
-                  ),
-                  5.horizontalSpace,
-                  CustomText(
-                    text: "ايميلك هو",
-                    fontFamily: "Segoe",
-                    alignment: AlignmentDirectional.topEnd,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
-                    color: Color.fromRGBO(0, 0, 0, 0.7),
-                  ),
-                ],
+              50.verticalSpace,
+              CustomText(
+                text: "لقد ارسلنا كود التأكيد علي هذا الرقم",
+                fontFamily: "Segoe",
+                fontWeight: FontWeight.w400,
+                fontSize: 14.sp,
+                color: Color.fromRGBO(0, 0, 0, 0.7),
+              ),
+              CustomText(
+                maxLines: 1,
+                text: "+2044585781547",
+                fontFamily: "Segoe",
+                fontWeight: FontWeight.w400,
+                fontSize: 14.sp,
+                color: Color.fromRGBO(0, 0, 0, 0.7),
               ),
               30.verticalSpace,
               Form(
-                key: controller.identifyformKey,
+                key: controller.verifyFormKey,
                 child: Pinput(
                   controller: controller.pinController,
                   focusNode: controller.focusNode,
@@ -82,7 +69,6 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
                                   Border.all(color: const Color(0xff268C6D)))),
                 ),
               ),
-              20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -107,7 +93,7 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
                   ),
                 ],
               ),
-              50.verticalSpace,
+              30.verticalSpace,
               CustomButton(
                 text: "تأكيد",
                 onTap: () {

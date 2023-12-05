@@ -8,8 +8,8 @@ import '../../../view_model/auth/forget_password_view_model.dart';
 import '../../custom_component/custom_button.dart';
 import '../../custom_component/custom_text.dart';
 
-class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
-  const IdentifyEmailView({super.key});
+class IdentifyPhoneView extends GetView<ForgetPasswordViewModel> {
+  const IdentifyPhoneView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
               80.verticalSpace,
               Center(
                 child: CustomText(
-                  text: "من فضلك تأكد من البريد الأكتروني",
+                  text: "من فضلك تأكد من رقم الهاتف",
                   fontFamily: "Cairo",
                   fontWeight: FontWeight.w500,
                   fontSize: 20.sp,
@@ -40,7 +40,7 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
                   Expanded(
                     child: CustomText(
                       maxLines: 1,
-                      text: "loding600@gmail.com",
+                      text: "+2484515514",
                       fontFamily: "Segoe",
                       alignment: AlignmentDirectional.topEnd,
                       fontWeight: FontWeight.w400,
@@ -50,7 +50,7 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
                   ),
                   5.horizontalSpace,
                   CustomText(
-                    text: "ايميلك هو",
+                    text: "رقم الهاتف هو",
                     fontFamily: "Segoe",
                     alignment: AlignmentDirectional.topEnd,
                     fontWeight: FontWeight.w400,
@@ -111,7 +111,7 @@ class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
               CustomButton(
                 text: "تأكيد",
                 onTap: () {
-                  controller.confirmEmail();
+                  controller.confirmPhone();
                 },
                 fontFamily: "inter",
                 fontWeight: FontWeight.w600,

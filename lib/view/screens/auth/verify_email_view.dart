@@ -48,7 +48,7 @@ class VerifyEmailView extends GetView<RegisterViewModel> {
               ),
               30.verticalSpace,
               Form(
-                key: controller.formKey,
+                key: controller.verifyFormKey,
                 child: Pinput(
                   controller: controller.pinController,
                   focusNode: controller.focusNode,

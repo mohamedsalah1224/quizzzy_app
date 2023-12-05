@@ -5,6 +5,9 @@ import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
 import 'package:quizzy_app/utils/binding/login_binding.dart';
 import 'package:quizzy_app/utils/binding/register_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/view/screens/auth/continue_register_view.dart';
+import 'package:quizzy_app/view/screens/auth/identify_phone_view.dart';
+import 'package:quizzy_app/view/screens/auth/verify_phone_view.dart';
 
 import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view.dart';
 import 'package:quizzy_app/view/screens/auth/chane_password_view.dart';
@@ -16,8 +19,6 @@ import 'package:quizzy_app/view/screens/auth/sucess_password_changed_view.dart';
 import 'package:quizzy_app/view/screens/auth/verify_email_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
-import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
-
 import 'binding/bottom_navigation_binding.dart';
 import 'binding/sucess_password_changed_binding.dart';
 
@@ -28,13 +29,19 @@ class Routes {
   static const String loginView = "/loginView";
   static const String registerView = "/registerView";
   static const String forgetPasswordView = "/forgetPasswordView";
-  static const String identifyEmailview = "/identifyEmailview";
+  static const String identifyEmailview =
+      "/identifyEmailview"; // IdentifyPhoneView
+  static const String identifyPhoneview = "/identifyPhoneview";
   static const String changePasswordView = "/changePasswordView";
-  static const String verifyEmailView = "/verifyEmailView";
+  static const String verifyEmailView =
+      "/verifyEmailView"; // ContinueRegisterView
+  static const String verifyPhoneView = "/verifyPhoneView";
+  static const String continueRegisterView = "/continueRegisterView";
   static const String sucessPasswordChanged =
       "/sucessPasswordChanged"; // ExamView
   static const String examView = "/examView";
 // identify_email_view
+// VerifyPhoneView
 
   static List<GetPage<dynamic>>? getPages() => [
         GetPage(
@@ -56,10 +63,18 @@ class Routes {
         GetPage(
             name: forgetPasswordView,
             page: () => const ForgetPasswordView(),
-            binding: ForgetPasswordBinding()),
+            binding: ForgetPasswordBinding()), // identifyPhoneview
         GetPage(
           name: identifyEmailview,
           page: () => const IdentifyEmailView(),
+        ),
+        GetPage(
+          name: identifyPhoneview,
+          page: () => const IdentifyPhoneView(),
+        ),
+        GetPage(
+          name: continueRegisterView,
+          page: () => const ContinueRegisterView(),
         ),
         GetPage(
           name: changePasswordView,
@@ -68,6 +83,10 @@ class Routes {
         GetPage(
           name: verifyEmailView,
           page: () => const VerifyEmailView(),
+        ),
+        GetPage(
+          name: verifyPhoneView,
+          page: () => const VerifyPhoneView(),
         ),
         GetPage(
             name: sucessPasswordChanged,

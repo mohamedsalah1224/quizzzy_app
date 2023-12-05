@@ -13,11 +13,14 @@ class Validation {
       return true;
     else
       return false;
+    // ^\+(?:[0-9]●?){6,14}[0-9]$
   }
 
-  bool isContacts({required String contact}) {
-    /// The regular expression for validating contacts in the app.
-    final RegExp contactRegex = RegExp(r'^(03|3)\d{9}$');
+  bool isContacts({required String contact, bool startPlusCode = false}) {
+    /// The regular expression for validating Phone but each Phone with start with the phus Code
+    final RegExp contactRegex = startPlusCode
+        ? RegExp(r'(^\+(?:[+0]9)?[0-9]{10,12}$)')
+        : RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
     if (contact.isNotEmpty && contactRegex.hasMatch(contact))
       return true;
     else

@@ -40,6 +40,7 @@ dependencies:
   intl: ^0.18.1
   pinput: ^3.0.1
   syncfusion_flutter_charts: ^23.1.44
+  dio: ^5.3.4
 
 dev_dependencies:
   flutter_test:
