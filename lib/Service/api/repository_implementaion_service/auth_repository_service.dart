@@ -9,8 +9,9 @@ import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
 
 class AuthRepositoryService implements AuthRepository {
-  AuthRepositoryService? _instance;
-  AuthRepositoryService get instance => _instance ??= AuthRepositoryService._();
+  static AuthRepositoryService? _instance;
+  static AuthRepositoryService get instance =>
+      _instance ??= AuthRepositoryService._();
 
   AuthRepositoryService._();
   @override
@@ -20,7 +21,7 @@ class AuthRepositoryService implements AuthRepository {
   }
 
   @override
-  Future<AuthModel> login({required LoginModel loginModel}) {
+  Future<AuthModel> login({required LoginModel loginModel}) async {
     throw UnimplementedError();
   }
 
