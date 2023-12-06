@@ -7,6 +7,7 @@ import 'package:quizzy_app/model/login_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 
 class AuthRepositoryService implements AuthRepository {
   static AuthRepositoryService? _instance;
@@ -22,7 +23,22 @@ class AuthRepositoryService implements AuthRepository {
 
   @override
   Future<AuthModel> login({required LoginModel loginModel}) async {
-    throw UnimplementedError();
+    try {
+      var response = await DioHelper().post(
+        EndPoint.login,
+        data: {
+          'phone': loginModel.phone,
+          'email': loginModel.email,
+          'password': loginModel.password,
+          'type': GeneralUtils.instance
+              .convertLoginEnumTypeToString(loginModel.type!),
+        },
+      );
+      return AuthModel.fromJson(response);
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+      // or throw response['message']
+    }
   }
 
   @override
