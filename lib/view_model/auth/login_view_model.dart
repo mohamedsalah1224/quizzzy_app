@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
-import 'package:quizzy_app/utils/validation.dart';
 
 import '../../utils/routes.dart';
 

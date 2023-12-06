@@ -12,27 +12,12 @@ class ForgetPasswordViewModel extends GetxController {
   String initForgetPassword = "";
 
   GlobalKey<FormState> forgetPasswordformKey = GlobalKey<FormState>();
-  GlobalKey<FormState> identifyformKey = GlobalKey<FormState>();
+
   GlobalKey<FormState> changePasswordFormKey = GlobalKey<FormState>();
-  TextEditingController pinController = TextEditingController();
+
   TextEditingController emailOrPhoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
-  String pinCode = "";
-  final defaultPinTheme = PinTheme(
-    width: 56,
-    height: 56,
-    textStyle: const TextStyle(
-      fontSize: 22,
-      color: Color.fromRGBO(30, 60, 87, 1),
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12).r,
-      border: Border.all(color: Color.fromRGBO(23, 171, 144, 0.4)),
-    ),
-  );
-
-  final focusNode = FocusNode();
 
   void send() {
     print(emailOrPhoneController.text);
@@ -50,8 +35,6 @@ class ForgetPasswordViewModel extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
-    pinController.dispose();
-    focusNode.dispose();
   }
 
   String? validatePhoneOrEmail({String? value}) {
@@ -69,33 +52,11 @@ class ForgetPasswordViewModel extends GetxController {
         passwordConfirmController.text, passwordController.text);
   }
 
-  void confirmEmail() {
-    focusNode.unfocus();
-    if (identifyformKey.currentState!.validate()) {
-      print(pinController.text);
-
-      Get.toNamed(Routes.changePasswordView);
-    }
-  }
-
-  void confirmPhone() {
-    focusNode.unfocus();
-    if (identifyformKey.currentState!.validate()) {
-      print(pinController.text);
-
-      Get.offNamed(Routes.changePasswordView);
-    }
-  }
-
   void changePassword() {
     if (changePasswordFormKey.currentState!.validate()) {
       print("Change Password");
       print(passwordController.text);
       Get.toNamed(Routes.sucessPasswordChanged);
     }
-  }
-
-  String? validatePinCode(String? value) {
-    return value == pinCode ? null : "هذا الكود خطأ";
   }
 }

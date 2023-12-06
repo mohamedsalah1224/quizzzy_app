@@ -2,9 +2,13 @@
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
+import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
+import 'package:quizzy_app/utils/binding/identify_phone_binding.dart';
 import 'package:quizzy_app/utils/binding/login_binding.dart';
 import 'package:quizzy_app/utils/binding/register_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/utils/binding/verify_email_binding.dart';
+import 'package:quizzy_app/utils/binding/verify_phone_binding.dart';
 import 'package:quizzy_app/view/screens/auth/continue_register_view.dart';
 import 'package:quizzy_app/view/screens/auth/identify_phone_view.dart';
 import 'package:quizzy_app/view/screens/auth/verify_phone_view.dart';
@@ -65,13 +69,13 @@ class Routes {
             page: () => const ForgetPasswordView(),
             binding: ForgetPasswordBinding()), // identifyPhoneview
         GetPage(
-          name: identifyEmailview,
-          page: () => const IdentifyEmailView(),
-        ),
+            name: identifyEmailview,
+            page: () => const IdentifyEmailView(),
+            binding: IdentifyEmailBinding()),
         GetPage(
-          name: identifyPhoneview,
-          page: () => const IdentifyPhoneView(),
-        ),
+            name: identifyPhoneview,
+            page: () => const IdentifyPhoneView(),
+            binding: IdentifyPhoneBinding()),
         GetPage(
           name: continueRegisterView,
           page: () => const ContinueRegisterView(),
@@ -83,10 +87,12 @@ class Routes {
         GetPage(
           name: verifyEmailView,
           page: () => const VerifyEmailView(),
+          binding: VerifyEmailBinding(),
         ),
         GetPage(
           name: verifyPhoneView,
           page: () => const VerifyPhoneView(),
+          binding: VerifyPhoneBinding(),
         ),
         GetPage(
             name: sucessPasswordChanged,

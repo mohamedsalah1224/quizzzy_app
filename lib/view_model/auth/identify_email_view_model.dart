@@ -5,12 +5,13 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
-class VerifyEmailViewModel extends GetxController {
+class IdentifyEmailViewModel extends GetxController {
   String initVerifyEmailViewModel = "";
   String pinCode = "4444";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController pinController = TextEditingController();
-  GlobalKey<FormState> verifyFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> identifyformKey = GlobalKey<FormState>();
+
   final focusNode = FocusNode();
 
   final defaultPinTheme = PinTheme(
@@ -43,10 +44,10 @@ class VerifyEmailViewModel extends GetxController {
 
   void confirmEmail() {
     focusNode.unfocus();
-    if (verifyFormKey.currentState!.validate()) {
+    if (identifyformKey.currentState!.validate()) {
       print(pinController.text);
 
-      Get.toNamed(Routes.continueRegisterView);
+      Get.toNamed(Routes.changePasswordView);
     }
   }
 

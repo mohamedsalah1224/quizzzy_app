@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:pinput/pinput.dart';
-import 'package:quizzy_app/view_model/auth/register_view_model.dart';
+import 'package:quizzy_app/view_model/auth/verify_phone_view_model.dart';
 import '../../custom_component/custom_text.dart';
 
-class VerifyPhoneView extends GetView<RegisterViewModel> {
+class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
   const VerifyPhoneView({super.key});
 
   @override
@@ -97,7 +97,7 @@ class VerifyPhoneView extends GetView<RegisterViewModel> {
               CustomButton(
                 text: "تأكيد",
                 onTap: () {
-                  controller.confirmEmail();
+                  controller.confirmPhone();
                 },
                 fontFamily: "inter",
                 fontWeight: FontWeight.w600,

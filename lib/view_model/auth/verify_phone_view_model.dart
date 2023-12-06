@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
-class VerifyEmailViewModel extends GetxController {
+class VerifyPhoneViewModel extends GetxController {
   String initVerifyEmailViewModel = "";
-  String pinCode = "4444";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController pinController = TextEditingController();
   GlobalKey<FormState> verifyFormKey = GlobalKey<FormState>();
+  String pinCode = "4444";
   final focusNode = FocusNode();
 
   final defaultPinTheme = PinTheme(
@@ -30,7 +29,7 @@ class VerifyEmailViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    print("Veify Email Page");
+    print("Veify Phone Page");
   }
 
   @override
@@ -41,12 +40,12 @@ class VerifyEmailViewModel extends GetxController {
     focusNode.dispose();
   }
 
-  void confirmEmail() {
+  void confirmPhone() {
     focusNode.unfocus();
     if (verifyFormKey.currentState!.validate()) {
       print(pinController.text);
 
-      Get.toNamed(Routes.continueRegisterView);
+      Get.offNamed(Routes.continueRegisterView);
     }
   }
 

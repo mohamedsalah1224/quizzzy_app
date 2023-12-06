@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:pinput/pinput.dart';
-import 'package:quizzy_app/view_model/auth/register_view_model.dart';
+import 'package:quizzy_app/view_model/auth/verify_email_view_model.dart';
 import '../../custom_component/custom_text.dart';
 
-class VerifyEmailView extends GetView<RegisterViewModel> {
+class VerifyEmailView extends GetView<VerifyEmailViewModel> {
   const VerifyEmailView({super.key});
 
   @override

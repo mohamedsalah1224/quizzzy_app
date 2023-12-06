@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:pinput/pinput.dart';
-
-import '../../../view_model/auth/forget_password_view_model.dart';
-
+import 'package:quizzy_app/view_model/auth/identify_email_view_model.dart';
 import '../../custom_component/custom_button.dart';
 import '../../custom_component/custom_text.dart';
 
-class IdentifyEmailView extends GetView<ForgetPasswordViewModel> {
+class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
   const IdentifyEmailView({super.key});
 
   @override
