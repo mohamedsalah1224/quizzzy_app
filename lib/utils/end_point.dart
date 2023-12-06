@@ -3,15 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class EndPoint {
   EndPoint._();
 
-  /// Assets for imagesAccount
-  /// assets/images/account.png
-  static String baseUrl = dotenv.get('BASE_URL');
-
-  static String register = dotenv.get('POPLAR_PEOPLE');
-// https://api.themoviedb.org/3/person/popular?api_key=fdd781f0c3c5c144079ecc6c5ca41814&page=2
-  static String profilePersonImage({required int person_id}) {
-    return "person/$person_id/images";
-  }
-
-  static String imagePath = dotenv.get('IMAGE_PATH');
+  static final String baseUrl = dotenv.get("BASE_URL");
+  static final String login = dotenv.get("LOGIN");
+  static final String logout = dotenv.get("LOGOUT");
+  static final String register = dotenv.get("REGISTER");
+  static final String checkUser = dotenv.get("CHECK_USER");
+  static final String socialLogin = dotenv.get("SOCIAL_LOGIN");
 }
