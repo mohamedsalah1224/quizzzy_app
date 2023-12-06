@@ -17,9 +17,16 @@ class AuthRepositoryService implements AuthRepository {
 
   AuthRepositoryService._();
   @override
-  Future<AuthModel> checkUser({required String value}) {
-    // TODO: implement checkUser
-    throw UnimplementedError();
+  Future<GeneralResponseModel> checkUser({required String value}) async {
+    try {
+      var response =
+          await DioHelper().post(EndPoint.checkUser, data: {'email': value});
+
+      return GeneralResponseModel.fromJson(response);
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+      // or throw response['message']
+    }
   }
 
   @override

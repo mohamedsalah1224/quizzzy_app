@@ -8,7 +8,7 @@ import '../../../model/social_login_model.dart';
 abstract class AuthRepository {
   Future<AuthModel> login({required LoginModel loginModel});
   Future<AuthModel> socialLogin({required SocialLoginModel socialLoginModel});
-  Future<AuthModel> checkUser(
+  Future<GeneralResponseModel> checkUser(
       {required String
           value}); // vaule can be email / phone / proveiderID  , retrun(message , sucess)
 
