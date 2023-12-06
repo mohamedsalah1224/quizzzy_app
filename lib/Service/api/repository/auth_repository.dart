@@ -1,4 +1,5 @@
 import 'package:quizzy_app/model/auth_model.dart';
+import 'package:quizzy_app/model/genral_response_mode.dart';
 
 import '../../../model/login_model.dart';
 import '../../../model/register_model.dart';
@@ -11,7 +12,8 @@ abstract class AuthRepository {
       {required String
           value}); // vaule can be email / phone / proveiderID  , retrun(message , sucess)
 
-  Future<String> logout(); // need Authorization , retrun(message , sucess)
+  Future<GeneralResponseModel>
+      logout(); // need Authorization , retrun(message , sucess)
   Future<AuthModel> register({required RegisterModel registerModel});
 //   updateProfile();
 //   getProfile();

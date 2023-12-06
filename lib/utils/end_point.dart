@@ -9,4 +9,7 @@ class EndPoint {
   static final String register = dotenv.get("REGISTER");
   static final String checkUser = dotenv.get("CHECK_USER");
   static final String socialLogin = dotenv.get("SOCIAL_LOGIN");
+
+  static final String messgeApiResponse =
+      dotenv.get("MESSAGE_API"); // to get Message Erro when occur Execption
 }

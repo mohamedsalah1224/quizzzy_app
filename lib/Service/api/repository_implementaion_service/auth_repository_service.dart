@@ -3,6 +3,7 @@ import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/auth_repository.dart';
 import 'package:quizzy_app/model/auth_model.dart';
+import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/login_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
@@ -42,9 +43,14 @@ class AuthRepositoryService implements AuthRepository {
   }
 
   @override
-  Future<String> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<GeneralResponseModel> logout() async {
+    try {
+      var response = await DioHelper().post(EndPoint.logout);
+      return GeneralResponseModel.fromJson(response); //
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+      // or throw response['message']
+    }
   }
 
   @override
