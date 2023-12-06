@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
-import 'package:pinput/pinput.dart';
+
 import 'package:quizzy_app/utils/form_validator.dart';
 
 import 'package:quizzy_app/utils/routes.dart';
