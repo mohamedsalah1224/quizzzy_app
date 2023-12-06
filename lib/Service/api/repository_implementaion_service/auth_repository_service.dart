@@ -82,8 +82,27 @@ class AuthRepositoryService implements AuthRepository {
   }
 
   @override
-  Future<AuthModel> socialLogin({required SocialLoginModel socialLoginModel}) {
-    // TODO: implement socialLogin
-    throw UnimplementedError();
+  Future<AuthModel> socialLogin(
+      {required SocialLoginModel socialLoginModel}) async {
+    try {
+      var reponse = await DioHelper().post(EndPoint.socialLogin, data: {
+        'name': socialLoginModel.name,
+        'academic_year_id': socialLoginModel.academicYearId,
+        'provider_id': socialLoginModel.academicYearId,
+        'provider_type': socialLoginModel.providerType,
+        'date_of_birth': socialLoginModel.dateOfBirth,
+        'device_token': socialLoginModel.deviceToken,
+        'username': socialLoginModel.username,
+        'governorate': socialLoginModel.governorate,
+        'area': socialLoginModel.area,
+        'residence_area': socialLoginModel.residenceArea,
+        'specialization': socialLoginModel.specialization
+      });
+
+      return AuthModel.fromJson(reponse);
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+      // or throw response['message']
+    }
   }
 }
