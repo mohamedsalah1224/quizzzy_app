@@ -1,7 +1,8 @@
 class SocialServiceResponseModel {
-  String providerId;
-  String providertype;
+  String? providerId;
+  String? providertype;
+  bool status;
 
   SocialServiceResponseModel(
-      {required this.providerId, required this.providertype});
+      {this.providerId, this.providertype, required this.status});
 }
