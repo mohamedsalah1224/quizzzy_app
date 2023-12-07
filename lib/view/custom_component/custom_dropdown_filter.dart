@@ -7,11 +7,13 @@ class CustomDropDownFilter extends StatelessWidget {
   final List<String>? items;
   final String defaultValue;
   final Color borderColor;
+  final Widget? icon;
   const CustomDropDownFilter(
       {super.key,
       required this.onChanged,
       required this.value,
       required this.defaultValue,
+      this.icon,
       required this.borderColor,
       required this.items});
 
@@ -33,15 +35,16 @@ class CustomDropDownFilter extends StatelessWidget {
               defaultValue,
             ),
             padding: const EdgeInsets.symmetric(horizontal: 5).w,
-            isExpanded: true,
-            iconEnabledColor: borderColor,
             underline: const Text(""),
+            iconEnabledColor: borderColor,
+            icon: icon,
             onChanged: onChanged,
+            isExpanded: true,
             items: items!
                 .map((e) => DropdownMenuItem(
                       child: Text("$e"),
                       value: e,
-                      alignment: AlignmentDirectional.centerEnd,
+                      alignment: Alignment.centerRight,
                     ))
                 .toList()),
       ),

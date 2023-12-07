@@ -7,7 +7,6 @@ import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
 import 'package:quizzy_app/view/screens/exam/quiz_type_view.dart';
 
 import '../../utils/constant.dart';
-import '../../view/screens/exam/exam_view.dart';
 
 class ManageExamViewModel extends GetxController {
   int _currentIndex = 0;

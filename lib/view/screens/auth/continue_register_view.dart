@@ -39,7 +39,7 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                   ),
                   30.verticalSpace,
                   CustomText(
-                    text: 'اسم المستخدم',
+                    text: "اسم المستخدم (الاسم المستعار)",
                     fontFamily: "Segoe",
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,

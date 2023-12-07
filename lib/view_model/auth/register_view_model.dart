@@ -21,6 +21,58 @@ class RegisterViewModel extends GetxController {
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
+  String? governorateValue;
+  String? stateOfAreaValue;
+  String? areaName;
+  String? specializationValue;
+  int? academicYearIdValue;
+  List<String> governorateList = [
+    "القدس",
+    "بيت لحم",
+    "الخليل",
+    "رام الله والبيرة",
+    "نابلس",
+    "سلفيت",
+    "قلقيلية",
+    "طولكرم",
+    "طوباس",
+    "جنين",
+    "أريحا والأغوار",
+    "شمال غزة",
+    "غزة",
+    "الوسطى",
+    "خان يونس",
+    "رفح"
+  ];
+// (مدينة — قرية— مخيم)
+  List<String> stateOfAreaList = ["مخيم", "قرية", "مدينة"];
+
+  List<String> areaNameList = ["ٌيرجي اختيار اسم المحافظة أولا"];
+
+  Map<String, List> getAreaName = {
+    "القدس": [
+      "أبو ديس",
+      "أبو غوش",
+      "إشوع",
+      "أم طوبا",
+      "بتير",
+    ],
+    "بيت لحم": ["الحجيلة", "الحدايدة", "الحلقوم"],
+    "الخليل": [],
+    "رام الله والبيرة": [],
+    "نابلس": [],
+    "سلفيت": [],
+    "قلقيلية": [],
+    "طولكرم": [],
+    "طوباس": [],
+    "جنين": [],
+    "أريحا والأغوار": [],
+    "شمال غزة": [],
+    "غزة": [],
+    "الوسطى": [],
+    "خان يونس": [],
+    "رفح": [],
+  };
   @override
   void onInit() {
     // TODO: implement onInit
@@ -33,6 +85,31 @@ class RegisterViewModel extends GetxController {
     // TODO: implement onClose
     super.onClose();
     dateController.dispose();
+  }
+
+  void updateGovernorate({required String value}) {
+    governorateValue = value;
+    update(['governorate']);
+  }
+
+  void updateStateOfAreaList({required String value}) {
+    stateOfAreaValue = value;
+    update(['stateOfArea']);
+  }
+
+  void updateAreaName({required String value}) {
+    areaName = value;
+    update(['areaName']);
+  }
+
+  void updateAcademicYear({required int value}) {
+    academicYearIdValue = value; // academicYearIdValue
+    update(['academicYear']);
+  }
+
+  void updateSpecialization({required String value}) {
+    specializationValue = value;
+    update(['specialization']);
   }
 
   Future<void> showDate(BuildContext context) async {

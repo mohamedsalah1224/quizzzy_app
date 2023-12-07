@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
@@ -119,61 +120,62 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          children: [
-                            CustomText(
-                              text: "قطاع غزة",
-                              fontFamily: "inter",
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            4.horizontalSpace,
-                            Radio(
-                                visualDensity: VisualDensity(
-                                  horizontal: VisualDensity.minimumDensity,
-                                  vertical: VisualDensity.minimumDensity,
-                                ),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: 1,
-                                groupValue: 1,
-                                activeColor: Color(0xff268C6D),
-                                onChanged: (value) {
-                                  print(value);
-                                })
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 150,
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: RadioListTile(
+                              visualDensity: VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              contentPadding: EdgeInsets.all(0),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              value: 1,
+                              title: CustomText(
+                                text: "الضفة الغربية",
+                                fontFamily: "inter",
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              groupValue: 2,
+                              activeColor: Color(0xff268C6D),
+                              onChanged: (value) {
+                                print(value);
+                              }),
                         ),
-                        Row(
-                          children: [
-                            CustomText(
-                              text: "الضفة الغربية",
-                              fontFamily: "inter",
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            4.horizontalSpace,
-                            Radio(
-                                visualDensity: VisualDensity(
-                                  horizontal: VisualDensity.minimumDensity,
-                                  vertical: VisualDensity.minimumDensity,
-                                ),
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: 1,
-                                groupValue: 2,
-                                activeColor: Color(0xff268C6D),
-                                onChanged: (value) {
-                                  print(value);
-                                })
-                          ],
+                      ),
+                      SizedBox(
+                        width: 150,
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: RadioListTile(
+                              visualDensity: VisualDensity(
+                                horizontal: VisualDensity.minimumDensity,
+                                vertical: VisualDensity.minimumDensity,
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              contentPadding: EdgeInsets.all(0),
+                              value: 1,
+                              title: CustomText(
+                                text: "الضفة الغربية",
+                                fontFamily: "inter",
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              groupValue: 2,
+                              activeColor: Color(0xff268C6D),
+                              onChanged: (value) {
+                                print(value);
+                              }),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   20.verticalSpace,
                   CustomText(
@@ -185,14 +187,20 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  CustomDropDownFilter(
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      value: null,
-                      defaultValue: "اسم المحافظة",
-                      borderColor: Color(0xff268C6D),
-                      items: ['منوفية', "القاهرة"]),
+                  GetBuilder<RegisterViewModel>(
+                    init: Get.find<RegisterViewModel>(),
+                    builder: (controller) {
+                      return CustomDropDownFilter(
+                        onChanged: (value) {
+                          controller.updateGovernorate(value: value!);
+                        },
+                        value: controller.governorateValue,
+                        defaultValue: "اسم المحافظة",
+                        borderColor: Color(0xff268C6D),
+                        items: controller.governorateList,
+                      );
+                    },
+                  ),
                   20.verticalSpace,
                   CustomText(
                     text: "منطقة السكن",
@@ -203,14 +211,21 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  CustomDropDownFilter(
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      value: null,
-                      defaultValue: "منطقة السكن",
-                      borderColor: Color(0xff268C6D),
-                      items: ['غزة', "مخيم"]),
+                  GetBuilder<RegisterViewModel>(
+                    id: "stateOfAreaList",
+                    builder: (controller) {
+                      print("Rebuild");
+                      return CustomDropDownFilter(
+                          onChanged: (value) {
+                            print(value);
+                            controller.updateStateOfAreaList(value: value!);
+                          },
+                          value: controller.stateOfAreaValue,
+                          defaultValue: "منطقة السكن",
+                          borderColor: Color(0xff268C6D),
+                          items: controller.stateOfAreaList);
+                    },
+                  ),
                   15.verticalSpace,
                   CustomText(
                     text: "اسم المنطقة",
