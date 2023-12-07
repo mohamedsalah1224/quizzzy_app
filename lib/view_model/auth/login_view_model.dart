@@ -26,8 +26,7 @@ class LoginViewModel extends GetxController {
   }
 
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance
-        .validatePhoneOrEmail(value, startPlusCode: true);
+    return FormValidator.instance.validatePhoneOrEmail(value);
   }
 
   String? validatePasword({String? value}) {

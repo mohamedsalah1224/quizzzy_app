@@ -167,7 +167,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                         value: controller.governorateValue,
                         defaultValue: "اسم المحافظة",
                         borderColor: Color(0xff268C6D),
-                        items: controller.governorateList,
+                        items: controller.governorateListValue,
                       );
                     },
                   ),

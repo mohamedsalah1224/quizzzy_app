@@ -28,17 +28,14 @@ class RegisterViewModel extends GetxController {
   String? academicYearValue;
   bool isVisibilityErroMessage = false;
   int groupValue = 1; // 1 deafult value mean "قطاع غزة"
-  List<String> governorateList = [
+  List<String> stateOfAreaList = ["مخيم", "قرية", "مدينة"];
+  List<String> areaNameList = [
+    "ٌيرجي اختيار اسم المحافظة أولا",
+  ];
+  List<String> governorateListValue = []; //  the value of the Drop Down
+
+  List<String> governoratListGaza = [
     "القدس",
-    "بيت لحم",
-    "الخليل",
-    "رام الله والبيرة",
-    "نابلس",
-    "سلفيت",
-    "قلقيلية",
-    "طولكرم",
-    "طوباس",
-    "جنين",
     "أريحا والأغوار",
     "شمال غزة",
     "غزة",
@@ -46,16 +43,14 @@ class RegisterViewModel extends GetxController {
     "خان يونس",
     "رفح"
   ];
-// (مدينة — قرية— مخيم)
-  List<String> stateOfAreaList = ["مخيم", "قرية", "مدينة"];
-
-  List<String> areaNameList = [
-    "ٌيرجي اختيار اسم المحافظة أولا",
-    "fsdfsdf",
-    "fsdf"
+  List<String> governorateListWest = [
+    "بيت لحم",
+    "الخليل",
+    "جنين",
+    "الوسطى",
   ];
-
-  Map<String, List> getAreaName = {
+// to get the Area Name based on the valu of governorateList (west , giza) that selected from dropDown
+  Map<String, List<String>> getAreaName = {
     "القدس": [
       "أبو ديس",
       "أبو غوش",
@@ -72,7 +67,7 @@ class RegisterViewModel extends GetxController {
     "طولكرم": [],
     "طوباس": [],
     "جنين": [],
-    "أريحا والأغوار": [],
+    "أريحا والأغوار": ["مصر"],
     "شمال غزة": [],
     "غزة": [],
     "الوسطى": [],
@@ -86,6 +81,7 @@ class RegisterViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    updateGovernorateListBasedOnRadioButtonSelection(); // to init the GovernorateList
     print("On Init");
   }
 
@@ -96,14 +92,33 @@ class RegisterViewModel extends GetxController {
     dateController.dispose();
   }
 
+  void updateGovernorateListBasedOnRadioButtonSelection() {
+    governorateListValue =
+        groupValue == 1 ? governoratListGaza : governorateListWest;
+  }
+
   void updateRadioButton({required int value}) {
     groupValue = value;
     update(["regionRadioButton"]);
+    governorateValue = null; // to set the default
+    areaName = null; // to set the default
+    areaNameList = [
+      "ٌيرجي اختيار اسم المحافظة أولا", // to set the default
+    ];
+    update(['areaName']);
+    updateGovernorateListBasedOnRadioButtonSelection();
+    update(['governorate']);
   }
 
   void updateGovernorate({required String value}) {
     governorateValue = value;
+
+    areaNameList =
+        getAreaName["$governorateValue"]!; // to update the areName List
+    areaName =
+        null; // to skip the erro becuase the initial value must contain a value of areNameList , so you must clear after a areList have a newValue
     update(['governorate']);
+    update(['areaName']); // to update the list of the areaName
   }
 
   void updateStateOfAreaList({required String value}) {
@@ -156,8 +171,7 @@ class RegisterViewModel extends GetxController {
   }
 
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance
-        .validatePhoneOrEmail(value, startPlusCode: true);
+    return FormValidator.instance.validatePhoneOrEmail(value);
   }
 
   String? validateName({String? value}) {
