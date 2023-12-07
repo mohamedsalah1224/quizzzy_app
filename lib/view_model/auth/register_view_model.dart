@@ -25,7 +25,9 @@ class RegisterViewModel extends GetxController {
   String? stateOfAreaValue;
   String? areaName;
   String? specializationValue;
-  int? academicYearIdValue;
+  String? academicYearValue;
+  bool isVisibilityErroMessage = false;
+  int groupValue = 1; // 1 deafult value mean "قطاع غزة"
   List<String> governorateList = [
     "القدس",
     "بيت لحم",
@@ -47,7 +49,11 @@ class RegisterViewModel extends GetxController {
 // (مدينة — قرية— مخيم)
   List<String> stateOfAreaList = ["مخيم", "قرية", "مدينة"];
 
-  List<String> areaNameList = ["ٌيرجي اختيار اسم المحافظة أولا"];
+  List<String> areaNameList = [
+    "ٌيرجي اختيار اسم المحافظة أولا",
+    "fsdfsdf",
+    "fsdf"
+  ];
 
   Map<String, List> getAreaName = {
     "القدس": [
@@ -73,6 +79,9 @@ class RegisterViewModel extends GetxController {
     "خان يونس": [],
     "رفح": [],
   };
+
+  List<String> academicYearList = const ["الصف الثاني عشر", "الصف الحادي عشر"];
+  List<String> specializationList = const ["علمي", "ادبي", "فني"];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -85,6 +94,11 @@ class RegisterViewModel extends GetxController {
     // TODO: implement onClose
     super.onClose();
     dateController.dispose();
+  }
+
+  void updateRadioButton({required int value}) {
+    groupValue = value;
+    update(["regionRadioButton"]);
   }
 
   void updateGovernorate({required String value}) {
@@ -102,14 +116,29 @@ class RegisterViewModel extends GetxController {
     update(['areaName']);
   }
 
-  void updateAcademicYear({required int value}) {
-    academicYearIdValue = value; // academicYearIdValue
+  void updateAcademicYear({required String value}) {
+    academicYearValue = value; // academicYearIdValue
     update(['academicYear']);
   }
 
   void updateSpecialization({required String value}) {
     specializationValue = value;
     update(['specialization']);
+  }
+
+  bool validateFieldsOfDropDown() {
+    if (governorateValue == null ||
+        stateOfAreaValue == null ||
+        areaName == null ||
+        specializationValue == null ||
+        academicYearValue == null) {
+      isVisibilityErroMessage = true;
+      update(['visibility']);
+      return true;
+    } else {
+      isVisibilityErroMessage = false;
+      return false;
+    }
   }
 
   Future<void> showDate(BuildContext context) async {
@@ -155,6 +184,8 @@ class RegisterViewModel extends GetxController {
 
   void continueregisterView() {
     if (registerFormKey.currentState!.validate()) {
+      if (validateFieldsOfDropDown())
+        return; // to show the Message erro if any Fields equal null
       if (Validation.instance.isEmail(email: emailOrPhoneController.text)) {
         Get.toNamed(Routes.verifyEmailView);
       } else {

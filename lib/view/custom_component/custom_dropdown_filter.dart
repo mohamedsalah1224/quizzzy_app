@@ -31,11 +31,12 @@ class CustomDropDownFilter extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: DropdownButton(
             value: value,
+            underline: const SizedBox.shrink(),
             hint: Text(
               defaultValue,
             ),
             padding: const EdgeInsets.symmetric(horizontal: 5).w,
-            underline: const Text(""),
+            // underline: const Text(""),
             iconEnabledColor: borderColor,
             icon: icon,
             onChanged: onChanged,

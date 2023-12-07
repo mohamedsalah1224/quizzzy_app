@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
+import 'package:quizzy_app/view/custom_component/custom_radio_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
 import 'package:quizzy_app/view_model/auth/register_view_model.dart';
 
@@ -116,66 +117,35 @@ class RegisterView extends GetView<RegisterViewModel> {
                     fontFamily: "Segoe",
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,
-                    color: Color(0xff077C58),
+                    color: const Color(0xff077C58),
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 150,
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: RadioListTile(
-                              visualDensity: VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity,
-                              ),
-                              contentPadding: EdgeInsets.all(0),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              value: 1,
-                              title: CustomText(
-                                text: "الضفة الغربية",
-                                fontFamily: "inter",
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              groupValue: 2,
-                              activeColor: Color(0xff268C6D),
-                              onChanged: (value) {
-                                print(value);
-                              }),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: RadioListTile(
-                              visualDensity: VisualDensity(
-                                horizontal: VisualDensity.minimumDensity,
-                                vertical: VisualDensity.minimumDensity,
-                              ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              contentPadding: EdgeInsets.all(0),
-                              value: 1,
-                              title: CustomText(
-                                text: "الضفة الغربية",
-                                fontFamily: "inter",
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              groupValue: 2,
-                              activeColor: Color(0xff268C6D),
-                              onChanged: (value) {
-                                print(value);
-                              }),
-                        ),
-                      ),
-                    ],
+                  GetBuilder<RegisterViewModel>(
+                    id: "regionRadioButton",
+                    builder: (controller) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomRadioButton(
+                            groupValue: controller.groupValue,
+                            value: 1,
+                            text: "قطاع غزة",
+                            onChanged: (value) {
+                              controller.updateRadioButton(value: value!);
+                            },
+                          ),
+                          CustomRadioButton(
+                            groupValue: controller.groupValue,
+                            value: 2,
+                            text: "الضفة الغربية",
+                            onChanged: (value) {
+                              controller.updateRadioButton(value: value!);
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   20.verticalSpace,
                   CustomText(
@@ -188,7 +158,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                   ),
                   3.verticalSpace,
                   GetBuilder<RegisterViewModel>(
-                    init: Get.find<RegisterViewModel>(),
+                    id: "governorate",
                     builder: (controller) {
                       return CustomDropDownFilter(
                         onChanged: (value) {
@@ -207,22 +177,20 @@ class RegisterView extends GetView<RegisterViewModel> {
                     fontFamily: "Segoe",
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,
-                    color: Color(0xff077C58),
+                    color: const Color(0xff077C58),
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
                   GetBuilder<RegisterViewModel>(
-                    id: "stateOfAreaList",
+                    id: "stateOfArea",
                     builder: (controller) {
-                      print("Rebuild");
                       return CustomDropDownFilter(
                           onChanged: (value) {
-                            print(value);
                             controller.updateStateOfAreaList(value: value!);
                           },
                           value: controller.stateOfAreaValue,
                           defaultValue: "منطقة السكن",
-                          borderColor: Color(0xff268C6D),
+                          borderColor: const Color(0xff268C6D),
                           items: controller.stateOfAreaList);
                     },
                   ),
@@ -236,14 +204,18 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  CustomDropDownFilter(
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      value: null,
-                      defaultValue: "اسم المنطقة",
-                      borderColor: Color(0xff268C6D),
-                      items: ['مخيم', "القاهرة"]),
+                  GetBuilder<RegisterViewModel>(
+                      id: 'areaName',
+                      builder: (controller) {
+                        return CustomDropDownFilter(
+                            onChanged: (value) {
+                              controller.updateAreaName(value: value!);
+                            },
+                            value: controller.areaName,
+                            defaultValue: "اسم المنطقة",
+                            borderColor: const Color(0xff268C6D),
+                            items: controller.areaNameList);
+                      }),
                   15.verticalSpace,
                   CustomText(
                     text: "الصف الدراسي",
@@ -254,14 +226,20 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  CustomDropDownFilter(
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      value: null,
-                      defaultValue: "الصف الدراسي",
-                      borderColor: Color(0xff268C6D),
-                      items: ['الصف الثاني عشر', "الصف الحادي عشر"]),
+                  GetBuilder<RegisterViewModel>(
+                    id: "academicYear",
+                    builder: (controller) {
+                      return CustomDropDownFilter(
+                          onChanged: (value) {
+                            print(value);
+                            controller.updateAcademicYear(value: value!);
+                          },
+                          value: controller.academicYearValue,
+                          defaultValue: "الصف الدراسي",
+                          borderColor: const Color(0xff268C6D),
+                          items: controller.academicYearList);
+                    },
+                  ),
                   15.verticalSpace,
                   CustomText(
                     text: "التخصص",
@@ -272,15 +250,36 @@ class RegisterView extends GetView<RegisterViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                   ),
                   3.verticalSpace,
-                  CustomDropDownFilter(
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      value: null,
-                      defaultValue: "التخصص",
-                      borderColor: Color(0xff268C6D),
-                      items: ['علمي', "ادبي"]),
-                  30.verticalSpace,
+                  GetBuilder<RegisterViewModel>(
+                    id: "specialization",
+                    builder: (controller) {
+                      return CustomDropDownFilter(
+                          onChanged: (value) {
+                            controller.updateSpecialization(value: value!);
+                          },
+                          value: controller.specializationValue,
+                          defaultValue: "التخصص",
+                          borderColor: const Color(0xff268C6D),
+                          items: controller.specializationList);
+                    },
+                  ),
+                  15.verticalSpace,
+                  GetBuilder<RegisterViewModel>(
+                    id: "visibility",
+                    builder: (controller) {
+                      return Visibility(
+                        visible: controller.isVisibilityErroMessage,
+                        child: CustomText(
+                          text: "من فضلك ادخل جميع  الحقول",
+                          alignment: Alignment.centerRight,
+                          fontSize: 15.sp,
+                          color: Color(0xffcc0000),
+                          fontFamily: "inter",
+                        ),
+                      );
+                    },
+                  ),
+                  15.verticalSpace,
                   CustomButton(
                     text: "استمرار",
                     fontFamily: "Poppins",
