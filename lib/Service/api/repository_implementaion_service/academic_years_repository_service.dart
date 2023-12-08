@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/academic_years_repository.dart';
 import 'package:quizzy_app/model/academic_year_response_model.dart';
@@ -11,8 +12,8 @@ class AcademicYearsRepositoryService implements AcademicYearsRepository {
     try {
       var response = await DioHelper().get(EndPoint.academiYears);
       return AcdemicYearsModel.fromJson(response);
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
     } catch (e) {
       rethrow;
     }
@@ -24,8 +25,8 @@ class AcademicYearsRepositoryService implements AcademicYearsRepository {
     try {
       var response = await DioHelper().get(EndPoint.getFullAcademiYear(id: id));
       return AcdemicYearResponseModel.fromJson(response);
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
     } catch (e) {
       rethrow;
     }

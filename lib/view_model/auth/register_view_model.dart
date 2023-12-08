@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/academic_years_repository_service.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
+import 'package:quizzy_app/model/acdemic_years_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 
@@ -78,7 +81,7 @@ class RegisterViewModel extends GetxController {
     "رفح": [],
   };
 
-  List<String> academicYearList = const ["الصف الثاني عشر", "الصف الحادي عشر"];
+  List<AcdemicYearsModel>? academicYearList;
   List<String> specializationList = const ["علمي", "ادبي", "فني"];
   @override
   void onInit() {
@@ -94,6 +97,16 @@ class RegisterViewModel extends GetxController {
     // TODO: implement onClose
     super.onClose();
     dateController.dispose();
+  }
+
+  void getAllAcdemicYears() {
+    try {
+      AcademicYearsRepositoryService()
+          .getAllAcademicYear()
+          .then((value) => academicYearList = value.data);
+    } on DioException catch (e) {
+      logPrint
+    } catch (e) {}
   }
 
   void updateGovernorateListBasedOnRadioButtonSelection() {
