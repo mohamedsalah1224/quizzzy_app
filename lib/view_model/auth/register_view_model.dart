@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quizzy_app/model/academic_year_model.dart';
+import 'package:quizzy_app/model/register_model.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 
 import 'package:quizzy_app/utils/validation.dart';
 
@@ -20,7 +23,7 @@ class RegisterViewModel extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-
+  RegisterModel? registerModel;
   String? governorateValue;
   String? stateOfAreaValue;
   String? areaName;
@@ -82,6 +85,7 @@ class RegisterViewModel extends GetxController {
     // TODO: implement onInit
     super.onInit();
     updateGovernorateListBasedOnRadioButtonSelection(); // to init the GovernorateList
+
     print("On Init");
   }
 
@@ -152,6 +156,7 @@ class RegisterViewModel extends GetxController {
       return true;
     } else {
       isVisibilityErroMessage = false;
+
       return false;
     }
   }
@@ -200,16 +205,33 @@ class RegisterViewModel extends GetxController {
     if (registerFormKey.currentState!.validate()) {
       if (validateFieldsOfDropDown())
         return; // to show the Message erro if any Fields equal null
-      if (Validation.instance.isEmail(email: emailOrPhoneController.text)) {
-        Get.toNamed(Routes.verifyEmailView);
-      } else {
-        Get.toNamed(Routes.verifyPhoneView);
-      }
+
+      Get.toNamed(Routes.continueRegisterView);
+      // if (Validation.instance.isEmail(email: emailOrPhoneController.text)) {
+      //   Get.toNamed(Routes.verifyEmailView);
+      // } else {
+      //   Get.toNamed(Routes.verifyPhoneView);
+      // }
     }
   }
 
   void logIn() {
     if (continueRegisterFormKey.currentState!.validate()) {
+      bool isEmail =
+          Validation.instance.isEmail(email: emailOrPhoneController.text);
+      registerModel = RegisterModel(
+        name: nameController.text,
+        dateOfBirth: dateController.text,
+        email: isEmail ? emailOrPhoneController.text : null,
+        phone: !isEmail ? emailOrPhoneController.text : null,
+        area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
+        username: userNameController.text,
+        specialization: specializationValue,
+        password: passwordController.text,
+        governorate: governorateValue,
+        residenceArea: stateOfAreaValue,
+        // academicYearId: GeneralUtils.instance.getAcdemicYearName(academicYearList: [], value: academicYearValue!)
+      );
       Get.offAllNamed(Routes.loginView);
     }
   }

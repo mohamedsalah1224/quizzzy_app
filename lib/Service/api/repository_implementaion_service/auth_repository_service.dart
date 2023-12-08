@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/auth_repository.dart';
 import 'package:quizzy_app/model/auth_model.dart';
@@ -23,9 +22,10 @@ class AuthRepositoryService implements AuthRepository {
           await DioHelper().post(EndPoint.checkUser, data: {'email': value});
 
       return GeneralResponseModel.fromJson(response);
-    } on DioException catch (e) {
-      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
-      // or throw response['message']
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -43,9 +43,11 @@ class AuthRepositoryService implements AuthRepository {
         },
       );
       return AuthModel.fromJson(response);
-    } on DioException catch (e) {
-      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } on DioException {
+      rethrow;
       // or throw response['message']
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -54,9 +56,10 @@ class AuthRepositoryService implements AuthRepository {
     try {
       var response = await DioHelper().post(EndPoint.logout);
       return GeneralResponseModel.fromJson(response); //
-    } on DioException catch (e) {
-      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
-      // or throw response['message']
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -82,9 +85,10 @@ class AuthRepositoryService implements AuthRepository {
       });
 
       return AuthModel.fromJson(reponse);
-    } on DioException catch (e) {
-      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
-      // or throw response['message']
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -107,9 +111,10 @@ class AuthRepositoryService implements AuthRepository {
       });
 
       return AuthModel.fromJson(reponse);
-    } on DioException catch (e) {
-      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
-      // or throw response['message']
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 }

@@ -1,4 +1,4 @@
-class AcademicYear {
+class AcademicYearModel {
   int? id;
   String? name;
   String? photo;
@@ -6,7 +6,7 @@ class AcademicYear {
   String? createdAt;
   String? updatedAt;
 
-  AcademicYear(
+  AcademicYearModel(
       {this.id,
       this.name,
       this.photo,
@@ -14,8 +14,8 @@ class AcademicYear {
       this.createdAt,
       this.updatedAt});
 
-  factory AcademicYear.fromJson(Map<String, dynamic> json) {
-    return AcademicYear(
+  factory AcademicYearModel.fromJson(Map<String, dynamic> json) {
+    return AcademicYearModel(
       id: json['id'],
       name: json['name'],
       createdAt: json['created_at'],

@@ -46,7 +46,7 @@ class VerifyEmailViewModel extends GetxController {
     if (verifyFormKey.currentState!.validate()) {
       print(pinController.text);
 
-      Get.toNamed(Routes.continueRegisterView);
+      // Get.toNamed(Routes.continueRegisterView);
     }
   }
 

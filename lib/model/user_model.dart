@@ -16,7 +16,7 @@ class User {
   String? providerId;
   String? providerType;
   String? deviceToken;
-  AcademicYear? academicYear;
+  AcademicYearModel? academicYear;
   bool? isActive;
   String? createdAt;
   String? updatedAt;
@@ -60,7 +60,7 @@ class User {
         providerType: json['provider_type'],
         deviceToken: json['device_token'],
         academicYear: json['academic_year'] != null
-            ? AcademicYear.fromJson(json['academic_year'])
+            ? AcademicYearModel.fromJson(json['academic_year'])
             : null,
         isActive: json['is_active'],
         createdAt: json['created_at'],
