@@ -43,10 +43,11 @@ class FormValidator {
     return null;
   }
 
-  String? contactsValidator(String? contact) {
+  String? contactsValidator(String? contact, {bool startPlusCode = false}) {
     if (contact == null || contact.isEmpty) {
       return _emptyPhoneInputError;
-    } else if (!Validation.instance.isContacts(contact: contact)) {
+    } else if (!Validation.instance
+        .isContacts(contact: contact, startPlusCode: startPlusCode)) {
       return _invalidEmailError;
     }
     return null;

@@ -19,7 +19,7 @@ class GeneralUtils {
     return groupValue == 1 ? "قطاع غزة" : "الضفة الغربية";
   }
 
-  int? getAcdemicYearName(
+  int? getAcademicYearById(
       {required List<AcademicYearModel> academicYearList,
       required String value}) {
     for (int i = 0; i < academicYearList.length; i++) {
@@ -29,5 +29,10 @@ class GeneralUtils {
     }
 
     return null;
+  }
+
+  List<String> convertAcdemicYearToListOfString(
+      {required List<AcademicYearModel> academicYearList}) {
+    return academicYearList.map((e) => e.name!).toList();
   }
 }

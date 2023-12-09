@@ -85,7 +85,7 @@ class AuthRepositoryService implements AuthRepository {
       });
 
       return AuthModel.fromJson(reponse);
-    } on DioException {
+    } on DioException catch (e) {
       rethrow;
     } catch (e) {
       rethrow;

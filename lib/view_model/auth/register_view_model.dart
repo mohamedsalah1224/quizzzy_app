@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -5,110 +7,109 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/academic_years_repository_service.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
-import 'package:quizzy_app/model/acdemic_years_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
+import 'package:quizzy_app/utils/constant/app_list_data.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
-
 import 'package:quizzy_app/utils/validation.dart';
-
 import '../../utils/form_validator.dart';
 import '../../utils/routes.dart';
 
 class RegisterViewModel extends GetxController {
-  String initRegisterViewModel = "";
+  final ValueNotifier<bool> _isLoading = ValueNotifier(false);
+  bool get isLoading => _isLoading.value;
 
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> continueRegisterFormKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController emailOrPhoneController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  RegisterModel? registerModel;
+
+  bool isSocial = false;
+
+  void setSocial() => isSocial = true;
   String? governorateValue;
   String? stateOfAreaValue;
   String? areaName;
   String? specializationValue;
   String? academicYearValue;
+  List<String> governorateListValue = []; //  the value of the Drop Down
   bool isVisibilityErroMessage = false;
   int groupValue = 1; // 1 deafult value mean "قطاع غزة"
-  List<String> stateOfAreaList = ["مخيم", "قرية", "مدينة"];
+  List<AcademicYearModel> academicYearModelList = []; // general Model
+  List<String> academicYearListDropDown = []; // for DropDown
   List<String> areaNameList = [
     "ٌيرجي اختيار اسم المحافظة أولا",
   ];
-  List<String> governorateListValue = []; //  the value of the Drop Down
 
-  List<String> governoratListGaza = [
-    "القدس",
-    "أريحا والأغوار",
-    "شمال غزة",
-    "غزة",
-    "الوسطى",
-    "خان يونس",
-    "رفح"
-  ];
-  List<String> governorateListWest = [
-    "بيت لحم",
-    "الخليل",
-    "جنين",
-    "الوسطى",
-  ];
-// to get the Area Name based on the valu of governorateList (west , giza) that selected from dropDown
-  Map<String, List<String>> getAreaName = {
-    "القدس": [
-      "أبو ديس",
-      "أبو غوش",
-      "إشوع",
-      "أم طوبا",
-      "بتير",
-    ],
-    "بيت لحم": ["الحجيلة", "الحدايدة", "الحلقوم"],
-    "الخليل": [],
-    "رام الله والبيرة": [],
-    "نابلس": [],
-    "سلفيت": [],
-    "قلقيلية": [],
-    "طولكرم": [],
-    "طوباس": [],
-    "جنين": [],
-    "أريحا والأغوار": ["مصر"],
-    "شمال غزة": [],
-    "غزة": [],
-    "الوسطى": [],
-    "خان يونس": [],
-    "رفح": [],
-  };
+  /////////////////////////// Get From Constant App list Data /////////////////////////////////////
+  late final List<String> stateOfAreaList;
+  late final List<String> specializationList;
+  late final List<String> governoratListGaza;
+  late final List<String> governorateListWest;
+  late final Map<String, List<String>>
+      getAreaName; // to get the Area Name based on the valu of governorateList (west , giza) that selected from dropDown
 
-  List<AcdemicYearsModel>? academicYearList;
-  List<String> specializationList = const ["علمي", "ادبي", "فني"];
+////////////////////////////////////////////////////Api Service , init , dispose/////////////////////////////////////////////////
+
+  void initConstantList() {
+    // to inint alll const list
+    stateOfAreaList = AppListData.stateOfAreaList;
+    specializationList = AppListData.specializationList;
+    governoratListGaza = AppListData.governoratListGaza;
+    governorateListWest = AppListData.governorateListWest;
+    getAreaName = AppListData.getAreaName;
+  }
+
+  void disposeAllController() {
+    nameController.dispose();
+    userNameController.dispose();
+    dateController.dispose();
+    emailOrPhoneController.dispose();
+    passwordController.dispose();
+    passwordConfirmController.dispose();
+    _isLoading.dispose();
+  }
+
+  void _getAllAcdemicYears() async {
+    try {
+      AcademicYearsRepositoryService().getAllAcademicYear().then((value) {
+        academicYearModelList = value.data!;
+        academicYearListDropDown = GeneralUtils.instance
+            .convertAcdemicYearToListOfString(
+                academicYearList:
+                    academicYearModelList); // cover the Acdemic Year Model to String value
+        // to conver
+        _isLoading.value = true;
+        update(['loading']);
+      });
+    } on DioException catch (e) {
+      debugPrint(
+          'Erro in RegisterViewModel getAllAcdemicYears Methods: Erro is \n$e');
+    } catch (e) {
+      debugPrint(
+          'Erro in RegisterViewModel getAllAcdemicYears Methods: Erro is \n$e');
+    }
+  }
+
+////////////////////////////////////////////////// onInit , onDispose ///////////////////////////////////////////////////
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    initConstantList(); // to inint alll const list
     updateGovernorateListBasedOnRadioButtonSelection(); // to init the GovernorateList
-
-    print("On Init");
+    _getAllAcdemicYears(); // get Acdemic Year from Api
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
-    dateController.dispose();
+    disposeAllController(); // to dispose All Controller of the Data Members
   }
 
-  void getAllAcdemicYears() {
-    try {
-      AcademicYearsRepositoryService()
-          .getAllAcademicYear()
-          .then((value) => academicYearList = value.data);
-    } on DioException catch (e) {
-      logPrint
-    } catch (e) {}
-  }
-
+//////////////////////////////////// Update the Element of The UI //////////////////////////////////////////////
   void updateGovernorateListBasedOnRadioButtonSelection() {
     governorateListValue =
         groupValue == 1 ? governoratListGaza : governorateListWest;
@@ -158,22 +159,6 @@ class RegisterViewModel extends GetxController {
     update(['specialization']);
   }
 
-  bool validateFieldsOfDropDown() {
-    if (governorateValue == null ||
-        stateOfAreaValue == null ||
-        areaName == null ||
-        specializationValue == null ||
-        academicYearValue == null) {
-      isVisibilityErroMessage = true;
-      update(['visibility']);
-      return true;
-    } else {
-      isVisibilityErroMessage = false;
-
-      return false;
-    }
-  }
-
   Future<void> showDate(BuildContext context) async {
     await showDatePicker(
             context: context,
@@ -188,8 +173,14 @@ class RegisterViewModel extends GetxController {
     });
   }
 
+////////////////////////////////////////////////////// Validation for the Screen ///////////////////////////////////////////////
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance.validatePhoneOrEmail(value);
+    if (isSocial) {
+      return FormValidator.instance
+          .contactsValidator(value, startPlusCode: false);
+    } else {
+      return FormValidator.instance.validatePhoneOrEmail(value);
+    }
   }
 
   String? validateName({String? value}) {
@@ -214,6 +205,23 @@ class RegisterViewModel extends GetxController {
         passwordConfirmController.text, passwordController.text);
   }
 
+  bool validateFieldsOfDropDown() {
+    if (governorateValue == null ||
+        stateOfAreaValue == null ||
+        areaName == null ||
+        specializationValue == null ||
+        academicYearValue == null) {
+      isVisibilityErroMessage = true;
+      update(['visibility']);
+      return true;
+    } else {
+      isVisibilityErroMessage = false;
+
+      return false;
+    }
+  }
+
+////////////////////////////////////////////////////////// Goals Methods of Screen //////////////////////////////////////////////////////////////////
   void continueregisterView() {
     if (registerFormKey.currentState!.validate()) {
       if (validateFieldsOfDropDown())
@@ -232,19 +240,27 @@ class RegisterViewModel extends GetxController {
     if (continueRegisterFormKey.currentState!.validate()) {
       bool isEmail =
           Validation.instance.isEmail(email: emailOrPhoneController.text);
-      registerModel = RegisterModel(
+      RegisterModel registerModel = RegisterModel(
         name: nameController.text,
         dateOfBirth: dateController.text,
-        email: isEmail ? emailOrPhoneController.text : null,
-        phone: !isEmail ? emailOrPhoneController.text : null,
+        email: isEmail ? emailOrPhoneController.text : "",
+        phone: !isEmail ? emailOrPhoneController.text : "",
         area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
         username: userNameController.text,
         specialization: specializationValue,
         password: passwordController.text,
         governorate: governorateValue,
         residenceArea: stateOfAreaValue,
-        // academicYearId: GeneralUtils.instance.getAcdemicYearName(academicYearList: [], value: academicYearValue!)
+        academicYearId: GeneralUtils.instance.getAcademicYearById(
+            academicYearList: academicYearModelList, value: academicYearValue!),
       );
+      debugPrint("${registerModel.toString()}");
+
+      if (isSocial) {
+        // call sociall End Point
+      } else {
+        // call Registr End Point
+      }
       Get.offAllNamed(Routes.loginView);
     }
   }

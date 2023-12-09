@@ -1,16 +1,18 @@
+import 'package:quizzy_app/model/academic_year_model.dart';
+
 class AcdemicYearsModel {
   bool? success;
-  List<AcdemicYearsModel>? data;
+  List<AcademicYearModel>? data;
   String? message;
 
   AcdemicYearsModel({this.success, this.data, this.message});
 
   factory AcdemicYearsModel.fromJson(Map<String, dynamic> json) {
-    List<AcdemicYearsModel> list = [];
+    List<AcademicYearModel> list = [];
 
     if (json['data'] != null) {
       json['data'].forEach((v) {
-        list.add(AcdemicYearsModel.fromJson(v));
+        list.add(AcademicYearModel.fromJson(v));
       });
     }
 

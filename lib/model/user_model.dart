@@ -20,6 +20,7 @@ class User {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
+  bool? hasVerifiedEmail;
 
   User(
       {this.id,
@@ -28,6 +29,7 @@ class User {
       this.email,
       this.phone,
       this.photo,
+      this.hasVerifiedEmail,
       this.dateOfBirth,
       this.governorate,
       this.area,
@@ -63,6 +65,7 @@ class User {
             ? AcademicYearModel.fromJson(json['academic_year'])
             : null,
         isActive: json['is_active'],
+        hasVerifiedEmail: json['hasVerifiedEmail'],
         createdAt: json['created_at'],
         updatedAt: json['updated_at']);
   }
@@ -87,6 +90,7 @@ class User {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'hasVerifiedEmail': hasVerifiedEmail,
       'academic_year': academicYear != null ? academicYear!.toJson() : {},
     };
   }
