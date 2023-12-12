@@ -15,5 +15,9 @@ class EndPoint {
   static final String messgeApiResponse =
       dotenv.get("MESSAGE_API"); // to get Message Erro when occur Execption
 
+  static final String verifyCode = dotenv.get("VERIFY_CODE");
+  static final String forgetPassword = dotenv.get("FORGET_PASSWORD");
+  static final String resetPassword = dotenv.get("RESET_PASSWORD");
+
   static String getFullAcademiYear({required int id}) => "$_academiYear$id";
 }
