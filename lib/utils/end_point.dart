@@ -18,6 +18,8 @@ class EndPoint {
   static final String verifyCode = dotenv.get("VERIFY_CODE");
   static final String forgetPassword = dotenv.get("FORGET_PASSWORD");
   static final String resetPassword = dotenv.get("RESET_PASSWORD");
+  static final String veifyEmailCode = dotenv.get("VERIFY_EMAIL_CODE");
+  static final String reSendVeifyEmail = dotenv.get("RESEND_VERIFY_EMAIL");
 
   static String getFullAcademiYear({required int id}) => "$_academiYear$id";
 }
