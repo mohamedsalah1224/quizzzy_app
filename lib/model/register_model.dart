@@ -14,24 +14,26 @@ class RegisterModel {
   String? providerType;
   String? deviceToken;
   String? password;
+  String? locationArea;
 
   set setPassword(password) => this.password = password;
   RegisterModel(
-      {this.name = "",
-      this.username = "",
-      this.email = "",
-      this.phone = "",
-      this.photo = "",
-      this.dateOfBirth = "",
-      this.governorate = "",
-      this.area = "",
-      this.residenceArea = "",
-      this.specialization = "",
-      this.academicYearId = 1,
-      this.providerId = "",
-      this.providerType = "",
-      this.deviceToken = "",
-      this.password = ""});
+      {this.name,
+      this.username,
+      this.locationArea,
+      this.email,
+      this.phone,
+      this.photo,
+      this.dateOfBirth,
+      this.governorate,
+      this.area,
+      this.residenceArea,
+      this.specialization,
+      this.academicYearId,
+      this.providerId,
+      this.providerType,
+      this.deviceToken,
+      this.password});
 
   @override
   String toString() {

@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
 void main() async {
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           initialRoute: Routes.initialRoute,
           initialBinding: SplashBinding(),
           getPages: Routes.getPages(),
+          navigatorKey: navigatorKey,
         );
       },
     );

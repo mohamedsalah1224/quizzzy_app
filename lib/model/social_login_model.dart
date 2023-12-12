@@ -10,9 +10,11 @@ class SocialLoginModel {
   String? providerId;
   String? providerType;
   String? deviceToken;
+  String? locationArea;
 
   SocialLoginModel({
     this.name,
+    this.locationArea,
     this.username,
     this.dateOfBirth,
     this.governorate,

@@ -21,6 +21,8 @@ class User {
   String? createdAt;
   String? updatedAt;
   bool? hasVerifiedEmail;
+  bool? phoneVerified;
+  String? locationArea;
 
   User(
       {this.id,
@@ -29,6 +31,7 @@ class User {
       this.email,
       this.phone,
       this.photo,
+      this.locationArea,
       this.hasVerifiedEmail,
       this.dateOfBirth,
       this.governorate,
@@ -41,6 +44,7 @@ class User {
       this.deviceToken,
       this.academicYear,
       this.isActive,
+      this.phoneVerified,
       this.createdAt,
       this.updatedAt});
 
@@ -67,6 +71,8 @@ class User {
         isActive: json['is_active'],
         hasVerifiedEmail: json['hasVerifiedEmail'],
         createdAt: json['created_at'],
+        phoneVerified: json['phone_verified'],
+        locationArea: json['location_area'],
         updatedAt: json['updated_at']);
   }
 
@@ -92,6 +98,8 @@ class User {
       'updated_at': updatedAt,
       'hasVerifiedEmail': hasVerifiedEmail,
       'academic_year': academicYear != null ? academicYear!.toJson() : {},
+      'location_area': locationArea,
+      'phone_verified': phoneVerified,
     };
   }
 }

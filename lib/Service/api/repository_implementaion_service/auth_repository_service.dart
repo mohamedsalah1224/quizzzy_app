@@ -71,9 +71,9 @@ class AuthRepositoryService implements AuthRepository {
         'phone': registerModel.phone,
         'email': registerModel.email,
         'password': registerModel.password,
-        'photo': registerModel.photo,
+        // 'photo': registerModel.photo,
         'academic_year_id': registerModel.academicYearId,
-        'provider_id': registerModel.academicYearId,
+        'provider_id': registerModel.providerId,
         'provider_type': registerModel.providerType,
         'date_of_birth': registerModel.dateOfBirth,
         'device_token': registerModel.deviceToken,
@@ -81,7 +81,8 @@ class AuthRepositoryService implements AuthRepository {
         'governorate': registerModel.governorate,
         'area': registerModel.area,
         'residence_area': registerModel.residenceArea,
-        'specialization': registerModel.specialization
+        'specialization': registerModel.specialization,
+        'location_area': registerModel.locationArea,
       });
 
       return AuthModel.fromJson(reponse);
@@ -107,7 +108,8 @@ class AuthRepositoryService implements AuthRepository {
         'governorate': socialLoginModel.governorate,
         'area': socialLoginModel.area,
         'residence_area': socialLoginModel.residenceArea,
-        'specialization': socialLoginModel.specialization
+        'specialization': socialLoginModel.specialization,
+        'location_area': socialLoginModel.locationArea
       });
 
       return AuthModel.fromJson(reponse);

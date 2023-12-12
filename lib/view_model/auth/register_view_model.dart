@@ -6,10 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/academic_years_repository_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
+import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
+import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/constant/app_list_data.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
 import '../../utils/form_validator.dart';
 import '../../utils/routes.dart';
@@ -236,32 +240,61 @@ class RegisterViewModel extends GetxController {
     }
   }
 
-  void logIn() {
+  void logIn() async {
     if (continueRegisterFormKey.currentState!.validate()) {
-      bool isEmail =
-          Validation.instance.isEmail(email: emailOrPhoneController.text);
-      RegisterModel registerModel = RegisterModel(
-        name: nameController.text,
-        dateOfBirth: dateController.text,
-        email: isEmail ? emailOrPhoneController.text : "",
-        phone: !isEmail ? emailOrPhoneController.text : "",
-        area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
-        username: userNameController.text,
-        specialization: specializationValue,
-        password: passwordController.text,
-        governorate: governorateValue,
-        residenceArea: stateOfAreaValue,
-        academicYearId: GeneralUtils.instance.getAcademicYearById(
-            academicYearList: academicYearModelList, value: academicYearValue!),
-      );
-      debugPrint("${registerModel.toString()}");
+      bool isSucessProcess = false;
 
       if (isSocial) {
         // call sociall End Point
       } else {
         // call Registr End Point
+        isSucessProcess = await _registerService();
       }
-      Get.offAllNamed(Routes.loginView);
+      if (isSucessProcess) Get.offAllNamed(Routes.loginView);
     }
+  }
+
+  Future<bool> _registerService() async {
+    bool isEmail =
+        Validation.instance.isEmail(email: emailOrPhoneController.text);
+    RegisterModel registerModel = RegisterModel(
+      name: nameController.text,
+      //dateController.text,
+      email: isEmail ? emailOrPhoneController.text : "",
+      phone: !isEmail ? emailOrPhoneController.text : "",
+      area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
+      username: userNameController.text,
+      specialization: specializationValue,
+      password: passwordController.text,
+
+      governorate: governorateValue,
+      residenceArea: stateOfAreaValue,
+      academicYearId: GeneralUtils.instance.getAcademicYearById(
+          academicYearList: academicYearModelList, value: academicYearValue!),
+      locationArea: areaName,
+      // providerId: "",
+      // providerType: "",
+      // deviceToken: "",
+      //  dateOfBirth: "",
+      // photo: "",
+    );
+
+    try {
+      AuthModel response = await AuthRepositoryService.instance
+          .register(registerModel: registerModel);
+      debugPrint('$response');
+      SnackBarHelper.instance
+          .showMessage(message: response.message!, milliseconds: 1000);
+      return true;
+    } on DioException catch (e) {
+      SnackBarHelper.instance.showMessage(
+          message:
+              ValidationErroModel.fromJson(e.response!.data).message.toString(),
+          milliseconds: 2000,
+          erro: true);
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString());
+    }
+    return false;
   }
 }
