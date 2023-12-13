@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
+import 'package:quizzy_app/model/forget_password_model.dart';
 
 import 'package:quizzy_app/utils/form_validator.dart';
 
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
 import '../../utils/validation.dart';
 
 class ForgetPasswordViewModel extends GetxController {
   String initForgetPassword = "";
+  String emailOrPhoneValue = "";
 
   GlobalKey<FormState> forgetPasswordformKey = GlobalKey<FormState>();
 
@@ -19,16 +23,40 @@ class ForgetPasswordViewModel extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
 
-  void send() {
+  void send() async {
     print(emailOrPhoneController.text);
 
     if (forgetPasswordformKey.currentState!.validate()) {
+      emailOrPhoneValue = emailOrPhoneController.text;
       if (Validation.instance.isEmail(email: emailOrPhoneController.text)) {
-        Get.toNamed(Routes.identifyEmailview);
+        await _forgetPasswordByEmail();
       } else {
-        Get.toNamed(Routes.identifyPhoneview);
+        _forgetPasswordByPhone();
       }
     }
+  }
+
+  Future<void> _forgetPasswordByEmail() async {
+    try {
+      ForgetPasswordModel forgetPasswordModel =
+          await ForgetPasswordRepositoryService()
+              .forgetPassword(email: emailOrPhoneValue);
+
+      if (forgetPasswordModel.success!) {
+        SnackBarHelper.instance
+            .showMessage(message: forgetPasswordModel.message!);
+        Get.toNamed(Routes.identifyEmailview);
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: forgetPasswordModel.message!, erro: true);
+      }
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
+  }
+
+  void _forgetPasswordByPhone() {
+    Get.toNamed(Routes.identifyPhoneview);
   }
 
   @override
@@ -38,8 +66,7 @@ class ForgetPasswordViewModel extends GetxController {
   }
 
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance
-        .validatePhoneOrEmail(value, startPlusCode: true);
+    return FormValidator.instance.validatePhoneOrEmail(value);
   }
 
   String? validatePaswword({String? value}) {

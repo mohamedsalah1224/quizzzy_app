@@ -3,10 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pinput/pinput.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/view/screens/auth/forget_password_view.dart';
+import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
 
 class IdentifyEmailViewModel extends GetxController {
-  String initVerifyEmailViewModel = "";
+  late String email;
   String pinCode = "4444";
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController pinController = TextEditingController();
@@ -29,8 +32,8 @@ class IdentifyEmailViewModel extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    email = Get.find<ForgetPasswordViewModel>().emailOrPhoneValue;
     print("Veify Email Page");
   }
 
@@ -54,4 +57,6 @@ class IdentifyEmailViewModel extends GetxController {
   String? validatePinCode(String? value) {
     return value == pinCode ? null : "هذا الكود خطأ";
   }
+
+  ////////////////Api Service////////
 }
