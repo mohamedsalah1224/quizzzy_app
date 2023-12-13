@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
 import 'package:quizzy_app/model/forget_password_model.dart';
+import 'package:quizzy_app/model/genral_response_mode.dart';
 
 import 'package:quizzy_app/utils/form_validator.dart';
 
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/auth/identify_email_view_model.dart';
 
 import '../../utils/validation.dart';
 
@@ -59,6 +61,34 @@ class ForgetPasswordViewModel extends GetxController {
     Get.toNamed(Routes.identifyPhoneview);
   }
 
+  Future<void> resetPasswordService({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+    required String routes,
+  }) async {
+    try {
+      GeneralResponseModel forgetPasswordModel =
+          await ForgetPasswordRepositoryService().resetpassword(
+              email: email,
+              code: code,
+              password: password,
+              passwordConfirmation: passwordConfirmation);
+
+      if (forgetPasswordModel.success!) {
+        SnackBarHelper.instance
+            .showMessage(message: forgetPasswordModel.message!);
+        Get.toNamed(routes);
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: forgetPasswordModel.message!, erro: true);
+      }
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
+  }
+
   @override
   void onClose() {
     // TODO: implement onClose
@@ -79,11 +109,14 @@ class ForgetPasswordViewModel extends GetxController {
         passwordConfirmController.text, passwordController.text);
   }
 
-  void changePassword() {
+  Future<void> changePassword() async {
     if (changePasswordFormKey.currentState!.validate()) {
-      print("Change Password");
-      print(passwordController.text);
-      Get.toNamed(Routes.sucessPasswordChanged);
+      await resetPasswordService(
+          routes: Routes.sucessPasswordChanged,
+          password: passwordController.text,
+          email: emailOrPhoneValue,
+          code: Get.find<IdentifyEmailViewModel>().pinController.text,
+          passwordConfirmation: passwordConfirmController.text);
     }
   }
 }

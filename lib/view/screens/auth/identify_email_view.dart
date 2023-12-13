@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/view_model/auth/identify_email_view_model.dart';
@@ -38,7 +39,7 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                   Expanded(
                     child: CustomText(
                       maxLines: 1,
-                      text: "loding600@gmail.com",
+                      text: controller.email,
                       fontFamily: "Segoe",
                       alignment: AlignmentDirectional.topEnd,
                       fontWeight: FontWeight.w400,
@@ -58,27 +59,34 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                 ],
               ),
               30.verticalSpace,
-              Form(
-                key: controller.identifyformKey,
-                child: Pinput(
-                  controller: controller.pinController,
-                  focusNode: controller.focusNode,
-                  length: 4,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  validator: (value) {
-                    return controller.validatePinCode(value);
-                  },
-                  errorPinTheme: controller.defaultPinTheme.copyWith(
-                      decoration: controller.defaultPinTheme.decoration!
-                          .copyWith(
-                              border: Border.all(color: Colors.redAccent))),
-                  defaultPinTheme: controller.defaultPinTheme,
-                  focusedPinTheme: controller.defaultPinTheme.copyWith(
-                      decoration: controller.defaultPinTheme.decoration!
-                          .copyWith(
-                              border:
-                                  Border.all(color: const Color(0xff268C6D)))),
-                ),
+              GetBuilder(
+                init: Get.find<IdentifyEmailViewModel>(),
+                id: "pinCode",
+                builder: (controller) {
+                  return Form(
+                    key: controller.identifyformKey,
+                    child: Pinput(
+                      controller: controller.pinController,
+                      focusNode: controller.focusNode,
+                      length: 6,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      validator: (value) {
+                        return controller.validatePinCode(value);
+                      },
+                      keyboardType: TextInputType.text,
+                      errorPinTheme: controller.defaultPinTheme.copyWith(
+                          decoration: controller.defaultPinTheme.decoration!
+                              .copyWith(
+                                  border: Border.all(color: Colors.redAccent))),
+                      defaultPinTheme: controller.defaultPinTheme,
+                      focusedPinTheme: controller.defaultPinTheme.copyWith(
+                          decoration: controller.defaultPinTheme.decoration!
+                              .copyWith(
+                                  border: Border.all(
+                                      color: const Color(0xff268C6D)))),
+                    ),
+                  );
+                },
               ),
               20.verticalSpace,
               Row(
@@ -93,8 +101,8 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                   ),
                   5.horizontalSpace,
                   TextButton(
-                    onPressed: () {
-                      print("إعادة الارسال");
+                    onPressed: () async {
+                      await controller.reSendCode();
                     },
                     child: CustomText(
                         text: "اعادة الارسال",
@@ -108,8 +116,8 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
               50.verticalSpace,
               CustomButton(
                 text: "تأكيد",
-                onTap: () {
-                  controller.confirmEmail();
+                onTap: () async {
+                  await controller.confirmEmail();
                 },
                 fontFamily: "inter",
                 fontWeight: FontWeight.w600,

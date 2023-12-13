@@ -84,8 +84,8 @@ class ChangePasswordView extends GetView<ForgetPasswordViewModel> {
                   fontFamily: "Poppins",
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
-                  onTap: () {
-                    controller.changePassword();
+                  onTap: () async {
+                    await controller.changePassword();
                   },
                 ),
                 40.verticalSpace,

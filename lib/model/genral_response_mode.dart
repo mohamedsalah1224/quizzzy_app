@@ -6,7 +6,7 @@ class GeneralResponseModel {
 
   factory GeneralResponseModel.fromJson(Map<String, dynamic> json) {
     return GeneralResponseModel(
-        message: json['success'], success: json['message']);
+        message: json['message'], success: json['success']);
   }
 
   Map<String, dynamic> toJson() {
