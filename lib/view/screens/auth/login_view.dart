@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
 import 'package:quizzy_app/view_model/auth/login_view_model.dart';
 
@@ -116,7 +117,6 @@ class LoginView extends GetView<LoginViewModel> {
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   onTap: () {
-                    print('سجل دخولك');
                     controller.loginButton();
                   },
                 ),
@@ -159,7 +159,9 @@ class LoginView extends GetView<LoginViewModel> {
                             cacheHeight: 30,
                             cacheWidth: 30,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            await controller.socialLoginButton(
+                                socialMediaType: SocialMediaType.google);
                             print("Sign in with a Google");
                           },
                         ),
@@ -168,7 +170,9 @@ class LoginView extends GetView<LoginViewModel> {
                             Icons.apple_outlined,
                             size: 25,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            await controller.socialLoginButton(
+                                socialMediaType: SocialMediaType.apple);
                             print("Sign in with a Apple");
                           },
                         ),
@@ -178,7 +182,9 @@ class LoginView extends GetView<LoginViewModel> {
                             size: 25,
                             color: Colors.blue,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            await controller.socialLoginButton(
+                                socialMediaType: SocialMediaType.facebook);
                             print("Sign in with a Facebook");
                           },
                         ),

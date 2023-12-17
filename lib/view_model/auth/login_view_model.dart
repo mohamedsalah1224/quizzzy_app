@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/Firebase/social_service/repository/social_repository.dart';
+import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/apple_repository_service.dart';
+import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/facebook_repository_service.dart';
+import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
+import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/model/auth_model.dart';
@@ -92,9 +97,6 @@ class LoginViewModel extends GetxController {
       if (authModel == null) {
         return; // if any erro occur skip return from this method
       }
-      print('-' * 50);
-      print(authModel.data!.user!.hasVerifiedEmail!); //
-      print('-' * 50);
       if (!authModel.data!.user!.hasVerifiedEmail!) {
         Get.toNamed(Routes.verifyEmailView); // to verify Email
       } else {
@@ -103,9 +105,28 @@ class LoginViewModel extends GetxController {
     }
   }
 
-  void socialLoginButton() {
+  SocialRepository _getObjectTypeOfSocailLoin(
+      {required SocialMediaType socialMediaType}) {
+    if (socialMediaType == SocialMediaType.apple) {
+      return AppleRepositoryService();
+    } else if (socialMediaType == SocialMediaType.google) {
+      return GoogleRepositoryService();
+    } else {
+      return FacebookRepositoryService();
+    }
+  }
+
+  Future<void> socialLoginButton(
+      {required SocialMediaType socialMediaType}) async {
     if (loginFormKey.currentState!.validate()) {
+      SocialRepository socialRepository = _getObjectTypeOfSocailLoin(
+          socialMediaType: socialMediaType); // to get the object
+
+      SocialRepositoryMangerService().login(socialRepository);
+
       /*
+      How to Think The Logic:
+          know the Object of socialMediaType to pass it to socialRepoitoryServiceManger
          1-  do ploymarphism and get the Provide Id of the Socail Type
          2- checkUser ? if exist cache Token ,checkVerifyPhone or not ? go to Home Page : 
            if not exist got ot SignUpView , call Socail Login Service , then cache Token 
