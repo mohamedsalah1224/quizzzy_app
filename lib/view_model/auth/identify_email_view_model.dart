@@ -9,7 +9,6 @@ import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/resend_verify_email_model.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
-import 'package:quizzy_app/view/screens/auth/forget_password_view.dart';
 import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
 
 class IdentifyEmailViewModel extends GetxController {

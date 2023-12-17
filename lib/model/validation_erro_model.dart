@@ -20,8 +20,8 @@ class ValidationErroModel {
 }
 
 class Errors {
-  List<String>? email;
-  List<String>? phone;
+  List? email;
+  List? phone;
 
   Errors({this.email, this.phone});
 

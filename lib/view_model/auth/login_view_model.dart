@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
+import 'package:quizzy_app/utils/validation.dart';
 
 import '../../utils/routes.dart';
 
@@ -41,8 +42,22 @@ class LoginViewModel extends GetxController {
     Get.toNamed(Routes.forgetPasswordView);
   }
 
+  ////////////////////////////////// Goal Mehtods/////////////////////////////////
+  void _handelAccountVerified() {
+    if (Validation.instance.isEmail(email: emailController.text)) {
+      // go to Email Service
+    } else {
+      //   go to Phone Service
+    }
+  }
+
+  void _loginService() {}
+  void _cacheAcessToken() {}
+
   void login() {
-    if (loginFormKey.currentState!.validate())
-      Get.offAllNamed(Routes.bottomNavgation);
+    if (loginFormKey.currentState!.validate()) {
+      // LoginService
+    }
+    Get.offAllNamed(Routes.bottomNavgation);
   }
 }
