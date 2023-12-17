@@ -69,7 +69,7 @@ class LoginView extends GetView<LoginViewModel> {
                     iconColor: Color(0xff268C6D),
                     validator: (value) =>
                         controller.validatePhoneOrEmail(value: value),
-                    controller: controller.emailController,
+                    controller: controller.emailOrPhoneController,
                   ),
                 ),
                 20.verticalSpace,
@@ -117,7 +117,7 @@ class LoginView extends GetView<LoginViewModel> {
                   fontWeight: FontWeight.w600,
                   onTap: () {
                     print('سجل دخولك');
-                    controller.login();
+                    controller.loginButton();
                   },
                 ),
                 25.verticalSpace,

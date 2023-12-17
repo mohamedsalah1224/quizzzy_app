@@ -35,4 +35,14 @@ class GeneralUtils {
       {required List<AcademicYearModel> academicYearList}) {
     return academicYearList.map((e) => e.name!).toList();
   }
+
+  String convertSocialMediaEnumToString(SocialMediaType socialMediaType) {
+    if (SocialMediaType.apple == socialMediaType) {
+      return "apple";
+    } else if (SocialMediaType.apple == socialMediaType) {
+      return "google";
+    } else {
+      return "facebook";
+    }
+  }
 }

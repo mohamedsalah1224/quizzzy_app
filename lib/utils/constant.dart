@@ -10,3 +10,5 @@ enum SourceLoginType { email, phone }
 enum QuizType { random, specialist, ai }
 
 enum QuestionSourceType { none, image, video, sound }
+
+enum SocialMediaType { google, facebook, apple }

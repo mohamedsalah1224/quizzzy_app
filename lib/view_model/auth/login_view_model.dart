@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
+import 'package:quizzy_app/Service/local/auth_token_service.dart';
+import 'package:quizzy_app/model/auth_model.dart';
+import 'package:quizzy_app/model/login_model.dart';
+import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
+import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
 
 import '../../utils/routes.dart';
@@ -8,7 +14,7 @@ import '../../utils/routes.dart';
 class LoginViewModel extends GetxController {
   String initViewModel = "";
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController emailOrPhoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
@@ -43,21 +49,55 @@ class LoginViewModel extends GetxController {
   }
 
   ////////////////////////////////// Goal Mehtods/////////////////////////////////
-  void _handelAccountVerified() {
-    if (Validation.instance.isEmail(email: emailController.text)) {
-      // go to Email Service
-    } else {
-      //   go to Phone Service
+
+  void _loginBySocialService() {}
+  Future<AuthModel?> _loginByEmailOrPhoneService(
+      {required LoginModel loginModel}) async {
+    try {
+      AuthModel authModel =
+          await AuthRepositoryService.instance.login(loginModel: loginModel);
+
+      if (authModel.success!) {
+        await _cacheAcessToken(
+            acessToken: authModel.data!.accessToken!); // Cache Acess Token
+        SnackBarHelper.instance
+            .showMessage(message: authModel.message!.toString());
+        return authModel;
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: authModel.message!.toString(), erro: true);
+      }
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
     }
+    return null;
   }
 
-  void _loginService() {}
-  void _cacheAcessToken() {}
+  Future<void> _cacheAcessToken({required String acessToken}) async {
+    await AuthTokenService.instance.add(value: acessToken); // cache acess token
+  }
 
-  void login() {
+  void loginButton() async {
     if (loginFormKey.currentState!.validate()) {
       // LoginService
+      bool isEmail = Validation.instance.isEmail(
+          email: emailOrPhoneController
+              .text); // to know if the input imail or phone
+      AuthModel? authModel = await _loginByEmailOrPhoneService(
+          loginModel: LoginModel(
+              email: isEmail ? emailOrPhoneController.text : '',
+              password: passwordController.text,
+              phone: !isEmail ? emailOrPhoneController.text : '',
+              type: isEmail ? SourceLoginType.email : SourceLoginType.phone));
+      if (authModel == null) {
+        return; // if any erro occur skip return from this method
+      }
+
+      if (authModel.data!.user!.hasVerifiedEmail!) {
+        Get.toNamed(Routes.verifyEmailView); // to verify Email
+      } else {
+        Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
+      }
     }
-    Get.offAllNamed(Routes.bottomNavgation);
   }
 }
