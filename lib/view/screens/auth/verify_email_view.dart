@@ -27,7 +27,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                   fontFamily: "Cairo",
                   fontWeight: FontWeight.w500,
                   fontSize: 20.sp,
-                  color: Color(0xff077C58),
+                  color: const Color(0xff077C58),
                 ),
               ),
               50.verticalSpace,
@@ -36,15 +36,15 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: Color.fromRGBO(0, 0, 0, 0.7),
+                color: const Color.fromRGBO(0, 0, 0, 0.7),
               ),
               CustomText(
                 maxLines: 1,
-                text: "loding600@gmail.com",
+                text: controller.email,
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: Color.fromRGBO(0, 0, 0, 0.7),
+                color: const Color.fromRGBO(0, 0, 0, 0.7),
               ),
               30.verticalSpace,
               Form(
@@ -52,7 +52,8 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                 child: Pinput(
                   controller: controller.pinController,
                   focusNode: controller.focusNode,
-                  length: 4,
+                  length: controller.length,
+                  keyboardType: TextInputType.text,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   validator: (value) {
                     return controller.validatePinCode(value);
@@ -69,6 +70,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                                   Border.all(color: const Color(0xff268C6D)))),
                 ),
               ),
+              10.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -77,27 +79,27 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                     fontFamily: "inter",
                     fontWeight: FontWeight.w400,
                     fontSize: 16.sp,
-                    color: Color.fromRGBO(0, 0, 0, 0.7),
+                    color: const Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                   5.horizontalSpace,
                   TextButton(
-                    onPressed: () {
-                      print("إعادة الارسال");
+                    onPressed: () async {
+                      await controller.reSendCode();
                     },
                     child: CustomText(
                         text: "اعادة الارسال",
                         fontFamily: "inter",
                         fontWeight: FontWeight.w600,
                         fontSize: 14.sp,
-                        color: Color(0xff268C6D)),
+                        color: const Color(0xff268C6D)),
                   ),
                 ],
               ),
               30.verticalSpace,
               CustomButton(
                 text: "تأكيد",
-                onTap: () {
-                  controller.confirmEmail();
+                onTap: () async {
+                  await controller.confirmEmail();
                 },
                 fontFamily: "inter",
                 fontWeight: FontWeight.w600,

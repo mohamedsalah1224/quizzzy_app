@@ -68,7 +68,7 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                     child: Pinput(
                       controller: controller.pinController,
                       focusNode: controller.focusNode,
-                      length: 6,
+                      length: controller.length,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       validator: (value) {
                         return controller.validatePinCode(value);

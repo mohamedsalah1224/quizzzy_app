@@ -92,12 +92,25 @@ class LoginViewModel extends GetxController {
       if (authModel == null) {
         return; // if any erro occur skip return from this method
       }
-
-      if (authModel.data!.user!.hasVerifiedEmail!) {
+      print('-' * 50);
+      print(authModel.data!.user!.hasVerifiedEmail!); //
+      print('-' * 50);
+      if (!authModel.data!.user!.hasVerifiedEmail!) {
         Get.toNamed(Routes.verifyEmailView); // to verify Email
       } else {
         Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
       }
+    }
+  }
+
+  void socialLoginButton() {
+    if (loginFormKey.currentState!.validate()) {
+      /*
+         1-  do ploymarphism and get the Provide Id of the Socail Type
+         2- checkUser ? if exist cache Token ,checkVerifyPhone or not ? go to Home Page : 
+           if not exist got ot SignUpView , call Socail Login Service , then cache Token 
+           then Verify Phone Number 
+      */
     }
   }
 }

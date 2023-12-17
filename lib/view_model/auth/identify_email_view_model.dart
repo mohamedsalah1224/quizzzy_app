@@ -13,7 +13,7 @@ import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
 
 class IdentifyEmailViewModel extends GetxController {
   late String email;
-
+  int length = 6;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController pinController = TextEditingController();
   GlobalKey<FormState> identifyformKey = GlobalKey<FormState>();
@@ -60,7 +60,7 @@ class IdentifyEmailViewModel extends GetxController {
   }
 
   String? validatePinCode(String? value) {
-    return value == null || value.isEmpty || value.length < 4
+    return value == null || value.isEmpty || value.length < length
         ? "هذا الكود خطأ"
         : null;
   }
