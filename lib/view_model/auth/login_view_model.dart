@@ -102,7 +102,8 @@ class LoginViewModel extends GetxController {
         return; // if any erro occur skip return from this method
       }
       if (!authModel.data!.user!.hasVerifiedEmail!) {
-        Get.toNamed(Routes.verifyEmailView); // to verify Email
+        Get.offAndToNamed(Routes.verifyEmailView);
+        // to verify Email
       } else {
         Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
       }

@@ -80,6 +80,7 @@ class VerifyEmailViewModel extends GetxController {
 
   Future<void> reSendCode() async {
     try {
+      pinController.text = "";
       ReSendVeifyEmailModel reSendVeifyEmailModel =
           await EmailRepositoryService().reSendVerifyEmail(email: email);
 

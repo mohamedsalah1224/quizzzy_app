@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:quizzy_app/Service/local/auth_token_service.dart';
 
 class DioInterceptors extends Interceptor {
   final Dio dio;
@@ -11,6 +12,9 @@ class DioInterceptors extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers['Accept'] = "application/json";
     options.headers['Content-Type'] = "application/json";
+
+    String accessToken = await AuthTokenService.instance.read() ?? "";
+    options.headers['Authorization'] = 'Bearer $accessToken';
 
     // options.headers['Authorization'] = 'Bearer $accessToken';
     //  var accessToken = await TokenRepository().getAccessToken();
