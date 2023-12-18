@@ -45,7 +45,7 @@ class VerifyPhoneViewModel extends GetxController {
     if (verifyFormKey.currentState!.validate()) {
       print(pinController.text);
 
-      Get.offNamed(Routes.continueRegisterView);
+      Get.offAllNamed(Routes.bottomNavgation);
     }
   }
 

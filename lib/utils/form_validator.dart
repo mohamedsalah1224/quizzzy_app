@@ -48,7 +48,7 @@ class FormValidator {
       return _emptyPhoneInputError;
     } else if (!Validation.instance
         .isContacts(contact: contact, startPlusCode: startPlusCode)) {
-      return _invalidEmailError;
+      return _invalidPhoneError;
     }
     return null;
   }

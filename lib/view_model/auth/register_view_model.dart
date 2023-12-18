@@ -10,11 +10,14 @@ import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_rep
 import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
+import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/constant/app_list_data.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
+import 'package:quizzy_app/view/screens/auth/login_view.dart';
+import 'package:quizzy_app/view_model/auth/login_view_model.dart';
 import '../../utils/form_validator.dart';
 import '../../utils/routes.dart';
 
@@ -31,9 +34,12 @@ class RegisterViewModel extends GetxController {
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
+  ///////////// register  Socail Variable//////////////////
+  String providerType = "";
+  String providerId = "";
   bool isSocial = false;
+/////////////////////////////////////////////////
 
-  void setSocial() => isSocial = true;
   String? governorateValue;
   String? stateOfAreaValue;
   String? areaName;
@@ -171,7 +177,8 @@ class RegisterViewModel extends GetxController {
             lastDate: DateTime(2023))
         .then((value) {
       if (value != null) {
-        String date = DateFormat('yyy:MM:dd').format(value);
+        // 'yyy-MM-dd'
+        String date = DateFormat('dd-MM-yyy').format(value);
         dateController.text = date;
       }
     });
@@ -245,7 +252,23 @@ class RegisterViewModel extends GetxController {
       bool isSucessProcess = false;
 
       if (isSocial) {
-        // call sociall End Point
+        // call register the information of the Social
+        Get.find<LoginViewModel>().registerInformationOfSocial(
+            socialLoginModel: SocialLoginModel(
+          providerId: providerId,
+          providerType: providerType,
+          name: nameController.text,
+          //  dateOfBirth: dateController.text,
+          area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
+          username: userNameController.text,
+          specialization: specializationValue,
+          governorate: governorateValue,
+          residenceArea: stateOfAreaValue,
+          academicYearId: GeneralUtils.instance.getAcademicYearById(
+              academicYearList: academicYearModelList,
+              value: academicYearValue!),
+          locationArea: areaName,
+        ));
       } else {
         // call Registr End Point
         isSucessProcess = await _registerService();
@@ -286,15 +309,17 @@ class RegisterViewModel extends GetxController {
       SnackBarHelper.instance
           .showMessage(message: response.message!, milliseconds: 1000);
       return true;
-    } on DioException catch (e) {
-      SnackBarHelper.instance.showMessage(
-          message:
-              ValidationErroModel.fromJson(e.response!.data).message.toString(),
-          milliseconds: 2000,
-          erro: true);
     } catch (e) {
-      SnackBarHelper.instance.showMessage(message: e.toString());
+      SnackBarHelper.instance
+          .showMessage(message: e.toString(), milliseconds: 2000, erro: true);
     }
     return false;
+  }
+
+  void activeSocial(
+      {required String providerIdValue, required String providerTypeValue}) {
+    providerId = providerIdValue;
+    providerType = providerTypeValue;
+    isSocial = true;
   }
 }

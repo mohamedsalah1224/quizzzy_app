@@ -7,6 +7,7 @@ import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/login_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
+import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 
@@ -87,7 +88,7 @@ class AuthRepositoryService implements AuthRepository {
 
       return AuthModel.fromJson(reponse);
     } on DioException catch (e) {
-      rethrow;
+      throw ValidationErroModel.fromJson(e.response!.data).message.toString();
     } catch (e) {
       rethrow;
     }
@@ -100,7 +101,7 @@ class AuthRepositoryService implements AuthRepository {
       var reponse = await DioHelper().post(EndPoint.socialLogin, data: {
         'name': socialLoginModel.name,
         'academic_year_id': socialLoginModel.academicYearId,
-        'provider_id': socialLoginModel.academicYearId,
+        'provider_id': socialLoginModel.providerId,
         'provider_type': socialLoginModel.providerType,
         'date_of_birth': socialLoginModel.dateOfBirth,
         'device_token': socialLoginModel.deviceToken,
@@ -109,12 +110,14 @@ class AuthRepositoryService implements AuthRepository {
         'area': socialLoginModel.area,
         'residence_area': socialLoginModel.residenceArea,
         'specialization': socialLoginModel.specialization,
-        'location_area': socialLoginModel.locationArea
+        'location_area': socialLoginModel.locationArea,
+        'email': socialLoginModel.email,
+        'phone': socialLoginModel.phone
       });
 
       return AuthModel.fromJson(reponse);
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      throw ValidationErroModel.fromJson(e.response!.data).message.toString();
     } catch (e) {
       rethrow;
     }

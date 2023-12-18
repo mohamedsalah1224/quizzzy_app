@@ -8,11 +8,16 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/model/auth_model.dart';
+import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/login_model.dart';
+import 'package:quizzy_app/model/social_login_model.dart';
+import 'package:quizzy_app/model/social_service_response_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
+import 'package:quizzy_app/view_model/auth/register_view_model.dart';
 
 import '../../utils/routes.dart';
 
@@ -55,7 +60,6 @@ class LoginViewModel extends GetxController {
 
   ////////////////////////////////// Goal Mehtods/////////////////////////////////
 
-  void _loginBySocialService() {}
   Future<AuthModel?> _loginByEmailOrPhoneService(
       {required LoginModel loginModel}) async {
     try {
@@ -105,6 +109,30 @@ class LoginViewModel extends GetxController {
     }
   }
 
+///////////////////////////////////// Social Logain Logic /////////////////////////////////////////////
+  Future<AuthModel?> _loginBySocialService(
+      {required SocialLoginModel socialLoginModel}) async {
+    try {
+      AuthModel authModel = await AuthRepositoryService.instance
+          .socialLogin(socialLoginModel: socialLoginModel);
+
+      if (authModel.success!) {
+        await _cacheAcessToken(
+            acessToken: authModel.data!.accessToken!); // Cache Acess Token
+        print('*' * 50);
+        print("Acess Toke ${authModel.data!.accessToken}");
+        print('*' * 50);
+        return authModel;
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: authModel.message!.toString(), erro: true);
+      }
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
+    return null;
+  }
+
   SocialRepository _getObjectTypeOfSocailLoin(
       {required SocialMediaType socialMediaType}) {
     if (socialMediaType == SocialMediaType.apple) {
@@ -116,22 +144,83 @@ class LoginViewModel extends GetxController {
     }
   }
 
+  Future<void> handelScoialAccountRouteProcess(
+      {required String providerId, required String providerType}) async {
+    GeneralResponseModel generalResponseModel =
+        await AuthRepositoryService.instance.checkUser(
+            value: providerId); // Check if the providerId ID Exist or not
+    print(generalResponseModel.success);
+    print(providerId);
+    print(providerType);
+    print('-' * 80);
+    if (generalResponseModel.success!) {
+      AuthModel? autModel = await _loginBySocialService(
+          socialLoginModel: SocialLoginModel(
+              providerId: providerId,
+              providerType: providerType)); // call Social Service , cache Token
+
+      if (autModel == null) return; // if any erro occur in social Service
+
+      // check Veify Phone or Not
+      !autModel.data!.user!.phoneVerified!
+          ? Get.offAndToNamed(Routes.verifyPhoneView)
+          : Get.offAllNamed(Routes.bottomNavgation);
+    } else {
+      // this mean the provider id must collect a some of Inforamtion
+      // go to Sign Up View
+      // and Verify Phone in the Logic  in Reigste View Model
+
+      Get.toNamed(Routes.registerView);
+      Get.put(RegisterViewModel());
+      Get.find<RegisterViewModel>().activeSocial(
+          providerIdValue: providerId,
+          providerTypeValue:
+              providerType); // to mark the Register View to Collect Social Inforamtion only  , pass ProviderId , providerType
+    }
+  }
+
   Future<void> socialLoginButton(
       {required SocialMediaType socialMediaType}) async {
-    if (loginFormKey.currentState!.validate()) {
-      SocialRepository socialRepository = _getObjectTypeOfSocailLoin(
-          socialMediaType: socialMediaType); // to get the object
+    SocialRepository socialRepository = _getObjectTypeOfSocailLoin(
+        socialMediaType: socialMediaType); // to get the object
 
-      SocialRepositoryMangerService().login(socialRepository);
+    SocialServiceResponseModel socialServiceResponseModel =
+        await SocialRepositoryMangerService()
+            .login(socialRepository); // apply Polymarphism
 
-      /*
+    if (socialServiceResponseModel.status) {
+      SnackBarHelper.instance
+          .showMessage(message: socialServiceResponseModel.message!);
+      // checkUser
+      await handelScoialAccountRouteProcess(
+          providerId: socialServiceResponseModel.providerId!,
+          providerType: socialServiceResponseModel
+              .providertype!); // to show where the Next Route
+    } else {
+      SnackBarHelper.instance.showMessage(
+          message: socialServiceResponseModel.message!, erro: true);
+    }
+
+    /*
       How to Think The Logic:
           know the Object of socialMediaType to pass it to socialRepoitoryServiceManger
          1-  do ploymarphism and get the Provide Id of the Socail Type
-         2- checkUser ? if exist cache Token ,checkVerifyPhone or not ? go to Home Page : 
+         2- checkUser ? if exist  ,checkVerifyPhone or not ? go to Home Page : 
            if not exist got ot SignUpView , call Socail Login Service , then cache Token 
            then Verify Phone Number 
       */
-    }
+  }
+
+  Future<void> registerInformationOfSocial(
+      {required SocialLoginModel socialLoginModel}) async {
+    AuthModel? autModel =
+        await _loginBySocialService(socialLoginModel: socialLoginModel);
+    if (autModel == null) return; // if any erro Occur
+
+    // // check Veify Phone or Not
+    // !autModel.data!.user!.phoneVerified!
+    //     ? Get.toNamed(Routes.verifyPhoneView)
+    //     : Get.offAllNamed(Routes.bottomNavgation);
+    Get.offAllNamed(Routes.bottomNavgation);
   }
 }

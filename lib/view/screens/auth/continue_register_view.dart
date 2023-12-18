@@ -39,7 +39,7 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                             fontSize: 14.sp,
                             color: Color(0xff077C58),
                           ),
-                          30.verticalSpace,
+                          50.verticalSpace,
                           CustomText(
                             text: "اسم المستخدم (الاسم المستعار)",
                             fontFamily: "Segoe",
@@ -49,6 +49,17 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                             alignment: AlignmentDirectional.topEnd,
                           ),
                           3.verticalSpace,
+                          SizedBox(
+                            width: double.infinity.w,
+                            height: 45.h,
+                            child: CustomTextFormField(
+                              icon: null,
+                              controller: controller.userNameController,
+                              validator: (value) =>
+                                  controller.validateUserName(value: value),
+                            ),
+                          ),
+                          45.verticalSpace,
                           CustomButton(
                             text: "تسجيل الدخول",
                             fontFamily: "Poppins",
