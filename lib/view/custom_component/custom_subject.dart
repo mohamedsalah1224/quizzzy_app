@@ -1,23 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 
 import 'custom_text.dart';
 
 class CustomSubject extends StatelessWidget {
-  final String name;
-  final String imageAssetName;
-  final Color color;
   final bool isShowArrow;
   final void Function()? onTap;
+  final DataSubjectModel subjectModel;
 
-  const CustomSubject(
-      {super.key,
-      required this.imageAssetName,
-      required this.name,
-      this.isShowArrow = true,
-      this.onTap,
-      this.color = const Color(0xffFC9A9A)});
+  const CustomSubject({
+    super.key,
+    required this.subjectModel,
+    this.isShowArrow = true,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,11 @@ class CustomSubject extends StatelessWidget {
         width: 110.w,
         height: 140.h,
         decoration: BoxDecoration(
-            color: color,
+            color:
+                GeneralUtils.instance.generateColor(), // to genearate a Color
             borderRadius: BorderRadius.circular(17).r,
             boxShadow: [
-              BoxShadow(
+              const BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   blurRadius: 5,
                   offset: const Offset(0, 4))
@@ -42,7 +43,7 @@ class CustomSubject extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(right: 15.w, top: 10.h),
               child: CustomText(
-                text: name,
+                text: subjectModel.name!,
                 fontFamily: "Cairo",
                 fontWeight: FontWeight.w800,
                 fontSize: 12.sp,
@@ -63,14 +64,33 @@ class CustomSubject extends StatelessWidget {
                     ),
                   ),
             Expanded(
-                child: Image.asset(
-              imageAssetName,
-              width: double.infinity,
-              fit: BoxFit.fitHeight,
-            ))
+              child: CachedNetworkImage(
+                imageUrl: subjectModel.photo!,
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.red, BlendMode.colorBurn)),
+                  ),
+                ),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 }
+/*
+ Expanded(
+                child: Image.asset(
+              imageAssetName,
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+            ))
+*/

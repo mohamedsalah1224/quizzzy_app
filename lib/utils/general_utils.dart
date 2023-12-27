@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'dart:math' as math;
 
 class GeneralUtils {
   static GeneralUtils? _instance;
@@ -15,6 +17,8 @@ class GeneralUtils {
     }
   }
 
+  Color generateColor() =>
+      Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   String getGroupValueName({required int groupValue}) {
     return groupValue == 1 ? "قطاع غزة" : "الضفة الغربية";
   }
