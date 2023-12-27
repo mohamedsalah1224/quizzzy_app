@@ -43,7 +43,7 @@ class LoginViewModel extends GetxController {
   }
 
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance.validatePhoneOrEmail(value);
+    return FormValidator.instance.validatePhoneOrEmail(value!.trim());
   }
 
   String? validatePasword({String? value}) {
@@ -94,9 +94,9 @@ class LoginViewModel extends GetxController {
               .text); // to know if the input imail or phone
       AuthModel? authModel = await _loginByEmailOrPhoneService(
           loginModel: LoginModel(
-              email: isEmail ? emailOrPhoneController.text : '',
+              email: isEmail ? emailOrPhoneController.text.trim() : '',
               password: passwordController.text,
-              phone: !isEmail ? emailOrPhoneController.text : '',
+              phone: !isEmail ? emailOrPhoneController.text.trim() : '',
               type: isEmail ? SourceLoginType.email : SourceLoginType.phone));
       if (authModel == null) {
         return; // if any erro occur skip return from this method

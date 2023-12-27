@@ -1,3 +1,5 @@
+import 'package:quizzy_app/model/answers_model.dart';
+
 class QuestionsModel {
   int? id;
   String? name;
@@ -10,6 +12,7 @@ class QuestionsModel {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
+  List<AnswersModel>? answers;
 
   QuestionsModel(
       {this.id,
@@ -19,40 +22,35 @@ class QuestionsModel {
       this.photo,
       this.semester,
       this.points,
+      this.answers,
       this.time,
       this.isActive,
       this.createdAt,
       this.updatedAt});
 
   factory QuestionsModel.fromJson(Map<String, dynamic> json) {
+    List<AnswersModel> lisAnswerModel = [];
+    if (json['answers'] != null) {
+      json['answers'].forEach((v) {
+        lisAnswerModel.add(AnswersModel.fromJson(v));
+      });
+    }
     return QuestionsModel(
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      isActive: json['is_active'],
-      time: json['time'],
-      points: json['points'],
-      description: json['description'],
-      semester: json['semester'],
-      photo: json['photo'],
-      type: json['type'],
-      name: json['name'],
-      id: json['id'],
-    );
+        createdAt: json['created_at'],
+        updatedAt: json['updated_at'],
+        isActive: json['is_active'],
+        time: json['time'],
+        points: json['points'],
+        description: json['description'],
+        semester: json['semester'],
+        photo: json['photo'],
+        type: json['type'],
+        name: json['name'],
+        id: json['id'],
+        answers: lisAnswerModel);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['description'] = this.description;
-    data['photo'] = this.photo;
-    data['semester'] = this.semester;
-    data['points'] = this.points;
-    data['time'] = this.time;
-    data['is_active'] = this.isActive;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return {
       'id': id,
       'name': name,
@@ -64,7 +62,8 @@ class QuestionsModel {
       'time': time,
       'is_active': isActive,
       'created_at': createdAt,
-      'updated_at': updatedAt
+      'updated_at': updatedAt,
+      'answers': answers != null ? answers!.map((v) => v.toJson()).toList() : []
     };
   }
 }

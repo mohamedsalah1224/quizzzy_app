@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/utils/app_images.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'custom_text.dart';
 
-class CustomSubject extends StatelessWidget {
+class CustomQuizType extends StatelessWidget {
   final String name;
   final String imageAssetName;
   final Color color;
   final bool isShowArrow;
   final void Function()? onTap;
 
-  const CustomSubject(
+  const CustomQuizType(
       {super.key,
       required this.imageAssetName,
       required this.name,
@@ -63,11 +63,21 @@ class CustomSubject extends StatelessWidget {
                     ),
                   ),
             Expanded(
-                child: Image.asset(
-              imageAssetName,
-              width: double.infinity,
-              fit: BoxFit.fitHeight,
-            ))
+              child: CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/200x150",
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                        colorFilter:
+                            ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                  ),
+                ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            )
           ],
         ),
       ),

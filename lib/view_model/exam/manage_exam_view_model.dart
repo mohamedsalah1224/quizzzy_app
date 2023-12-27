@@ -24,7 +24,7 @@ class ManageExamViewModel extends GetxController {
   String? get subjectSelected => _subjectSelected;
 
   void chooseSubject({required String subjectSelected}) {
-    this._subjectSelected = subjectSelected;
+    _subjectSelected = subjectSelected;
     _currentIndex = 1;
     update();
   }

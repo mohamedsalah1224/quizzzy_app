@@ -188,9 +188,9 @@ class RegisterViewModel extends GetxController {
   String? validatePhoneOrEmail({String? value}) {
     if (isSocial) {
       return FormValidator.instance
-          .contactsValidator(value, startPlusCode: false);
+          .contactsValidator(value!.trim(), startPlusCode: false);
     } else {
-      return FormValidator.instance.validatePhoneOrEmail(value);
+      return FormValidator.instance.validatePhoneOrEmail(value!.trim());
     }
   }
 
@@ -283,8 +283,8 @@ class RegisterViewModel extends GetxController {
     RegisterModel registerModel = RegisterModel(
       name: nameController.text,
       //dateController.text,
-      email: isEmail ? emailOrPhoneController.text : "",
-      phone: !isEmail ? emailOrPhoneController.text : "",
+      email: isEmail ? emailOrPhoneController.text.trim() : "",
+      phone: !isEmail ? emailOrPhoneController.text.trim() : "",
       area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
       username: userNameController.text,
       specialization: specializationValue,
