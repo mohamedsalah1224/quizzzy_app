@@ -11,7 +11,9 @@ class EndPoint {
   static final String socialLogin = dotenv.get("SOCIAL_LOGIN");
   // /api/academic-years
   static final String academiYears = dotenv.get("ACADEMIC_YEARS");
-  static final String _academiYear = dotenv.get("ACADEMIC_YEAR");
+
+  static final String subjects = dotenv.get("SUBJECTS");
+
   static final String messgeApiResponse =
       dotenv.get("MESSAGE_API"); // to get Message Erro when occur Execption
 
@@ -21,5 +23,6 @@ class EndPoint {
   static final String veifyEmailCode = dotenv.get("VERIFY_EMAIL_CODE");
   static final String reSendVeifyEmail = dotenv.get("RESEND_VERIFY_EMAIL");
 
-  static String getFullAcademiYear({required int id}) => "$_academiYear$id";
+  static String getAcademiYearById({required int id}) => "$academiYears/:$id";
+  static String getSubjectById({required int id}) => "$subjects/:$id";
 }

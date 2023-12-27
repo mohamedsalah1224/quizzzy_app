@@ -8,9 +8,10 @@ import 'package:quizzy_app/utils/end_point.dart';
 
 class AcademicYearsRepositoryService implements AcademicYearsRepository {
   @override
-  Future<AcdemicYearsModel> getAllAcademicYear() async {
+  Future<AcdemicYearsModel> getAllAcademicYear({int? skip, int? limit}) async {
     try {
-      var response = await DioHelper().get(EndPoint.academiYears);
+      var response = await DioHelper().get(EndPoint.academiYears,
+          queryParameters: {'skip': skip, 'limit': limit});
       return AcdemicYearsModel.fromJson(response);
     } on DioException catch (e) {
       throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
@@ -23,7 +24,7 @@ class AcademicYearsRepositoryService implements AcademicYearsRepository {
   Future<AcdemicYearResponseModel> getAcademicYearById(
       {required int id}) async {
     try {
-      var response = await DioHelper().get(EndPoint.getFullAcademiYear(id: id));
+      var response = await DioHelper().get(EndPoint.getAcademiYearById(id: id));
       return AcdemicYearResponseModel.fromJson(response);
     } on DioException catch (e) {
       throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
