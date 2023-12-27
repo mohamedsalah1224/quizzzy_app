@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
+import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
 import 'package:quizzy_app/view/custom_component/custom_radio_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
@@ -310,12 +311,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                           ]),
                         )),
                   )
-                : Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                      color: primayColor,
-                    ),
-                  );
+                : const CustomCircularProgressIndicator();
           },
         ));
   }
