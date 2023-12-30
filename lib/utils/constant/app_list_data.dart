@@ -20,8 +20,9 @@ class AppListData {
   static const Map<String, List<String>> getAreaName = {
     "القدس": [
       "أبو ديس",
-      "أبو غوش",
-      "إشوع",
+      " بيت إجزا",
+      "بيت إكسا"
+          "السواحرة الغربية",
       "أم طوبا",
       "بتير",
     ],

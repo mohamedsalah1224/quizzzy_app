@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 
 import 'custom_text.dart';
 
@@ -52,32 +53,24 @@ class CustomSubject extends StatelessWidget {
               ),
             ),
             2.verticalSpace,
-            !isShowArrow
-                ? const SizedBox()
-                : Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: Image.asset(
-                      Assets.imagesNextArrow,
-                      cacheHeight: 24,
-                      cacheWidth: 24,
-                      color: Colors.white,
-                    ),
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Image.asset(
+                Assets.imagesNextArrow,
+                cacheHeight: 24,
+                cacheWidth: 24,
+                color: Colors.white,
+              ),
+            ),
             Expanded(
               child: CachedNetworkImage(
+                fit: BoxFit.fitHeight,
+                width: double.infinity,
                 imageUrl: subjectModel.photo!,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.red, BlendMode.colorBurn)),
-                  ),
-                ),
+                fadeInDuration: const Duration(seconds: 1),
                 placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                    const CustomCircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             )
           ],

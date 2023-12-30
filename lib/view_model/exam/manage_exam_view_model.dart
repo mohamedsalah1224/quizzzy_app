@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
+import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
 import 'package:quizzy_app/view/screens/exam/choose_subject.dart';
 import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
@@ -9,8 +12,10 @@ import 'package:quizzy_app/view/screens/exam/quiz_type_view.dart';
 import '../../utils/constant.dart';
 
 class ManageExamViewModel extends GetxController {
+  bool _isLoadChoicePage = false;
   int _currentIndex = 0;
-  String? _subjectSelected;
+  int? _subjectSelectedId;
+  late List<DataSubjectModel> _subjectList;
 
   final List<Widget> _examViewList = const [
     ChooseSubject(),
@@ -21,10 +26,12 @@ class ManageExamViewModel extends GetxController {
 
   List<Widget> get examViewList => _examViewList;
   int get currentIndex => _currentIndex;
-  String? get subjectSelected => _subjectSelected;
+  bool get isLoadChoicePage => _isLoadChoicePage;
+  List<DataSubjectModel> get subjectList => _subjectList;
+  int? get subjectSelected => _subjectSelectedId;
 
-  void chooseSubject({required String subjectSelected}) {
-    _subjectSelected = subjectSelected;
+  void chooseSubject({required int subjectSelectedId}) {
+    _subjectSelectedId = subjectSelectedId;
     _currentIndex = 1;
     update();
   }
@@ -53,6 +60,32 @@ class ManageExamViewModel extends GetxController {
 
   void resetController() {
     _currentIndex = 0;
-    _subjectSelected = null;
+    _subjectSelectedId = null;
+  }
+
+  ///////////////////////////////Life cylce/////////////////////////////////////
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _getSubjects();
+  }
+
+  //////////////////////////////////// Service ///////////////////////////////////
+
+  void _getSubjects({int? limit, int? skip}) {
+    try {
+      SubjectsRepositoryService()
+          .getSubjects(limit: limit, skip: skip)
+          .then((value) {
+        print(value.data);
+        _subjectList = value.data!;
+        _isLoadChoicePage = true;
+        update(['loadingChoicePage']);
+      });
+    } catch (e) {
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
   }
 }

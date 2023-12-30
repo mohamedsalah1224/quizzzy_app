@@ -22,7 +22,7 @@ class SubjectsRepositoryService implements SubjectsRepository {
   @override
   Future<SubjectsModel> getSubjects({int? skip, int? limit}) async {
     try {
-      var response = await DioHelper().get(EndPoint.academiYears,
+      var response = await DioHelper().get(EndPoint.subjects,
           queryParameters: {'skip': skip, 'limit': limit});
       return SubjectsModel.fromJson(response);
     } on DioException catch (e) {
