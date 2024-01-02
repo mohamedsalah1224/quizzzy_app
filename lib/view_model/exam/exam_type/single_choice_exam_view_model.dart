@@ -24,6 +24,7 @@ class SingleChoiceExamViewModel extends GetxController {
   }
 
   void onTap({required int idAnswerValue, required int index}) {
+    if (idAnswerValue == answerSelectedId) return; // to Skip the rebuild
     answerSelectedId = idAnswerValue;
     idQueion = questionsModel.id;
     selectedIndex = index;

@@ -71,10 +71,15 @@ class ExamView extends GetView<ManageExamViewModel> {
               ),
               25.verticalSpace,
 // Above Section of the Exam
-              CustomAboveSectionOfQuestion(
-                questionsModel: controller.getCurrentQuestionModel(
-                    index: controller.currentQuetionIndex),
-                level: 'صعب',
+              GetBuilder<ManageExamViewModel>(
+                id: "updateAboveSection",
+                builder: (controller) {
+                  return CustomAboveSectionOfQuestion(
+                    questionsModel: controller.getCurrentQuestionModel(
+                        index: controller.currentQuetionIndex),
+                    level: 'صعب',
+                  );
+                },
               ),
               20.verticalSpace,
               const ManageExamType(),

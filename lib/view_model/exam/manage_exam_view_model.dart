@@ -151,6 +151,7 @@ class ManageExamViewModel extends GetxController {
   void nextQuestion() {
     _currentQuetionIndex++; // increment the new Question
     if (_currentQuetionIndex < examData.data!.questions!.length) {
+      update(["updateAboveSection"]); // update the Above Section
       updateTheCurrentExamType(); // update  the Question Type
     } else {
       print("-" * 50);
@@ -336,8 +337,8 @@ class ManageExamViewModel extends GetxController {
                   createdAt: "2023-10-31T18:23:49.000000Z",
                   updatedAt: "2023-10-31T18:23:49.000000Z"),
               QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
+                  id: 5,
+                  name: "معني كلمة سيارة",
                   type:
                       "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
                   description: null,
@@ -349,35 +350,35 @@ class ManageExamViewModel extends GetxController {
                   isActive: true,
                   answers: <AnswersModel>[
                     AnswersModel(
-                        id: 1,
-                        title: "القدس",
-                        questionType: "single_choice",
+                        id: 6,
+                        title: "Car",
+                        questionType: "multiple_choice",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text",
                         answerOrder: 1,
                         answerSettings: null,
                         photo:
                             "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
+                        isCorrect: true,
                         createdAt: "2023-10-31T18:26:47.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                     AnswersModel(
                         id: 3,
-                        title: "القاهرة",
-                        questionType: "single_choice",
+                        title: "Bmw",
+                        questionType: "multiple_choice",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text_image",
                         answerOrder: null,
                         answerSettings: null,
                         photo:
                             "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
+                        isCorrect: true,
                         createdAt: "2023-10-31T18:27:33.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                     AnswersModel(
                         id: 4,
-                        title: "دبي",
-                        questionType: "single_choice",
+                        title: "Marcidis",
+                        questionType: "multiple_choice",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text",
                         answerOrder: null,
@@ -385,6 +386,19 @@ class ManageExamViewModel extends GetxController {
                         photo:
                             "https://quizzy.makank.online/images/answers/avatar.png",
                         isCorrect: true,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 9,
+                        title: "عجلة",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: false,
                         createdAt: "2023-10-31T18:28:53.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                   ],
