@@ -46,7 +46,8 @@ class ManageExamView extends GetView<ManageExamViewModel> {
       ),
       body: GetBuilder<ManageExamViewModel>(
         builder: (context) {
-          return controller.examViewList[controller.currentIndex];
+          return controller
+              .examViewList[controller.currentManageExamsPagesIndex];
         },
       ),
     );

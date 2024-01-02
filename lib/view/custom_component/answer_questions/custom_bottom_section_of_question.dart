@@ -4,13 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../custom_button.dart';
 import '../custom_text.dart';
 
+// ignore: must_be_immutable
 class CustomBottomViewOfQuestion extends StatelessWidget {
-  const CustomBottomViewOfQuestion(
+  CustomBottomViewOfQuestion(
       {super.key,
       required this.onPressedSendNote,
+      this.currentValue = false,
+      required this.onChanged,
       required this.onTapNextQuestion});
   final void Function()? onPressedSendNote;
   final void Function()? onTapNextQuestion;
+  final void Function(bool)? onChanged;
+  bool currentValue;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,10 +62,10 @@ class CustomBottomViewOfQuestion extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   child: SwitchListTile(
                       contentPadding: EdgeInsets.zero,
-                      visualDensity: VisualDensity(
+                      visualDensity: const VisualDensity(
                           horizontal: VisualDensity.minimumDensity,
                           vertical: VisualDensity.minimumDensity),
-                      value: false,
+                      value: currentValue,
                       title: CustomText(
                         text: "مشكوك في صحته",
                         fontFamily: "Cairo",
@@ -68,9 +73,12 @@ class CustomBottomViewOfQuestion extends StatelessWidget {
                         fontSize: 14.sp,
                       ),
                       activeColor: Colors.white,
-                      activeTrackColor: Color(0xff7EBD4C),
+                      activeTrackColor: const Color(0xff7EBD4C),
                       onChanged: (value) {
-                        seState(() => print(value));
+                        seState(() {
+                          currentValue = value;
+                          onChanged!(value); // to Know the Current Value
+                        });
                       }),
                 ),
               ),
@@ -83,9 +91,7 @@ class CustomBottomViewOfQuestion extends StatelessWidget {
             fontFamily: "Cairo",
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
-            onTap: () {
-              print("next");
-            })
+            onTap: onTapNextQuestion)
       ],
     );
   }

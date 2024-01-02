@@ -4,14 +4,13 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/csutom_above_section_of_question.dart';
-import 'package:quizzy_app/view/custom_component/custom_button.dart';
-import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
+import 'package:quizzy_app/view/screens/exam/exam_type/mange_exam_type.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 import '../../../utils/app_images.dart';
 import '../../custom_component/answer_questions/custom_bottom_section_of_question.dart';
 import '../../custom_component/answer_questions/custom_single_choice_container.dart';
-import '../../custom_component/custom_classification.dart';
+
 import '../../custom_component/custom_text.dart';
 
 class ExamView extends GetView<ManageExamViewModel> {
@@ -50,6 +49,12 @@ class ExamView extends GetView<ManageExamViewModel> {
                 print("Ok");
               },
             ),
+            IconButton(
+              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Get.back();
+              },
+            ),
           ],
         ),
         body: Padding(
@@ -67,42 +72,25 @@ class ExamView extends GetView<ManageExamViewModel> {
               25.verticalSpace,
 // Above Section of the Exam
               CustomAboveSectionOfQuestion(
-                  examName: "ما هي عاصمة فلسطين؟",
-                  points: 100,
-                  level: "صعب",
-                  time: 5,
-                  questionSourceLink: Assets.imageExam1,
-                  questionSourceType: QuestionSourceType.image),
-              20.verticalSpace,
-              Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 20.r,
-                runSpacing: 20.r,
-                children: [
-                  CustomSingleChoiceContainer(
-                    text: "القاهرة",
-                    color: Color(0xffFF3DC8),
-                  ),
-                  CustomSingleChoiceContainer(
-                    text: "القدس",
-                    color: Color(0xff5BC8FD),
-                  ),
-                  CustomSingleChoiceContainer(
-                    text: "الجيزة",
-                  ),
-                  CustomSingleChoiceContainer(
-                    text: "غزة",
-                    color: Color(0xff9FD800),
-                  ),
-                ],
+                questionsModel: controller.getCurrentQuestionModel(
+                    index: controller.currentQuetionIndex),
+                level: 'صعب',
               ),
+              20.verticalSpace,
+              const ManageExamType(),
+
               25.verticalSpace,
+              // Blew Section
               CustomBottomViewOfQuestion(
                 onPressedSendNote: () {
-                  print("Note");
+                  controller.sendNote();
                 },
                 onTapNextQuestion: () {
-                  print("Next Question");
+                  controller.nextQuestion();
+                },
+                onChanged: (value) {
+                  print(value);
+                  controller.wrongQuetion(isWrongQuestion: value);
                 },
               ),
               25.verticalSpace,

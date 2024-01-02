@@ -5,6 +5,7 @@ import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_phone_binding.dart';
 import 'package:quizzy_app/utils/binding/login_binding.dart';
+import 'package:quizzy_app/utils/binding/questions_type_binding.dart';
 import 'package:quizzy_app/utils/binding/register_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
 import 'package:quizzy_app/utils/binding/verify_email_binding.dart';
@@ -99,8 +100,8 @@ class Routes {
             page: () => const SucessPasswordChangedView(),
             binding: SucessPasswordChangedBinding()),
         GetPage(
-          name: examView,
-          page: () => const ExamView(),
-        ),
+            name: examView,
+            page: () => const ExamView(),
+            binding: QuestionsTypeBinding()),
       ];
 }

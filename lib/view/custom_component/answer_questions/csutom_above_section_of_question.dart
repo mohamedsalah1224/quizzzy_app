@@ -1,40 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quizzy_app/model/questions_model.dart';
 
-import '../../../utils/app_images.dart';
 import '../../../utils/constant.dart';
 import '../custom_classification.dart';
 import '../custom_text.dart';
 import 'custom_question_source_type.dart';
 
 class CustomAboveSectionOfQuestion extends StatelessWidget {
+  final QuestionsModel questionsModel;
   const CustomAboveSectionOfQuestion({
     super.key,
-    required this.examName,
-    required this.points,
+    required this.questionsModel,
     required this.level,
-    required this.time,
-    required this.questionSourceType,
-    this.questionSourceLink = "",
   });
 
-  final String examName;
-  final int points;
   final String level;
-  final int time;
-  final QuestionSourceType questionSourceType;
-  final String questionSourceLink;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomQuestionSourceType(
-          questionSourceType: QuestionSourceType.image,
-          questionSourceLink: questionSourceLink,
-        ),
+            questionSourceType: questionsModel.photo != null
+                ? QuestionSourceType.image
+                : QuestionSourceType.video,
+            questionSourceLink: questionsModel.photo!),
         10.verticalSpace,
         CustomText(
-          text: examName,
+          text: questionsModel.name!,
           fontFamily: "Cairo",
           fontSize: 16.sp,
         ),
@@ -43,13 +37,13 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomClassification(
-              text: level,
+              text: "صعب", // لسه تتعدل من Api
             ),
             CustomClassification(
-              text: '$points نقطة',
+              text: '${questionsModel.points} نقطة',
             ),
             CustomClassification(
-              text: '$time ثواني',
+              text: '${questionsModel.time} ثواني',
             ),
           ],
         ),

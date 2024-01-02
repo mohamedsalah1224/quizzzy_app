@@ -66,6 +66,9 @@ class QuizTypeView extends GetView<ManageExamViewModel> {
                 imageAssetName: Assets.imagesRandom,
                 isShowArrow: false,
                 name: "بشكل عشوائي",
+                onTap: () {
+                  controller.createOtherExam(QuizType.random);
+                },
                 color: Color(0xff5BC8FD)),
           ]),
         ]));
