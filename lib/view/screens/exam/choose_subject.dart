@@ -43,8 +43,8 @@ class ChooseSubject extends GetView<ManageExamViewModel> {
                             subjectModel: controller.subjectList[index],
                             onTap: () {
                               controller.chooseSubject(
-                                  subjectSelectedId:
-                                      controller.subjectList[index].id!);
+                                  subjectSelectedInformation:
+                                      controller.subjectList[index]);
                             },
                           );
                         });

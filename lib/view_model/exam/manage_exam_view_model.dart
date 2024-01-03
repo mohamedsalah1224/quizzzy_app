@@ -29,7 +29,8 @@ class ManageExamViewModel extends GetxController {
   int _currentManageExamsPagesIndex = 0;
   int _currentQuetionIndex = 0;
   int _currentExamTypeIndex = 0;
-  int? _subjectSelectedId;
+
+  DataSubjectModel? _subjectSelectedInformation;
   bool _isLoadExamViewPage = false;
   late List<DataSubjectModel> _subjectList;
   final List<Widget> _examTypeList = [
@@ -54,7 +55,8 @@ class ManageExamViewModel extends GetxController {
   bool get isLoadExamViewPage => _isLoadExamViewPage;
   List<DataSubjectModel> get subjectList => _subjectList;
 
-  int get subjectSelectedId => _subjectSelectedId!;
+  DataSubjectModel get subjectSelectedInformation =>
+      _subjectSelectedInformation!;
   ExamsModel get examData => _examData!;
   List<Widget> get examTypeList => _examTypeList;
   int get currentQuetionIndex => _currentQuetionIndex;
@@ -72,8 +74,8 @@ class ManageExamViewModel extends GetxController {
         : false;
   }
 
-  void chooseSubject({required int subjectSelectedId}) {
-    _subjectSelectedId = subjectSelectedId;
+  void chooseSubject({required DataSubjectModel subjectSelectedInformation}) {
+    _subjectSelectedInformation = subjectSelectedInformation;
     _currentManageExamsPagesIndex = 1;
     update();
   }
@@ -113,7 +115,7 @@ class ManageExamViewModel extends GetxController {
     _currentExamTypeIndex = 0;
     _currentQuetionIndex = 0;
 
-    _subjectSelectedId = null;
+    _subjectSelectedInformation = null;
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -225,8 +227,8 @@ class ManageExamViewModel extends GetxController {
             storeExamModel: StoreExamModel(
                 type: ExamConstatnt.randomlyExam,
                 typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-                subjectId: _subjectSelectedId,
-                semester: "1"))
+                subjectId: _subjectSelectedInformation!.id,
+                semester: _subjectSelectedInformation!.semester))
         .then((value) {
       _examData = value;
       // SnackBarHelper.instance
@@ -246,8 +248,8 @@ class ManageExamViewModel extends GetxController {
             storeExamModel: StoreExamModel(
                 type: ExamConstatnt.aiExam,
                 typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-                subjectId: _subjectSelectedId,
-                semester: "1"))
+                subjectId: _subjectSelectedInformation!.id,
+                semester: _subjectSelectedInformation!.semester))
         .then((value) {
       _examData = value;
       // SnackBarHelper.instance
