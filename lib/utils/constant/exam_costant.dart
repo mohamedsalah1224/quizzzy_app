@@ -11,4 +11,8 @@ class ExamConstatnt {
   static const String choiceExam = "choice";
   static const String randomlyExam = "randomly";
   static const String aiExam = "ai";
+
+  // choice_specialist
+
+  static const String specialistExam = "choice_specialist";
 }

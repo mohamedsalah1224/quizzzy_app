@@ -77,7 +77,6 @@ class ExamView extends GetView<ManageExamViewModel> {
                   return CustomAboveSectionOfQuestion(
                     questionsModel: controller.getCurrentQuestionModel(
                         index: controller.currentQuetionIndex),
-                    level: 'صعب',
                   );
                 },
               ),

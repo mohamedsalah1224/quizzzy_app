@@ -2,7 +2,18 @@ import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
 
 abstract class ExamRepository {
-  Future<ExamsModel> getExams({int? skip, int? limit});
+  Future<ExamsModel> getExams(
+      {int? skip,
+      int? limit,
+      required String type,
+      required int subjectId,
+      String? typeAssessment});
   Future<ExamsModel> showExam({required int id}); // path the id
   Future<ExamsModel> storeExam({required StoreExamModel storeExamModel});
+
+  void startQuiz({required int examId});
+  void answerQuestion(
+      {required int questionId,
+      required int examAttemptId,
+      required List<int> givenAnswer});
 }

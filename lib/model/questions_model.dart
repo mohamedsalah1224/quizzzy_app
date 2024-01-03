@@ -6,6 +6,10 @@ class QuestionsModel {
   String? type;
   String? description;
   String? photo;
+  String? file;
+  String? fileType;
+  String? level;
+  int? lessonId;
   String? semester;
   String? points;
   String? time;
@@ -22,6 +26,10 @@ class QuestionsModel {
       this.photo,
       this.semester,
       this.points,
+      this.file,
+      this.fileType,
+      this.lessonId,
+      this.level,
       this.answers,
       this.time,
       this.isActive,
@@ -47,6 +55,10 @@ class QuestionsModel {
         type: json['type'],
         name: json['name'],
         id: json['id'],
+        file: json['file'],
+        fileType: json['file_type'],
+        level: json['level'],
+        lessonId: json['lesson_id'],
         answers: lisAnswerModel);
   }
 
@@ -63,6 +75,10 @@ class QuestionsModel {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'file': file,
+      'file_type': fileType,
+      'level': level,
+      'lesson_id': lessonId,
       'answers': answers != null ? answers!.map((v) => v.toJson()).toList() : []
     };
   }

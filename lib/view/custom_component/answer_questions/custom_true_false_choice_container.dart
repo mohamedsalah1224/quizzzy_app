@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
 import '../custom_text.dart';
 
-class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
+class CustomTrueFalseChoice extends GetView<TrueFalseExamViewModel> {
   final String title;
   final Color color;
   final String? photo;
@@ -15,7 +15,7 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
   final bool reviewExam;
   final int index;
 
-  const CustomSingleChoiceContainer({
+  const CustomTrueFalseChoice({
     super.key,
     required this.title,
     required this.id,
@@ -40,12 +40,12 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
         children: [
           Container(
             width: 144.w,
-            height: 90.h,
+            height: 200.h, //90
             alignment: AlignmentDirectional.center,
             decoration: BoxDecoration(
                 //rgba(0, 0, 0, 0.25)
                 color: color,
-                boxShadow: const <BoxShadow>[
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                       offset: Offset(0, 5),
                       spreadRadius: 0,

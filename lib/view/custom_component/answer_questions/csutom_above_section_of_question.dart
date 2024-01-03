@@ -12,10 +12,7 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
   const CustomAboveSectionOfQuestion({
     super.key,
     required this.questionsModel,
-    required this.level,
   });
-
-  final String level;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomClassification(
-              text: "صعب", // لسه تتعدل من Api
+              text: questionsModel.level ?? "صعب", // لسه تتعدل من Api
             ),
             CustomClassification(
               text: '${questionsModel.points} نقطة',

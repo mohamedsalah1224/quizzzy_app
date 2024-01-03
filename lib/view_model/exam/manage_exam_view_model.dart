@@ -12,9 +12,8 @@ import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
 import 'package:quizzy_app/view/screens/exam/choose_subject.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/compare_exam.dart';
-import 'package:quizzy_app/view/screens/exam/exam_type/long_answer_exam.dart';
+import 'package:quizzy_app/view/screens/exam/exam_type/long_short_answer_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/multiple_choice_exam.dart';
-import 'package:quizzy_app/view/screens/exam/exam_type/short_answer_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/single_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/true_false_exam.dart';
 import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
@@ -28,11 +27,11 @@ class ManageExamViewModel extends GetxController {
   int _currentQuetionIndex = 0;
   int _currentExamTypeIndex = 0;
   int? _subjectSelectedId;
+  bool _isLoadExamViewPage = false;
   late List<DataSubjectModel> _subjectList;
   final List<Widget> _examTypeList = [
     const CompareExam(),
-    const LongAnswerExam(),
-    const ShortAnswerExam(),
+    const LongShortAnswerExam(),
     const MultipleChoiceExam(),
     const TrueFalseExam(),
     const SingleChoiceExam(),
@@ -49,6 +48,7 @@ class ManageExamViewModel extends GetxController {
   List<Widget> get examViewList => _examViewList;
 
   bool get isLoadChoicePage => _isLoadChoicePage;
+  bool get isLoadExamViewPage => _isLoadExamViewPage;
   List<DataSubjectModel> get subjectList => _subjectList;
   int? get subjectSelected => _subjectSelectedId;
   int get subjectSelectedId => _subjectSelectedId!;
@@ -112,7 +112,6 @@ class ManageExamViewModel extends GetxController {
  [
     const CompareExam(),
     const LongAnswerExam(),
-    const ShortAnswerExam(),
     const MultipleChoiceExam(),
     const TrueFalseExam(),
     const SingleChoiceExam()
@@ -131,16 +130,16 @@ class ManageExamViewModel extends GetxController {
         _currentExamTypeIndex = 1;
         break;
       case ExamConstatnt.shortAnswer:
-        _currentExamTypeIndex = 2;
+        _currentExamTypeIndex = 1;
         break;
       case ExamConstatnt.multipleChoice:
-        _currentExamTypeIndex = 3;
+        _currentExamTypeIndex = 2;
         break;
       case ExamConstatnt.trueFalse:
-        _currentExamTypeIndex = 4;
+        _currentExamTypeIndex = 3;
         break;
       case ExamConstatnt.singleChoice:
-        _currentExamTypeIndex = 5;
+        _currentExamTypeIndex = 4;
         break;
     }
     update(['examType']);
@@ -208,6 +207,8 @@ class ManageExamViewModel extends GetxController {
   }
 
   void _randomExamService() {
+    _isLoadExamViewPage = false;
+
     _examData = ExamsModel(
         success: true,
         message: "Sucess",
@@ -226,6 +227,39 @@ class ManageExamViewModel extends GetxController {
             time: null,
             isActive: true,
             questions: <QuestionsModel>[
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
+                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  semester: null,
+                  lessonId: 1,
+                  file: null,
+                  fileType: null,
+                  level: "متوسط",
+                  points: "200.00",
+                  time: "20",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 13,
+                        title: "اكتب بما لايتجاوز السطرين",
+                        questionType: "short_answer",
+                        answerTwoGapMatch: "القدس",
+                        answerViewFormat: "text",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: null,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
               QuestionsModel(
                   id: 1,
                   name: "ماهي عاصمة فلسطين ؟",
@@ -290,27 +324,27 @@ class ManageExamViewModel extends GetxController {
                   photo:
                       "https://quizzy.makank.online/images/questions/avatar.png",
                   semester: null,
-                  points: "15.00",
-                  time: "50",
+                  points: "25.00",
+                  time: "60",
                   isActive: true,
                   answers: <AnswersModel>[
                     AnswersModel(
-                        id: 1,
-                        title: "القدس",
-                        questionType: "single_choice",
+                        id: 3,
+                        title: "صح",
+                        questionType: "true_false",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text",
                         answerOrder: 1,
                         answerSettings: null,
                         photo:
                             "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
+                        isCorrect: true,
                         createdAt: "2023-10-31T18:26:47.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                     AnswersModel(
-                        id: 3,
-                        title: "القاهرة",
-                        questionType: "single_choice",
+                        id: 6,
+                        title: "خطأ",
+                        questionType: "true_false",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text_image",
                         answerOrder: null,
@@ -319,19 +353,6 @@ class ManageExamViewModel extends GetxController {
                             "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
                         isCorrect: false,
                         createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "دبي",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                   ],
                   createdAt: "2023-10-31T18:23:49.000000Z",
@@ -408,8 +429,15 @@ class ManageExamViewModel extends GetxController {
     updateTheCurrentExamType(); //update  the Question Type
   }
 
-  void _aiExamService() {}
+  void _aiExamService() {
+    _isLoadExamViewPage = false;
+  }
 
-  void _choiceExamService() {}
-  void _specialistExamService() {}
+  void _choiceExamService() {
+    _isLoadExamViewPage = false;
+  }
+
+  void _specialistExamService() {
+    _isLoadExamViewPage = false;
+  }
 }

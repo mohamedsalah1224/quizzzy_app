@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_subject.dart';
-import 'package:get/get.dart';
 import '../../../view_model/exam/manage_exam_view_model.dart';
 import '../../custom_component/custom_search_field.dart';
 import '../../custom_component/custom_text.dart';

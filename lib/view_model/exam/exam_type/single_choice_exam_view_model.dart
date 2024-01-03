@@ -10,8 +10,8 @@ class SingleChoiceExamViewModel extends GetxController {
   ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
   int? selectedIndex;
 
-  int? idQueion;
-  int? answerSelectedId;
+  int? idQueion; // 4 true
+  int? answerSelectedId; // 3 , 4 , 1
   @override
   void onInit() {
     // TODO: implement onInit

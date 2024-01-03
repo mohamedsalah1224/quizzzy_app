@@ -8,7 +8,7 @@ class MultipleChoiceExamViewModel extends GetxController {
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
   ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
-  List<int> listAnswerIdSelected = [];
+  List<int> listAnswerIdSelected = [1, 3, 4];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -30,5 +30,11 @@ class MultipleChoiceExamViewModel extends GetxController {
     print("-" * 50);
     print(listAnswerIdSelected);
     print("-" * 50);
+  }
+
+  int? isIdExist(int index) {
+    return listAnswerIdSelected.contains(listAnswersModel[index].id!)
+        ? listAnswersModel[index].id!
+        : null;
   }
 }

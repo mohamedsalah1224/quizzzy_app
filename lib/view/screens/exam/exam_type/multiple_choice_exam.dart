@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/custom_multiple_choice_container.dart';
-import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 
 class MultipleChoiceExam extends GetView<MultipleChoiceExamViewModel> {
@@ -22,6 +21,8 @@ class MultipleChoiceExam extends GetView<MultipleChoiceExamViewModel> {
             id: controller.listAnswersModel[index].id!,
             isCorrect: controller.listAnswersModel[index].isCorrect!,
             photo: controller.listAnswersModel[index].photo,
+            // reviewExam: true,
+            // answerUserSelectedID: controller.isIdExist(index),
           ),
         ));
   }
