@@ -23,6 +23,21 @@ class EndPoint {
   static final String veifyEmailCode = dotenv.get("VERIFY_EMAIL_CODE");
   static final String reSendVeifyEmail = dotenv.get("RESEND_VERIFY_EMAIL");
 
+  // Exams
+  static final String exams = dotenv.get("EXAMS");
+  static final String storeExams = dotenv.get("EXAMS");
+  static final String startQuiz = dotenv.get("START_QUIZ");
+  static final String answerQuestion = dotenv.get("ANSWER_QUESTION");
+
+  static String showExamById({required int examId}) => "$exams/:$examId";
+
+  /*
+  EXAMS="/api/exams"
+START_QUIZ="/api/exams/start"
+ANSWER_QUESTION="/api/exams/answer_question"
+
+  */
+
   static String getAcademiYearById({required int id}) => "$academiYears/:$id";
   static String getSubjectById({required int id}) => "$subjects/:$id";
 }
