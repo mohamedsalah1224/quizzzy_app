@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
 
 import '../custom_text.dart';
 
 // ignore: must_be_immutable
-class CustomMultipleChoiceContainer
-    extends GetView<MultipleChoiceExamViewModel> {
+class CustomMultipleChoiceContainer extends StatelessWidget {
   final String title;
   final Color color;
   final String? photo;

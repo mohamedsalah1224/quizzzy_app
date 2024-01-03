@@ -8,21 +8,21 @@ class StoreExamModel {
   final String? photo;
   final String? semester;
   final String? isActive;
-  final String? unitId;
-  final String? lessonId;
-  final String? subjectId;
+  final int? unitId;
+  final int? lessonId;
+  final int? subjectId;
 
   StoreExamModel(
       {this.description,
-      this.isActive,
+      this.isActive = '1',
       this.level,
       this.name,
       this.photo,
       this.questionTypes,
-      this.semester,
+      required this.semester,
       this.type,
       this.lessonId,
-      this.subjectId,
+      required this.subjectId,
       this.unitId,
       this.typeAssessment});
 }

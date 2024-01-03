@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/exam_repository.dart';
 import 'package:quizzy_app/model/exams_model.dart';
@@ -55,6 +56,10 @@ class ExamRepositoryService implements ExamRepository {
 
       return ExamsModel.fromJson(reponse);
     } on DioException catch (e) {
+      print("-" * 50);
+      debugPrint('${e.response!.data}');
+      print("-" * 50);
+
       throw ValidationErroModel.fromJson(e.response!.data).message.toString();
     } catch (e) {
       rethrow;

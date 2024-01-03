@@ -19,17 +19,21 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
     return Column(
       children: [
         CustomQuestionSourceType(
-            questionSourceType: questionsModel.photo != null
-                ? QuestionSourceType.image
+            questionSourceType: questionsModel.fileType == null
+                ? questionsModel.photo != null
+                    ? QuestionSourceType.image
+                    : QuestionSourceType.none
                 : QuestionSourceType.video,
-            questionSourceLink: questionsModel.photo!),
+            questionSourceLink: questionsModel.photo),
         10.verticalSpace,
         CustomText(
           text: questionsModel.name!,
           fontFamily: "Cairo",
           fontSize: 16.sp,
         ),
-        25.verticalSpace,
+        questionsModel.fileType == null && questionsModel.photo == null
+            ? 40.verticalSpace
+            : 25.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -44,6 +48,9 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
             ),
           ],
         ),
+        questionsModel.fileType == null && questionsModel.photo == null
+            ? 25.verticalSpace
+            : const SizedBox()
       ],
     );
   }

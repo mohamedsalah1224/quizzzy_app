@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 import '../custom_button.dart';
 import '../custom_text.dart';
 
 // ignore: must_be_immutable
-class CustomBottomViewOfQuestion extends StatelessWidget {
+class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
   CustomBottomViewOfQuestion(
       {super.key,
       required this.onPressedSendNote,
@@ -51,7 +53,9 @@ class CustomBottomViewOfQuestion extends StatelessWidget {
             textDirection: TextDirection.rtl,
           ),
         ),
-        10.verticalSpace,
+        controller.isNoSourceInputForThisQuestion()
+            ? 20.verticalSpace
+            : 10.verticalSpace,
         StatefulBuilder(
           builder: (context, seState) {
             return Align(
@@ -85,7 +89,9 @@ class CustomBottomViewOfQuestion extends StatelessWidget {
             );
           },
         ),
-        10.verticalSpace,
+        controller.isNoSourceInputForThisQuestion()
+            ? 20.verticalSpace
+            : 10.verticalSpace,
         CustomButton(
             text: 'التالي',
             fontFamily: "Cairo",

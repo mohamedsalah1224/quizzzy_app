@@ -8,10 +8,10 @@ import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.
 class QuestionsTypeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => CompareChoiceExamViewModel());
-    Get.lazyPut(() => MultipleChoiceExamViewModel());
-    Get.lazyPut(() => ShortLongAnswerViewModel());
-    Get.lazyPut(() => SingleChoiceExamViewModel());
-    Get.lazyPut(() => TrueFalseExamViewModel());
+    Get.lazyPut(() => CompareChoiceExamViewModel(), fenix: true);
+    Get.lazyPut(() => MultipleChoiceExamViewModel(), fenix: true);
+    Get.lazyPut(() => ShortLongAnswerViewModel(), fenix: true);
+    Get.lazyPut(() => SingleChoiceExamViewModel(), fenix: true);
+    Get.lazyPut(() => TrueFalseExamViewModel(), fenix: true);
   }
 }

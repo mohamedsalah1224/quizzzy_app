@@ -8,7 +8,7 @@ class MultipleChoiceExamViewModel extends GetxController {
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
   ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
-  List<int> listAnswerIdSelected = [1, 3, 4];
+  List<int> listAnswerIdSelected = [];
   @override
   void onInit() {
     // TODO: implement onInit

@@ -9,21 +9,26 @@ class MultipleChoiceExam extends GetView<MultipleChoiceExamViewModel> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-        alignment: WrapAlignment.start,
-        spacing: 20.r,
-        runSpacing: 20.r,
-        children: List.generate(
-          controller.listAnswersModel.length,
-          (index) => CustomMultipleChoiceContainer(
-            color: const Color(0xff9FD800),
-            title: controller.listAnswersModel[index].title!,
-            id: controller.listAnswersModel[index].id!,
-            isCorrect: controller.listAnswersModel[index].isCorrect!,
-            photo: controller.listAnswersModel[index].photo,
-            // reviewExam: true,
-            // answerUserSelectedID: controller.isIdExist(index),
-          ),
-        ));
+    return GetBuilder<MultipleChoiceExamViewModel>(
+      id: "notUpdated",
+      builder: (controller) {
+        return Wrap(
+            alignment: WrapAlignment.start,
+            spacing: 20.r,
+            runSpacing: 20.r,
+            children: List.generate(
+              controller.listAnswersModel.length,
+              (index) => CustomMultipleChoiceContainer(
+                color: const Color(0xff9FD800),
+                title: controller.listAnswersModel[index].title!,
+                id: controller.listAnswersModel[index].id!,
+                isCorrect: controller.listAnswersModel[index].isCorrect!,
+                photo: controller.listAnswersModel[index].photo,
+                // reviewExam: true,
+                // answerUserSelectedID: controller.isIdExist(index),
+              ),
+            ));
+      },
+    );
   }
 }

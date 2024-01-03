@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/csutom_above_section_of_question.dart';
+import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/mange_exam_type.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
@@ -57,47 +58,60 @@ class ExamView extends GetView<ManageExamViewModel> {
             ),
           ],
         ),
-        body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.h),
-            child: SingleChildScrollView(
-                child: Column(children: [
-              10.verticalSpace,
-              LinearPercentIndicator(
-                percent: 0.8,
-                lineHeight: 12.h,
-                barRadius: Radius.circular(20),
-                progressColor: Color(0xff268C6D),
-                backgroundColor: Color(0xffEEEEEE),
-              ),
-              25.verticalSpace,
+        body: GetBuilder<ManageExamViewModel>(
+          id: "LoadExamViewPage",
+          builder: (controller) {
+            return !controller.isLoadExamViewPage
+                ? const CustomCircularProgressIndicator()
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.h),
+                    child: SingleChildScrollView(
+                        child: Column(children: [
+                      10.verticalSpace,
+                      LinearPercentIndicator(
+                        percent: 0.8,
+                        lineHeight: 12.h,
+                        barRadius: Radius.circular(20),
+                        progressColor: Color(0xff268C6D),
+                        backgroundColor: Color(0xffEEEEEE),
+                      ),
+                      25.verticalSpace,
 // Above Section of the Exam
-              GetBuilder<ManageExamViewModel>(
-                id: "updateAboveSection",
-                builder: (controller) {
-                  return CustomAboveSectionOfQuestion(
-                    questionsModel: controller.getCurrentQuestionModel(
-                        index: controller.currentQuetionIndex),
-                  );
-                },
-              ),
-              20.verticalSpace,
-              const ManageExamType(),
-
-              25.verticalSpace,
-              // Blew Section
-              CustomBottomViewOfQuestion(
-                onPressedSendNote: () {
-                  controller.sendNote();
-                },
-                onTapNextQuestion: () {
-                  controller.nextQuestion();
-                },
-                onChanged: (value) {
-                  print(value);
-                  controller.wrongQuetion(isWrongQuestion: value);
-                },
-              ),
-              25.verticalSpace,
-            ]))));
+                      GetBuilder<ManageExamViewModel>(
+                        id: "updateAboveSection",
+                        builder: (controller) {
+                          return CustomAboveSectionOfQuestion(
+                            questionsModel: controller.getCurrentQuestionModel(
+                                index: controller.currentQuetionIndex),
+                          );
+                        },
+                      ),
+                      20.verticalSpace,
+                      const ManageExamType(),
+                      controller.isNoSourceInputForThisQuestion()
+                          ? 40.verticalSpace
+                          : 25.verticalSpace,
+                      // Blew Section
+                      GetBuilder<ManageExamViewModel>(
+                        id: "updateBlewSection",
+                        builder: (controller) {
+                          return CustomBottomViewOfQuestion(
+                            onPressedSendNote: () {
+                              controller.sendNote();
+                            },
+                            onTapNextQuestion: () {
+                              controller.nextQuestion();
+                            },
+                            onChanged: (value) {
+                              print(value);
+                              controller.wrongQuetion(isWrongQuestion: value);
+                            },
+                          );
+                        },
+                      ),
+                      25.verticalSpace,
+                    ])));
+          },
+        ));
   }
 }

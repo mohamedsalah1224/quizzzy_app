@@ -6,7 +6,7 @@ import 'package:quizzy_app/view/custom_component/custom_circular_progress_indica
 
 class CustomQuestionSourceType extends StatelessWidget {
   final QuestionSourceType questionSourceType;
-  final String questionSourceLink;
+  final String? questionSourceLink;
   const CustomQuestionSourceType(
       {super.key,
       required this.questionSourceType,
@@ -14,20 +14,20 @@ class CustomQuestionSourceType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (questionSourceType == QuestionSourceType.none)
-      return const SizedBox();
-    else if (questionSourceType == QuestionSourceType.image)
+    if (questionSourceType == QuestionSourceType.none) {
+      return 50.verticalSpace;
+    } else if (questionSourceType == QuestionSourceType.image)
       return CachedNetworkImage(
         fit: BoxFit.fitHeight,
         width: double.infinity.w,
         height: 127.h,
-        imageUrl: questionSourceLink,
+        imageUrl: questionSourceLink ?? "",
         fadeInDuration: const Duration(seconds: 1),
         placeholder: (context, url) => const CustomCircularProgressIndicator(),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       );
     else if (questionSourceType == QuestionSourceType.video)
-      return Text("Vide");
+      return Text("Video");
     else
       return Text("Sound");
   }

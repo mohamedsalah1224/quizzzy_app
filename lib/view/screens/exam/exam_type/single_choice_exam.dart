@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/custom_single_choice_container.dart';
-import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
-import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class SingleChoiceExam extends GetView<SingleChoiceExamViewModel> {
   const SingleChoiceExam({super.key});

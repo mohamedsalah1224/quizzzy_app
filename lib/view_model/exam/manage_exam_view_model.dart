@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
+import 'package:quizzy_app/model/store_exam_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
@@ -50,7 +53,7 @@ class ManageExamViewModel extends GetxController {
   bool get isLoadChoicePage => _isLoadChoicePage;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
   List<DataSubjectModel> get subjectList => _subjectList;
-  int? get subjectSelected => _subjectSelectedId;
+
   int get subjectSelectedId => _subjectSelectedId!;
   ExamsModel get examData => _examData!;
   List<Widget> get examTypeList => _examTypeList;
@@ -59,6 +62,14 @@ class ManageExamViewModel extends GetxController {
   int get currentExamTypeIndex => _currentExamTypeIndex;
   QuestionsModel getCurrentQuestionModel({required int index}) {
     return _examData!.data!.questions![index];
+  }
+
+  bool isNoSourceInputForThisQuestion() {
+    QuestionsModel questionsModel =
+        _examData!.data!.questions![_currentQuetionIndex];
+    return questionsModel.fileType == null && questionsModel.photo == null
+        ? true
+        : false;
   }
 
   void chooseSubject({required int subjectSelectedId}) {
@@ -150,7 +161,11 @@ class ManageExamViewModel extends GetxController {
   void nextQuestion() {
     _currentQuetionIndex++; // increment the new Question
     if (_currentQuetionIndex < examData.data!.questions!.length) {
-      update(["updateAboveSection"]); // update the Above Section
+      update([
+        "updateAboveSection",
+        "updateBlewSection"
+      ]); // update the Above Section
+
       updateTheCurrentExamType(); // update  the Question Type
     } else {
       print("-" * 50);
@@ -192,245 +207,56 @@ class ManageExamViewModel extends GetxController {
   //////////////////////////////////// Service ///////////////////////////////////
 
   void _getSubjects({int? limit, int? skip}) {
-    try {
-      SubjectsRepositoryService()
-          .getSubjects(limit: limit, skip: skip)
-          .then((value) {
-        print(value.data);
-        _subjectList = value.data!;
-        _isLoadChoicePage = true;
-        update(['loadingChoicePage']);
-      });
-    } catch (e) {
-      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
-    }
+    _isLoadChoicePage = false;
+    SubjectsRepositoryService().getSubjects(limit: limit, skip: skip).then(
+        (value) {
+      _subjectList = value.data!;
+      _isLoadChoicePage = true;
+      update(['loadingChoicePage']);
+    }).catchError((e) =>
+        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
   }
 
   void _randomExamService() {
     _isLoadExamViewPage = false;
 
-    _examData = ExamsModel(
-        success: true,
-        message: "Sucess",
-        data: ExamModel(
-            id: 18,
-            name: "TEst",
-            type: "choice",
-            questionTypes: null,
-            level: null,
-            typeAssessment: "after_finish",
-            description: null,
-            photo: "https://quizzy.makank.online/images/exams/avatar.png",
-            file: null,
-            semester: "1",
-            points: null,
-            time: null,
-            isActive: true,
-            questions: <QuestionsModel>[
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  lessonId: 1,
-                  file: null,
-                  fileType: null,
-                  level: "متوسط",
-                  points: "200.00",
-                  time: "20",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 13,
-                        title: "اكتب بما لايتجاوز السطرين",
-                        questionType: "short_answer",
-                        answerTwoGapMatch: "القدس",
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: null,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 1,
-                        title: "القدس",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "القاهرة",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "دبي",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "25.00",
-                  time: "60",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 3,
-                        title: "صح",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 6,
-                        title: "خطأ",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 5,
-                  name: "معني كلمة سيارة",
-                  type:
-                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 6,
-                        title: "Car",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "Bmw",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "Marcidis",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 9,
-                        title: "عجلة",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-            ]));
-    updateTheCurrentExamType(); //update  the Question Type
+    ExamRepositoryService()
+        .storeExam(
+            storeExamModel: StoreExamModel(
+                type: ExamConstatnt.randomlyExam,
+                typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+                subjectId: _subjectSelectedId,
+                semester: "1"))
+        .then((value) {
+      _examData = value;
+      // SnackBarHelper.instance
+      //     .showMessage(message: _examData!.message!.toString());
+      _isLoadExamViewPage = true;
+      updateTheCurrentExamType(); //update  the Question Type
+      update(['LoadExamViewPage']);
+    }).catchError((e) => SnackBarHelper.instance.showMessage(
+            message: e.toString(), milliseconds: 2000, erro: true));
   }
 
   void _aiExamService() {
     _isLoadExamViewPage = false;
+
+    ExamRepositoryService()
+        .storeExam(
+            storeExamModel: StoreExamModel(
+                type: ExamConstatnt.aiExam,
+                typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+                subjectId: _subjectSelectedId,
+                semester: "1"))
+        .then((value) {
+      _examData = value;
+      // SnackBarHelper.instance
+      //     .showMessage(message: _examData!.message!.toString());
+      _isLoadExamViewPage = true;
+      updateTheCurrentExamType(); //update  the Question Type
+      update(['LoadExamViewPage']);
+    }).catchError((e) => SnackBarHelper.instance.showMessage(
+            message: e.toString(), milliseconds: 2000, erro: true));
   }
 
   void _choiceExamService() {
