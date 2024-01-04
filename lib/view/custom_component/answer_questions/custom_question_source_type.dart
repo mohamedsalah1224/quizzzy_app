@@ -17,14 +17,20 @@ class CustomQuestionSourceType extends StatelessWidget {
     if (questionSourceType == QuestionSourceType.none) {
       return 50.verticalSpace;
     } else if (questionSourceType == QuestionSourceType.image)
-      return CachedNetworkImage(
-        fit: BoxFit.fitHeight,
-        width: double.infinity.w,
+      // ignore: curly_braces_in_flow_control_structures
+      return Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         height: 127.h,
-        imageUrl: questionSourceLink ?? "",
-        fadeInDuration: const Duration(seconds: 1),
-        placeholder: (context, url) => const CustomCircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12).r),
+        child: CachedNetworkImage(
+          fit: BoxFit.fitHeight,
+          height: 127.h,
+          imageUrl: questionSourceLink ?? "",
+          fadeInDuration: const Duration(seconds: 1),
+          placeholder: (context, url) =>
+              const CustomCircularProgressIndicator(),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
       );
     else if (questionSourceType == QuestionSourceType.video)
       return Text("Video");
