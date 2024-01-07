@@ -22,7 +22,7 @@ class StartQuizModel {
 }
 
 class Data {
-  String? examId;
+  int? examId;
   int? totalQuestions;
   int? totalMarks;
   int? totalAnsweredQuestions;

@@ -1,13 +1,18 @@
+import 'dart:async';
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
+import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
+import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/routes.dart';
@@ -21,6 +26,11 @@ import 'package:quizzy_app/view/screens/exam/exam_type/single_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/true_false_exam.dart';
 import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
 import 'package:quizzy_app/view/screens/exam/quiz_type_view.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/compare_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
 import '../../utils/constant.dart';
 
@@ -31,6 +41,7 @@ class ManageExamViewModel extends GetxController {
   int _currentExamTypeIndex = 0;
 
   DataSubjectModel? _subjectSelectedInformation;
+  StartQuizModel? _startQuizModel;
   bool _isLoadExamViewPage = false;
   late List<DataSubjectModel> _subjectList;
   final List<Widget> _examTypeList = [
@@ -57,6 +68,8 @@ class ManageExamViewModel extends GetxController {
 
   DataSubjectModel get subjectSelectedInformation =>
       _subjectSelectedInformation!;
+
+  StartQuizModel get startQuizModel => _startQuizModel!;
   ExamsModel get examData => _examData!;
   List<Widget> get examTypeList => _examTypeList;
   int get currentQuetionIndex => _currentQuetionIndex;
@@ -116,6 +129,7 @@ class ManageExamViewModel extends GetxController {
     _currentQuetionIndex = 0;
 
     _subjectSelectedInformation = null;
+    _startQuizModel = null;
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -158,9 +172,35 @@ class ManageExamViewModel extends GetxController {
     update(['examType']);
   }
 
+  Future<void> getDeltedControllerName() async {
+    switch (_currentExamTypeIndex) {
+      case 0:
+        await Get.delete<CompareChoiceExamViewModel>(force: true);
+
+        break;
+      case 1:
+        await Get.delete<ShortLongAnswerViewModel>(force: true);
+        break;
+      case 2:
+        await Get.delete<MultipleChoiceExamViewModel>(force: true);
+        break;
+      case 3:
+        await Get.delete<TrueFalseExamViewModel>(force: true);
+        break;
+      case 4:
+        await Get.delete<SingleChoiceExamViewModel>(force: true);
+        break;
+    }
+  }
 /////////////////////////////////// Button Action///////////////////////
 
-  void nextQuestion() {
+  void nextQuestion() async {
+    await getDeltedControllerName();
+    Timer(const Duration(seconds: 2), () => print("Ok"));
+    print("-" * 50);
+    print(_startQuizModel!.data!.id!);
+    print("-" * 50);
+
     _currentQuetionIndex++; // increment the new Question
     if (_currentQuetionIndex < examData.data!.questions!.length) {
       update([
@@ -219,6 +259,28 @@ class ManageExamViewModel extends GetxController {
         SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
   }
 
+  void _startQuizService({required int examId}) {
+    ExamRepositoryService().startQuiz(examId: examId).then((value) {
+      _startQuizModel = value;
+      update(['LoadExamViewPage']); //update  the Question Type
+    }).catchError((e) => SnackBarHelper.instance
+        .showMessage(message: e.toString(), milliseconds: 2000, erro: true));
+  }
+
+  Future<AnswerQuestionModel?> answerQuestionService(
+      {required int questionId, required var givenAnswer}) async {
+    AnswerQuestionModel? answerQuestionModel;
+    try {
+      answerQuestionModel = await ExamRepositoryService().answerQuestion(
+          questionId: questionId,
+          examAttemptId: _startQuizModel!.data!.id!, // from Start Exam Service
+          givenAnswer: givenAnswer);
+    } catch (e) {
+      rethrow;
+    }
+    return answerQuestionModel;
+  }
+
   void _randomExamService() {
     _isLoadExamViewPage = false;
 
@@ -231,11 +293,9 @@ class ManageExamViewModel extends GetxController {
                 semester: _subjectSelectedInformation!.semester))
         .then((value) {
       _examData = value;
-      // SnackBarHelper.instance
-      //     .showMessage(message: _examData!.message!.toString());
       _isLoadExamViewPage = true;
-      updateTheCurrentExamType(); //update  the Question Type
-      update(['LoadExamViewPage']);
+      _startQuizService(examId: _examData!.data!.id!);
+      updateTheCurrentExamType();
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
   }

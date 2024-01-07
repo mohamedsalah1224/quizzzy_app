@@ -2,20 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/exam_repository.dart';
+import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
+import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
 import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
 
 class ExamRepositoryService implements ExamRepository {
-  @override
-  void answerQuestion(
-      {required int questionId,
-      required int examAttemptId,
-      required List<int> givenAnswer}) {
-    // TODO: implement answerQuestion
-  }
-
   @override
   Future<ExamsModel> getExams(
       {int? skip,
@@ -32,9 +26,6 @@ class ExamRepositoryService implements ExamRepository {
     // TODO: implement showExam
     throw UnimplementedError();
   }
-
-  @override
-  void startQuiz({required int examId}) async {}
 
   @override
   Future<ExamsModel> storeExam({required StoreExamModel storeExamModel}) async {
@@ -61,7 +52,45 @@ class ExamRepositoryService implements ExamRepository {
       print("-" * 50);
 
       throw ValidationErroModel.fromJson(e.response!.data).message.toString();
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AnswerQuestionModel> answerQuestion(
+      {required int questionId,
+      required int examAttemptId,
+      required var givenAnswer}) async {
+    try {
+      var reponse = await DioHelper().post(EndPoint.answerQuestion, data: {
+        'exam_attempt_id': examAttemptId,
+        'question_id': questionId,
+        'given_answer': givenAnswer
+      });
+
+      return AnswerQuestionModel.fromJson(reponse);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw ValidationErroModel.fromJson(e.response!.data).message.toString();
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StartQuizModel> startQuiz({required int examId}) async {
+    try {
+      var reponse =
+          await DioHelper().post(EndPoint.startQuiz, data: {'exam_id': examId});
+
+      return StartQuizModel.fromJson(reponse);
+    } on DioException catch (e) {
+      throw ValidationErroModel.fromJson(e.response!.data).message.toString();
+    } catch (e, s) {
+      debugPrint(s.toString()); // to print the Erro Stack Lines
       rethrow;
     }
   }

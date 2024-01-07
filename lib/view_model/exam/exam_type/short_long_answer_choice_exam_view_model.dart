@@ -9,15 +9,33 @@ class ShortLongAnswerViewModel extends GetxController {
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
   ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
-  TextEditingController answerTextController = TextEditingController();
+  late TextEditingController answerTextController;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
+    answerTextController = TextEditingController();
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
 
-    print("On Init SuCESS ShortLongAnswerViewModel");
+    print("-" * 50);
+    print("intilze ShortLongAnswerViewModel");
+    print("-" * 50);
+  }
+
+  @override
+  void onClose() async {
+    // TODO: implement onClose
+
+    super.onClose();
+  }
+
+  void onFieldSubmitted(String value) {
+    print("-" * 50);
+    print(value);
+    print("Question Id ${questionsModel.id}");
+    print("-" * 50);
   }
 }

@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
+import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class SingleChoiceExamViewModel extends GetxController {
   String initSingleChoice = "";
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
+
   ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
   int? selectedIndex;
 
@@ -18,6 +20,7 @@ class SingleChoiceExamViewModel extends GetxController {
     super.onInit();
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
+
     listAnswersModel = questionsModel.answers!;
 
     print("On Init SuCESS sINGLE Choice");

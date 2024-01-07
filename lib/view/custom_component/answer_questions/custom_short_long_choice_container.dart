@@ -41,6 +41,9 @@ class CustomShortLongChoiceContainer extends GetView<ShortLongAnswerViewModel> {
                 borderRadius: BorderRadius.circular(17).r),
             child: TextFormField(
               controller: controller.answerTextController,
+              onFieldSubmitted: (value) {
+                controller.onFieldSubmitted(value);
+              },
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
               decoration: InputDecoration(
