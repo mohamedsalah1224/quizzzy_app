@@ -1,4 +1,4 @@
-class Lessons {
+class LessonsModel {
   int? id;
   String? name;
   String? description;
@@ -7,7 +7,7 @@ class Lessons {
   String? createdAt;
   String? updatedAt;
 
-  Lessons(
+  LessonsModel(
       {this.id,
       this.name,
       this.description,
@@ -16,8 +16,8 @@ class Lessons {
       this.createdAt,
       this.updatedAt});
 
-  factory Lessons.fromJson(Map<String, dynamic> json) {
-    return Lessons(
+  factory LessonsModel.fromJson(Map<String, dynamic> json) {
+    return LessonsModel(
       id: json['id'],
       name: json['name'],
       description: json['description'],

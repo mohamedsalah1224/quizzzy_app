@@ -66,7 +66,7 @@ class ManageExamViewModel extends GetxController {
   bool get isLoadExamViewPage => _isLoadExamViewPage;
   List<DataSubjectModel> get subjectList => _subjectList;
 
-  DataSubjectModel get subjectSelectedInformation =>
+  DataSubjectModel get getSubjectSelectedInformation =>
       _subjectSelectedInformation!;
 
   StartQuizModel get startQuizModel => _startQuizModel!;

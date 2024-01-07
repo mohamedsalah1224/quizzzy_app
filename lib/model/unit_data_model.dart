@@ -5,7 +5,7 @@ class UnitDataModel {
   String? name;
   String? description;
   String? photo;
-  List<Lessons>? lessons;
+  List<LessonsModel>? lessons;
   bool? isActive;
   String? createdAt;
   String? updatedAt;
@@ -21,11 +21,11 @@ class UnitDataModel {
       this.updatedAt});
 
   factory UnitDataModel.fromJson(Map<String, dynamic> json) {
-    List<Lessons> listLeaseon = [];
+    List<LessonsModel> listLeaseon = [];
 
     if (json['lessons'] != null) {
       json['lessons'].forEach((v) {
-        listLeaseon.add(Lessons.fromJson(v));
+        listLeaseon.add(LessonsModel.fromJson(v));
       });
     }
 
