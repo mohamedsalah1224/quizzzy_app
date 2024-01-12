@@ -42,7 +42,8 @@ class ExamRepositoryService implements ExamRepository {
         'is_active': storeExamModel.isActive,
         'unit_id': storeExamModel.unitId,
         'lesson_id': storeExamModel.lessonId,
-        'subject_id': storeExamModel.subjectId
+        'subject_id': storeExamModel.subjectId,
+        'time': storeExamModel.time
       });
 
       return ExamsModel.fromJson(reponse);

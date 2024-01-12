@@ -45,24 +45,34 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
                       },
                     ),
                     10.verticalSpace,
-                    CustomDropDownFilter(
-                      items: ["الأولي", "الثانية", "الثالثة"],
-                      value: null,
-                      onChanged: (value) {
-                        print(value);
+                    GetBuilder<FilterQuestionsViewModel>(
+                      id: "updateUnits",
+                      builder: (controller) {
+                        return CustomDropDownFilter(
+                          items: controller.unitsValueList,
+                          value: controller.unitValue,
+                          onChanged: (value) {
+                            controller.updateUnits(value!);
+                          },
+                          borderColor: const Color(0xffFF3DC8),
+                          defaultValue: "وحدة",
+                        );
                       },
-                      borderColor: const Color(0xffFF3DC8),
-                      defaultValue: "وحدة",
                     ),
                     10.verticalSpace,
-                    CustomDropDownFilter(
-                      items: ["الأول", "الثاني", "الثالث"],
-                      value: null,
-                      onChanged: (value) {
-                        print(value);
+                    GetBuilder<FilterQuestionsViewModel>(
+                      id: "updateLeasons",
+                      builder: (controller) {
+                        return CustomDropDownFilter(
+                          items: controller.leasonsValueList,
+                          value: controller.leasonValue,
+                          onChanged: (value) {
+                            controller.updateLeasons(value!);
+                          },
+                          borderColor: const Color(0xff9FD800),
+                          defaultValue: "الدرس",
+                        );
                       },
-                      borderColor: const Color(0xff9FD800),
-                      defaultValue: "الدرس",
                     ),
                     10.verticalSpace,
                     GetBuilder<FilterQuestionsViewModel>(
@@ -220,8 +230,7 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16.sp,
                       onTap: () {
-                        print("التالي");
-                        //  controller.confirmFilter();
+                        controller.confirmFilter();
                       },
                     ),
                     50.verticalSpace,

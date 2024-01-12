@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/model/questions_model.dart';
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
 
 import '../../../utils/constant.dart';
 import '../custom_classification.dart';
@@ -19,12 +20,15 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
     return Column(
       children: [
         CustomQuestionSourceType(
+            fileSourceLink: questionsModel.file,
             questionSourceType: questionsModel.fileType == null
                 ? questionsModel.photo != null
                     ? QuestionSourceType.image
                     : QuestionSourceType.none
-                : QuestionSourceType.video,
-            questionSourceLink: questionsModel.photo),
+                : questionsModel.fileType == ExamConstatnt.video
+                    ? QuestionSourceType.video
+                    : QuestionSourceType.sound,
+            imageSourceLink: questionsModel.photo),
         10.verticalSpace,
         CustomText(
           text: questionsModel.name!,

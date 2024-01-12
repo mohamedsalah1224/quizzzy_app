@@ -1,26 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
-class TrueFalseExamViewModel extends GetxController {
-  String init = "";
+class TrueFalseExamViewModel extends ChangeNotifier {
+  bool isNotFirstTimeToLoadConstractor = false;
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
-  ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
+  late ManageExamViewModel manageExamViewModel;
   int? selectedIndex;
 
   int? idQueion; // 4 true
   int? answerSelectedId;
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
+
+  void initObject() {
+    manageExamViewModel = Get.find<ManageExamViewModel>();
+
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
+    selectedIndex = null;
+    idQueion = null;
+    answerSelectedId = null;
+    print("+" * 50);
+    print("Sucess Init the object TrueFalseExamViewModel");
+    print("+" * 50);
+    if (isNotFirstTimeToLoadConstractor) notifyListeners();
 
-    print("On Init SuCESS TrueFalseExamViewModel");
+    isNotFirstTimeToLoadConstractor = true;
+  }
+
+  TrueFalseExamViewModel() {
+    initObject();
   }
 
   void onTap({required int idAnswerValue, required int index}) {
@@ -28,7 +40,8 @@ class TrueFalseExamViewModel extends GetxController {
     answerSelectedId = idAnswerValue;
     idQueion = questionsModel.id;
     selectedIndex = index;
-    update(["TrueFalseComponent"]);
+
+    notifyListeners();
     print("-" * 50);
     print("Question Id $idQueion \n answerSelectedId:$answerSelectedId");
     print("-" * 50);

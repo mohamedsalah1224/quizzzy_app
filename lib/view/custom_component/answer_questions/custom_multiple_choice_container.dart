@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 
 import '../custom_text.dart';
@@ -28,11 +31,24 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
     this.color = Colors.amber,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<MultipleChoiceExamViewModel>(
+  /*
+   return GetBuilder<MultipleChoiceExamViewModel>(
       id: "MultipleChoice $id",
       builder: (controller) {
+        return GestureDetector(
+          onTap: reviewExam
+              ? null
+              : () {
+                  isActive = !isActive;
+                  controller.onTap(idAnswer: id, value: isActive);
+                },
+          child: Stack(alignment: AlignmentDirectional.topEnd, children: [
+
+  */
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<MultipleChoiceExamViewModel>(
+      builder: (context, controller, child) {
         return GestureDetector(
           onTap: reviewExam
               ? null
@@ -75,7 +91,7 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                 : const SizedBox(),
             if (reviewExam)
               answerUserSelectedID == id && isCorrect
-                  ? RPadding(
+                  ? const RPadding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.check_circle,

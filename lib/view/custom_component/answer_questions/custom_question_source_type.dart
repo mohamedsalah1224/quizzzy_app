@@ -6,11 +6,13 @@ import 'package:quizzy_app/view/custom_component/custom_circular_progress_indica
 
 class CustomQuestionSourceType extends StatelessWidget {
   final QuestionSourceType questionSourceType;
-  final String? questionSourceLink;
+  final String? imageSourceLink;
+  final String? fileSourceLink;
   const CustomQuestionSourceType(
       {super.key,
       required this.questionSourceType,
-      this.questionSourceLink = ""});
+      this.fileSourceLink,
+      this.imageSourceLink = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class CustomQuestionSourceType extends StatelessWidget {
         child: CachedNetworkImage(
           fit: BoxFit.fitHeight,
           height: 127.h,
-          imageUrl: questionSourceLink ?? "",
+          imageUrl: imageSourceLink ?? "",
           fadeInDuration: const Duration(seconds: 1),
           placeholder: (context, url) =>
               const CustomCircularProgressIndicator(),
@@ -33,8 +35,8 @@ class CustomQuestionSourceType extends StatelessWidget {
         ),
       );
     else if (questionSourceType == QuestionSourceType.video)
-      return Text("Video");
+      return Text("Video $fileSourceLink");
     else
-      return Text("Sound");
+      return Text("Sound $fileSourceLink");
   }
 }

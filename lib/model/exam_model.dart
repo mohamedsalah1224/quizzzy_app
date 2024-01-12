@@ -14,6 +14,7 @@ class ExamModel {
   String? points;
   String? time;
   bool? isActive;
+  String? reference;
   List<QuestionsModel>? questions;
   String? createdAt;
   String? updatedAt;
@@ -24,6 +25,7 @@ class ExamModel {
       this.type,
       this.questionTypes,
       this.level,
+      this.reference,
       this.typeAssessment,
       this.description,
       this.photo,
@@ -45,23 +47,23 @@ class ExamModel {
     }
 
     return ExamModel(
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      id: json['id'],
-      name: json['name'],
-      type: json['type'],
-      questionTypes: json['question_types'],
-      level: json['level'],
-      typeAssessment: json['type_assessment'],
-      description: json['description'],
-      photo: json['photo'],
-      file: json['file'],
-      semester: json['semester'],
-      points: json['points'],
-      time: json['time'],
-      isActive: json['is_active'],
-      questions: listQuestionModel,
-    );
+        createdAt: json['created_at'],
+        updatedAt: json['updated_at'],
+        id: json['id'],
+        name: json['name'],
+        type: json['type'],
+        questionTypes: json['question_types'],
+        level: json['level'],
+        typeAssessment: json['type_assessment'],
+        description: json['description'],
+        photo: json['photo'],
+        file: json['file'],
+        semester: json['semester'],
+        points: json['points'],
+        time: json['time'],
+        isActive: json['is_active'],
+        questions: listQuestionModel,
+        reference: json['reference']);
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +83,7 @@ class ExamModel {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'reference': reference,
       'questions':
           questions != null ? questions!.map((v) => v.toJson()).toList() : []
     };

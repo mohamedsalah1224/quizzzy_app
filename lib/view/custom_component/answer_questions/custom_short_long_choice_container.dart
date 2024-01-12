@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:quizzy_app/model/answers_model.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_view_model.dart';
 
-class CustomShortLongChoiceContainer extends GetView<ShortLongAnswerViewModel> {
+class CustomShortLongChoiceContainer extends StatelessWidget {
   final Color color;
 
   final int? answerUserSelectedID;
 
   final AnswersModel answersModel; // id User Answer Selected
+  final TextEditingController? controllerText;
+  final void Function(String)? onFieldSubmitted;
 
   const CustomShortLongChoiceContainer({
     super.key,
     required this.answersModel,
+    required this.controllerText,
+    required this.onFieldSubmitted,
     this.answerUserSelectedID,
     this.color = Colors.amber,
   });
@@ -40,10 +42,8 @@ class CustomShortLongChoiceContainer extends GetView<ShortLongAnswerViewModel> {
                 ],
                 borderRadius: BorderRadius.circular(17).r),
             child: TextFormField(
-              controller: controller.answerTextController,
-              onFieldSubmitted: (value) {
-                controller.onFieldSubmitted(value);
-              },
+              controller: controllerText,
+              onFieldSubmitted: onFieldSubmitted,
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
               decoration: InputDecoration(

@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:quizzy_app/model/answers_model.dart';
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
 
 import '../custom_text.dart';
 
-class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
-  final String title;
-  final Color color;
-  final String? photo;
-  final bool isCorrect;
+class CustomSingleChoiceContainer extends StatelessWidget {
+  final Color? color;
   final int? answerUserSelectedID; // id User Answer Selected
-  final int id;
   final bool reviewExam;
   final int index;
+  final AnswersModel answerModel;
 
-  const CustomSingleChoiceContainer({
-    super.key,
-    required this.title,
-    required this.id,
-    required this.isCorrect,
-    this.reviewExam = false,
-    required this.index,
-    this.photo,
-    this.answerUserSelectedID,
-    this.color = Colors.amber,
-  });
+  const CustomSingleChoiceContainer(
+      {super.key,
+      this.reviewExam = false,
+      required this.index,
+      this.answerUserSelectedID,
+      this.color = Colors.amber,
+      required this.answerModel});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +28,9 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
       onTap: reviewExam
           ? null
           : () {
-              controller.onTap(idAnswerValue: id, index: index);
+              context
+                  .read<SingleChoiceExamViewModel>()
+                  .onTap(idAnswerValue: answerModel.id!, index: index);
             },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,
@@ -45,6 +42,16 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
             decoration: BoxDecoration(
                 //rgba(0, 0, 0, 0.25)
                 color: color,
+                image: answerModel.answerViewFormat ==
+                            ExamConstatnt.answerViewFormatIamge ||
+                        answerModel.answerViewFormat ==
+                            ExamConstatnt.answerViewFormatTextImage
+                    ? DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(
+                          answerModel.photo!,
+                        ))
+                    : null,
                 boxShadow: const <BoxShadow>[
                   BoxShadow(
                       offset: Offset(0, 5),
@@ -53,14 +60,23 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
                       color: Color.fromRGBO(0, 0, 0, 0.25)),
                 ],
                 borderRadius: BorderRadius.circular(17).r),
-            child: CustomText(
-              text: title,
-              fontFamily: "Cairo",
-              fontWeight: FontWeight.w400,
-              fontSize: 16.sp,
-            ),
+            child: answerModel.answerViewFormat ==
+                        ExamConstatnt.answerViewFormatText ||
+                    answerModel.answerViewFormat ==
+                        ExamConstatnt.answerViewFormatTextImage
+                ? CustomText(
+                    text: answerModel.title ?? "",
+                    fontFamily: "Cairo",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.sp,
+                    color: answerModel.answerViewFormat ==
+                            ExamConstatnt.answerViewFormatTextImage
+                        ? Colors.white
+                        : null,
+                  )
+                : const SizedBox(),
           ),
-          controller.selectedIndex == index
+          context.read<SingleChoiceExamViewModel>().selectedIndex == index
               ? const RPadding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
@@ -71,7 +87,7 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
                 )
               : const SizedBox(),
           if (reviewExam)
-            answerUserSelectedID == id && isCorrect
+            answerUserSelectedID == answerModel.id && answerModel.isCorrect!
                 ? const RPadding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(
@@ -79,7 +95,7 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
                       color: Colors.white,
                       size: 30,
                     ))
-                : isCorrect
+                : answerModel.isCorrect!
                     ? const RPadding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(
@@ -88,7 +104,7 @@ class CustomSingleChoiceContainer extends GetView<SingleChoiceExamViewModel> {
                           size: 30,
                         ),
                       )
-                    : answerUserSelectedID == id
+                    : answerUserSelectedID == answerModel.id!
                         ? const RPadding(
                             padding: EdgeInsets.all(8.0),
                             child: Icon(

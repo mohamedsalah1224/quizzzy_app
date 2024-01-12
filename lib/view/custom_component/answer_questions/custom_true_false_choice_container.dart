@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
 import '../custom_text.dart';
 
-class CustomTrueFalseChoice extends GetView<TrueFalseExamViewModel> {
+class CustomTrueFalseChoice extends StatelessWidget {
   final String title;
   final Color color;
   final String? photo;
@@ -29,6 +29,7 @@ class CustomTrueFalseChoice extends GetView<TrueFalseExamViewModel> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = context.read<TrueFalseExamViewModel>();
     return GestureDetector(
       onTap: reviewExam
           ? null
@@ -45,7 +46,7 @@ class CustomTrueFalseChoice extends GetView<TrueFalseExamViewModel> {
             decoration: BoxDecoration(
                 //rgba(0, 0, 0, 0.25)
                 color: color,
-                boxShadow: <BoxShadow>[
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                       offset: Offset(0, 5),
                       spreadRadius: 0,

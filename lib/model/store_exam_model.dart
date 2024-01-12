@@ -11,11 +11,13 @@ class StoreExamModel {
   final int? unitId;
   final int? lessonId;
   final int? subjectId;
+  final String? time;
 
   StoreExamModel(
       {this.description,
       this.isActive = '1',
       this.level,
+      this.time,
       this.name,
       this.photo,
       this.questionTypes,

@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:ffi';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
-import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
-import 'package:quizzy_app/model/exam_model.dart';
+
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
@@ -26,9 +24,8 @@ import 'package:quizzy_app/view/screens/exam/exam_type/single_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/true_false_exam.dart';
 import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
 import 'package:quizzy_app/view/screens/exam/quiz_type_view.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/compare_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_view_model.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_provider_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
@@ -99,11 +96,24 @@ class ManageExamViewModel extends GetxController {
     // call api Repositry for filter Question
   }
 
-  void confirmFilter() {
+  void confirmFilter(
+      {int? leasonId,
+      String? level,
+      String? semesterId,
+      int? time,
+      String? typeAssessment,
+      int? unitId}) {
     // _currentIndex = 3;
     // update();
     // call api to create Exam Based on Filter information
 
+    _choiceExamService(
+        leasonId: leasonId,
+        level: level,
+        semesterId: semesterId,
+        time: time,
+        typeAssessment: typeAssessment,
+        unitId: unitId);
     Get.toNamed(Routes.examView);
   }
 
@@ -172,37 +182,49 @@ class ManageExamViewModel extends GetxController {
     update(['examType']);
   }
 
-  Future<void> getDeltedControllerName() async {
+  Future<void> resetAllController() async {
     switch (_currentExamTypeIndex) {
-      case 0:
-        await Get.delete<CompareChoiceExamViewModel>(force: true);
+      // case 0:
+      //   await Get.delete<CompareChoiceExamViewModel>(force: true);
 
-        break;
+      //   break;
       case 1:
-        await Get.delete<ShortLongAnswerViewModel>(force: true);
+        Provider.of<ShortLongAnswerViewModel>(
+                ExamConstatnt.currentContextQuestion,
+                listen: false)
+            .initObject();
         break;
       case 2:
-        await Get.delete<MultipleChoiceExamViewModel>(force: true);
+        Provider.of<MultipleChoiceExamViewModel>(
+                ExamConstatnt.currentContextQuestion,
+                listen: false)
+            .initObject();
         break;
       case 3:
-        await Get.delete<TrueFalseExamViewModel>(force: true);
+        Provider.of<TrueFalseExamViewModel>(
+                ExamConstatnt.currentContextQuestion,
+                listen: false)
+            .initObject();
         break;
       case 4:
-        await Get.delete<SingleChoiceExamViewModel>(force: true);
+        Provider.of<SingleChoiceExamViewModel>(
+                ExamConstatnt.currentContextQuestion,
+                listen: false)
+            .initObject();
         break;
     }
   }
 /////////////////////////////////// Button Action///////////////////////
 
   void nextQuestion() async {
-    await getDeltedControllerName();
-    Timer(const Duration(seconds: 2), () => print("Ok"));
     print("-" * 50);
     print(_startQuizModel!.data!.id!);
     print("-" * 50);
 
     _currentQuetionIndex++; // increment the new Question
+
     if (_currentQuetionIndex < examData.data!.questions!.length) {
+      resetAllController(); // to Reset All Provider Controler
       update([
         "updateAboveSection",
         "updateBlewSection"
@@ -321,8 +343,32 @@ class ManageExamViewModel extends GetxController {
             message: e.toString(), milliseconds: 2000, erro: true));
   }
 
-  void _choiceExamService() {
+  void _choiceExamService(
+      {String? semesterId,
+      int? unitId,
+      int? leasonId,
+      int? time,
+      String? level,
+      String? typeAssessment}) {
     _isLoadExamViewPage = false;
+    ExamRepositoryService()
+        .storeExam(
+            storeExamModel: StoreExamModel(
+                type: ExamConstatnt.randomlyExam,
+                typeAssessment: typeAssessment,
+                subjectId: _subjectSelectedInformation!.id,
+                semester: semesterId,
+                lessonId: leasonId,
+                level: level,
+                unitId: unitId,
+                time: time.toString()))
+        .then((value) {
+      _examData = value;
+      _isLoadExamViewPage = true;
+      _startQuizService(examId: _examData!.data!.id!);
+      updateTheCurrentExamType();
+    }).catchError((e) => SnackBarHelper.instance.showMessage(
+            message: e.toString(), milliseconds: 2000, erro: true));
   }
 
   void _specialistExamService() {

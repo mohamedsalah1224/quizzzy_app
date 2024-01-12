@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class ExamConstatnt {
   const ExamConstatnt._();
   static const String singleChoice = "single_choice";
@@ -12,7 +14,20 @@ class ExamConstatnt {
   static const String randomlyExam = "randomly";
   static const String aiExam = "ai";
 
+  static const String answerViewFormatIamge = "image";
+  static const String answerViewFormatText = "text"; // text_image
+  static const String answerViewFormatTextImage = "text_image";
   // choice_specialist
 
   static const String specialistExam = "choice_specialist";
+
+  static const String video = "video";
+
+  static BuildContext? _currentContextQuestion;
+
+  static void setNewQuestionContext(BuildContext context) {
+    _currentContextQuestion = context;
+  }
+
+  static BuildContext get currentContextQuestion => _currentContextQuestion!;
 }

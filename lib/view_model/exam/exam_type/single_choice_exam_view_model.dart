@@ -1,29 +1,39 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
-import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
-class SingleChoiceExamViewModel extends GetxController {
-  String initSingleChoice = "";
+class SingleChoiceExamViewModel extends ChangeNotifier {
+  bool isNotFirstTimeToLoadConstractor = false;
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
 
-  ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
+  late ManageExamViewModel manageExamViewModel;
   int? selectedIndex;
 
   int? idQueion; // 4 true
   int? answerSelectedId; // 3 , 4 , 1
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
+
+  void initObject() {
+    manageExamViewModel = Get.find<ManageExamViewModel>();
+
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
-
     listAnswersModel = questionsModel.answers!;
+    selectedIndex = null;
+    idQueion = null;
+    answerSelectedId = null;
+    print("+" * 50);
+    print("Sucess Init the object SingleChoiceExamViewModel");
+    print("+" * 50);
+    if (isNotFirstTimeToLoadConstractor) notifyListeners();
 
-    print("On Init SuCESS sINGLE Choice");
+    isNotFirstTimeToLoadConstractor = true;
+  }
+
+  SingleChoiceExamViewModel() {
+    initObject();
   }
 
   void onTap({required int idAnswerValue, required int index}) {
@@ -31,7 +41,7 @@ class SingleChoiceExamViewModel extends GetxController {
     answerSelectedId = idAnswerValue;
     idQueion = questionsModel.id;
     selectedIndex = index;
-    update(["SingleChoiceComponent"]);
+    notifyListeners();
     print("-" * 50);
     print("Question Id $idQueion \n answerSelectedId:$answerSelectedId");
     print("-" * 50);

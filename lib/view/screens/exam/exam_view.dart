@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/csutom_above_section_of_question.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/mange_exam_type.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_provider_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 import '../../../utils/app_images.dart';

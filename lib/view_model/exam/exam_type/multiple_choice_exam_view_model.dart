@@ -1,26 +1,34 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
-class MultipleChoiceExamViewModel extends GetxController {
-  String init = "";
+class MultipleChoiceExamViewModel extends ChangeNotifier {
   late List<AnswersModel> listAnswersModel;
   late QuestionsModel questionsModel;
-  ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
+  late ManageExamViewModel manageExamViewModel;
   List<int> listAnswerIdSelected = [];
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
+
+  void initObject() {
+    manageExamViewModel = Get.find<ManageExamViewModel>();
+
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
-    print("On Init SuCESS MultipleChoiceExamViewModel");
+    listAnswerIdSelected = [];
+    print("+" * 50);
+    print("Sucess Init the object MultipleChoiceExamViewModel");
+    print("+" * 50);
+  }
+
+  MultipleChoiceExamViewModel() {
+    initObject();
   }
 
   void onTap({required int idAnswer, required bool value}) {
-    update(["MultipleChoice $idAnswer"]); // to rebuild only that have this id
+    //  update(["MultipleChoice $idAnswer"]); // to rebuild only that have this id
+    notifyListeners();
     if (value) {
       listAnswerIdSelected.add(idAnswer); // to add the id from the List
     } else {
