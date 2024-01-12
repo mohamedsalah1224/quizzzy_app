@@ -17,6 +17,7 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
   final void Function()? onPressedSendNote;
   final void Function()? onTapNextQuestion;
   final void Function(bool)? onChanged;
+
   bool currentValue;
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
               borderRadius: BorderRadius.circular(8.r)),
           padding: const EdgeInsets.symmetric(horizontal: 12).w,
           child: TextFormField(
+            controller: controller.noteController,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
                 isCollapsed: true,

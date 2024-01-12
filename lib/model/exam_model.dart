@@ -14,7 +14,8 @@ class ExamModel {
   String? points;
   String? time;
   bool? isActive;
-  String? reference;
+  int? subjectId;
+
   List<QuestionsModel>? questions;
   String? createdAt;
   String? updatedAt;
@@ -23,9 +24,9 @@ class ExamModel {
       {this.id,
       this.name,
       this.type,
+      this.subjectId,
       this.questionTypes,
       this.level,
-      this.reference,
       this.typeAssessment,
       this.description,
       this.photo,
@@ -47,23 +48,24 @@ class ExamModel {
     }
 
     return ExamModel(
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-        id: json['id'],
-        name: json['name'],
-        type: json['type'],
-        questionTypes: json['question_types'],
-        level: json['level'],
-        typeAssessment: json['type_assessment'],
-        description: json['description'],
-        photo: json['photo'],
-        file: json['file'],
-        semester: json['semester'],
-        points: json['points'],
-        time: json['time'],
-        isActive: json['is_active'],
-        questions: listQuestionModel,
-        reference: json['reference']);
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      id: json['id'],
+      name: json['name'],
+      type: json['type'],
+      questionTypes: json['question_types'],
+      level: json['level'],
+      typeAssessment: json['type_assessment'],
+      description: json['description'],
+      photo: json['photo'],
+      file: json['file'],
+      semester: json['semester'],
+      points: json['points'],
+      time: json['time'],
+      isActive: json['is_active'],
+      subjectId: json['subject_id'],
+      questions: listQuestionModel,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -79,11 +81,11 @@ class ExamModel {
       'file': file,
       'semester': semester,
       'points': points,
+      'subject_id': subjectId,
       'time': time,
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
-      'reference': reference,
       'questions':
           questions != null ? questions!.map((v) => v.toJson()).toList() : []
     };

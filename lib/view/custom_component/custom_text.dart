@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -10,12 +9,14 @@ class CustomText extends StatelessWidget {
   final AlignmentGeometry? alignment;
   final TextAlign? textAlign;
   final int? maxLines;
+  final TextDirection? textDirection;
   const CustomText(
       {super.key,
       required this.text,
       this.alignment,
       this.color,
       this.fontSize,
+      this.textDirection,
       this.maxLines = 4,
       this.textAlign,
       this.fontFamily,
@@ -29,6 +30,7 @@ class CustomText extends StatelessWidget {
           textAlign: textAlign,
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,
+          textDirection: textDirection,
           style: TextStyle(
               color: color,
               fontSize: fontSize,

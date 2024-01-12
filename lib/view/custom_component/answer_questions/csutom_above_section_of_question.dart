@@ -30,11 +30,36 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
                     : QuestionSourceType.sound,
             imageSourceLink: questionsModel.photo),
         10.verticalSpace,
-        CustomText(
-          text: questionsModel.name!,
-          fontFamily: "Cairo",
-          fontSize: 16.sp,
-        ),
+        questionsModel.name != null
+            ? CustomText(
+                text: questionsModel.name!,
+                fontFamily: "Cairo",
+                fontSize: 16.sp,
+                textDirection: TextDirection.rtl,
+                maxLines: 10, // the Question can Be 6 Line
+              )
+            : const SizedBox(),
+        questionsModel.reference != null ? 4.verticalSpace : const SizedBox(),
+        questionsModel.reference != null
+            ? Container(
+                decoration: const BoxDecoration(
+                    shape: BoxShape.rectangle, color: Colors.lightGreen),
+                padding: REdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  questionsModel.reference!,
+                  textDirection: TextDirection.rtl,
+                  maxLines: 3,
+                  style: TextStyle(
+                      fontFamily: "Cairo",
+                      fontSize: 10.sp,
+                      color: Colors.black,
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.bold,
+                      decorationColor: Colors.lightGreen,
+                      decoration: TextDecoration.underline),
+                ),
+              )
+            : const SizedBox(),
         questionsModel.fileType == null && questionsModel.photo == null
             ? 40.verticalSpace
             : 25.verticalSpace,

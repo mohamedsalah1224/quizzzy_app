@@ -16,6 +16,9 @@ class QuestionsModel {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
+  String? reference;
+  String? notes;
+  bool? needReview;
   List<AnswersModel>? answers;
 
   QuestionsModel(
@@ -24,9 +27,12 @@ class QuestionsModel {
       this.type,
       this.description,
       this.photo,
+      this.reference,
+      this.needReview,
       this.semester,
       this.points,
       this.file,
+      this.notes,
       this.fileType,
       this.lessonId,
       this.level,
@@ -48,7 +54,9 @@ class QuestionsModel {
         updatedAt: json['updated_at'],
         isActive: json['is_active'],
         time: json['time'],
+        notes: json['notes'],
         points: json['points'],
+        reference: json['reference'],
         description: json['description'],
         semester: json['semester'],
         photo: json['photo'],
@@ -59,13 +67,16 @@ class QuestionsModel {
         fileType: json['file_type'],
         level: json['level'],
         lessonId: json['lesson_id'],
+        needReview: json['need_review'],
         answers: lisAnswerModel);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'reference': reference,
       'name': name,
+      'notes': notes,
       'type': type,
       'description': description,
       'photo': photo,
@@ -79,6 +90,7 @@ class QuestionsModel {
       'file_type': fileType,
       'level': level,
       'lesson_id': lessonId,
+      'need_review': needReview,
       'answers': answers != null ? answers!.map((v) => v.toJson()).toList() : []
     };
   }

@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/utils/constant.dart';
-import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
+import 'package:quizzy_app/view/custom_component/source_type/custom_source_audio.dart';
+import 'package:quizzy_app/view/custom_component/source_type/custom_source_image.dart';
+import 'package:quizzy_app/view/custom_component/source_type/custom_source_video.dart';
 
 class CustomQuestionSourceType extends StatelessWidget {
   final QuestionSourceType questionSourceType;
@@ -18,25 +19,16 @@ class CustomQuestionSourceType extends StatelessWidget {
   Widget build(BuildContext context) {
     if (questionSourceType == QuestionSourceType.none) {
       return 50.verticalSpace;
-    } else if (questionSourceType == QuestionSourceType.image)
-      // ignore: curly_braces_in_flow_control_structures
-      return Container(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        height: 127.h,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12).r),
-        child: CachedNetworkImage(
-          fit: BoxFit.fitHeight,
-          height: 127.h,
-          imageUrl: imageSourceLink ?? "",
-          fadeInDuration: const Duration(seconds: 1),
-          placeholder: (context, url) =>
-              const CustomCircularProgressIndicator(),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        ),
+    } else if (questionSourceType == QuestionSourceType.image) {
+      return CustomSourceImage(imageSourceLink: imageSourceLink);
+    } else if (questionSourceType == QuestionSourceType.video) {
+      return CustomSourceVideo(
+        fileSourceLink: fileSourceLink,
       );
-    else if (questionSourceType == QuestionSourceType.video)
-      return Text("Video $fileSourceLink");
-    else
-      return Text("Sound $fileSourceLink");
+    } else {
+      return CustomSourceAudio(
+        fileSourceLink: fileSourceLink,
+      );
+    }
   }
 }
