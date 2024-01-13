@@ -369,12 +369,198 @@ class ManageExamViewModel extends GetxController {
                   id: 1,
                   name: "ماهي عاصمة فلسطين ؟",
                   type:
+                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                  semester: null,
+                  lessonId: 1,
+                  file: null,
+                  fileType: null,
+                  level: "متوسط",
+                  points: "200.00",
+                  time: "20",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 13,
+                        title: "اكتب باختصار لايتجاوز السطرين",
+                        questionType: "short_answer",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: null,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
+                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  semester: null,
+                  points: "25.00",
+                  time: "60",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 3,
+                        title: "هذه الإجابة صحيحة",
+                        questionType: "true_false",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: 1,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 6,
+                        title: "خطأ",
+                        questionType: "true_false",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: false,
+                        createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 5,
+                  name: "معني كلمة سيارة",
+                  type:
+                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  semester: null,
+                  points: "15.00",
+                  time: "50",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 6,
+                        title: "Car",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: 1,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 3,
+                        title: "Bmw",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 4,
+                        title:
+                            "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 9,
+                        title: null,
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: false,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
+                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  semester: null,
+                  points: "25.00",
+                  time: "60",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 3,
+                        title: "صح",
+                        questionType: "true_false",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: 1,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 6,
+                        title: "خطأ",
+                        questionType: "true_false",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: false,
+                        createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
                       "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
                   description: null,
-                  photo: null,
-                  fileType: null,
+                  photo: "",
+                  fileType: "audio",
                   file:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
+                      "https://quizzy.makank.online/images/questions/diqxxvjwu3t4hqDCWRp9kt9jOGbIBnySIpzItM1N.mp3",
                   semester: null,
                   points: "15.00",
                   time: "50",
@@ -383,7 +569,8 @@ class ManageExamViewModel extends GetxController {
                   answers: <AnswersModel>[
                     AnswersModel(
                         id: 1,
-                        title: "القدس",
+                        title:
+                            " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
                         questionType: "single_choice",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text",
@@ -494,74 +681,6 @@ class ManageExamViewModel extends GetxController {
                             "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
                         isCorrect: false,
                         createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 5,
-                  name: "معني كلمة سيارة",
-                  type:
-                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 6,
-                        title: "Car",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "Bmw",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "Marcidis",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 9,
-                        title: "عجلة",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                   ],
                   createdAt: "2023-10-31T18:23:49.000000Z",

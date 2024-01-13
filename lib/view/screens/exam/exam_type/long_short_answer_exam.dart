@@ -23,6 +23,7 @@ class LongShortAnswerExam extends StatelessWidget {
                     onFieldSubmitted: (value) {
                       controller.onFieldSubmitted(value);
                     },
+                    maxCharLength: 500,
                   )
                 : const Center(
                     child: CustomText(text: 'This Question No Have Answers'),

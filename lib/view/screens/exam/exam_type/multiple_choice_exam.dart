@@ -23,11 +23,7 @@ class MultipleChoiceExam extends StatelessWidget {
                 controller.listAnswersModel.length,
                 (index) => CustomMultipleChoiceContainer(
                       color: const Color(0xff9FD800),
-                      title: controller.listAnswersModel[index].title!,
-                      id: controller.listAnswersModel[index].id!,
-                      isCorrect: controller.listAnswersModel[index].isCorrect!,
-                      photo: controller.listAnswersModel[index].photo,
-                      // reviewExam: true,
+                      answerModel: controller.listAnswersModel[index],
                       // answerUserSelectedID: controller.isIdExist(index),
                     )));
       },

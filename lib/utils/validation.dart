@@ -16,6 +16,25 @@ class Validation {
     // ^\+(?:[0-9]●?){6,14}[0-9]$
   }
 
+  bool isArabicText({required String text}) {
+    final RegExp arabicText = RegExp(r'[\u0750-\u077F]');
+    if (text.isNotEmpty && arabicText.hasMatch(text)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isEnglishText({required String text}) {
+    final RegExp englishText = RegExp(r'[a-zA-Z]');
+    ;
+    if (text.isNotEmpty && englishText.hasMatch(text)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   bool isContacts({required String contact, bool startPlusCode = false}) {
     /// The regular expression for validating Phone but each Phone with start with the phus Code
     final RegExp contactRegex = startPlusCode

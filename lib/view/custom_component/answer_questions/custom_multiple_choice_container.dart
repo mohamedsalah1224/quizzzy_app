@@ -1,32 +1,28 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy_app/model/answers_model.dart';
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 
 import '../custom_text.dart';
 
 // ignore: must_be_immutable
 class CustomMultipleChoiceContainer extends StatelessWidget {
-  final String title;
   final Color color;
-  final String? photo;
-  final bool isCorrect;
+
   final int? answerUserSelectedID; // id User Answer Selected
-  final int id;
+
   final bool reviewExam;
+  final AnswersModel answerModel;
   bool isActive;
 
   CustomMultipleChoiceContainer({
     super.key,
-    required this.title,
     this.isActive = false,
-    required this.id,
-    required this.isCorrect,
     this.reviewExam = false,
-    this.photo,
+    required this.answerModel,
     this.answerUserSelectedID,
     this.color = Colors.amber,
   });
@@ -54,16 +50,27 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
               ? null
               : () {
                   isActive = !isActive;
-                  controller.onTap(idAnswer: id, value: isActive);
+                  controller.onTap(idAnswer: answerModel.id!, value: isActive);
                 },
           child: Stack(alignment: AlignmentDirectional.topEnd, children: [
             Container(
               width: 144.w,
               height: 90.h,
+              padding: REdgeInsets.symmetric(horizontal: 4, vertical: 4),
               alignment: AlignmentDirectional.center,
               decoration: BoxDecoration(
                   //rgba(0, 0, 0, 0.25)
                   color: color,
+                  image: answerModel.answerViewFormat ==
+                              ExamConstatnt.answerViewFormatIamge ||
+                          answerModel.answerViewFormat ==
+                              ExamConstatnt.answerViewFormatTextImage
+                      ? DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(
+                            answerModel.photo!,
+                          ))
+                      : null,
                   boxShadow: const <BoxShadow>[
                     BoxShadow(
                         offset: Offset(0, 5),
@@ -72,12 +79,35 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                         color: Color.fromRGBO(0, 0, 0, 0.25)),
                   ],
                   borderRadius: BorderRadius.circular(17).r),
-              child: CustomText(
-                text: title,
-                fontFamily: "Cairo",
-                fontWeight: FontWeight.w400,
-                fontSize: 16.sp,
-              ),
+              child: answerModel.answerViewFormat ==
+                          ExamConstatnt.answerViewFormatText ||
+                      answerModel.answerViewFormat ==
+                          ExamConstatnt.answerViewFormatTextImage
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: CustomText(
+                        text: answerModel.title ?? "",
+                        fontFamily: "Cairo",
+                        fontWeight: FontWeight.w400,
+                        textDirection: Validation.instance
+                                .isEnglishText(text: answerModel.title!)
+                            ? TextDirection.ltr
+                            : TextDirection.rtl,
+                        fontSize: answerModel.title!.length > 35
+                            ? 10.sp
+                            : 16.sp, // to resize the Text
+                        textAlign: answerModel.title!.length > 100
+                            ? null
+                            : TextAlign
+                                .center, // if the Text More than 100 Char make it start otherWise make it Center
+                        color: answerModel.answerViewFormat ==
+                                ExamConstatnt.answerViewFormatTextImage
+                            ? Colors.white
+                            : null,
+                        maxLines: 100,
+                      ),
+                    )
+                  : const SizedBox(),
             ),
             isActive
                 ? const RPadding(
@@ -90,7 +120,7 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                   )
                 : const SizedBox(),
             if (reviewExam)
-              answerUserSelectedID == id && isCorrect
+              answerUserSelectedID == answerModel.id! && answerModel.isCorrect!
                   ? const RPadding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(
@@ -99,7 +129,8 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                         size: 30,
                       ),
                     )
-                  : answerUserSelectedID == id && !isCorrect
+                  : answerUserSelectedID == answerModel.id! &&
+                          !answerModel.isCorrect!
                       ? const RPadding(
                           padding: EdgeInsets.all(8.0),
                           child: Icon(
@@ -108,7 +139,7 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                             size: 30,
                           ),
                         )
-                      : answerUserSelectedID == null && isCorrect
+                      : answerUserSelectedID == null && answerModel.isCorrect!
                           ? const RPadding(
                               padding: EdgeInsets.all(8.0),
                               child: Icon(

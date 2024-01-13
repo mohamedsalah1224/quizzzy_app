@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy_app/model/answers_model.dart';
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
 import '../custom_text.dart';
 
 class CustomTrueFalseChoice extends StatelessWidget {
-  final String title;
-  final Color color;
-  final String? photo;
-  final bool isCorrect;
+  final Color? color;
   final int? answerUserSelectedID; // id User Answer Selected
-  final int id;
   final bool reviewExam;
   final int index;
+  final AnswersModel answerModel;
 
   const CustomTrueFalseChoice({
     super.key,
-    required this.title,
-    required this.id,
-    required this.isCorrect,
     this.reviewExam = false,
     required this.index,
-    this.photo,
+    required this.answerModel,
     this.answerUserSelectedID,
     this.color = Colors.amber,
   });
@@ -34,7 +31,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
       onTap: reviewExam
           ? null
           : () {
-              controller.onTap(idAnswerValue: id, index: index);
+              controller.onTap(idAnswerValue: answerModel.id!, index: index);
             },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,
@@ -43,9 +40,20 @@ class CustomTrueFalseChoice extends StatelessWidget {
             width: 144.w,
             height: 200.h, //90
             alignment: AlignmentDirectional.center,
+            padding: REdgeInsets.symmetric(horizontal: 4, vertical: 4),
             decoration: BoxDecoration(
                 //rgba(0, 0, 0, 0.25)
                 color: color,
+                image: answerModel.answerViewFormat ==
+                            ExamConstatnt.answerViewFormatIamge ||
+                        answerModel.answerViewFormat ==
+                            ExamConstatnt.answerViewFormatTextImage
+                    ? DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(
+                          answerModel.photo!,
+                        ))
+                    : null,
                 boxShadow: const <BoxShadow>[
                   BoxShadow(
                       offset: Offset(0, 5),
@@ -54,12 +62,35 @@ class CustomTrueFalseChoice extends StatelessWidget {
                       color: Color.fromRGBO(0, 0, 0, 0.25)),
                 ],
                 borderRadius: BorderRadius.circular(17).r),
-            child: CustomText(
-              text: title,
-              fontFamily: "Cairo",
-              fontWeight: FontWeight.w400,
-              fontSize: 16.sp,
-            ),
+            child: answerModel.answerViewFormat ==
+                        ExamConstatnt.answerViewFormatText ||
+                    answerModel.answerViewFormat ==
+                        ExamConstatnt.answerViewFormatTextImage
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: CustomText(
+                      text: answerModel.title ?? "",
+                      fontFamily: "Cairo",
+                      fontWeight: FontWeight.w400,
+                      textDirection: Validation.instance
+                              .isEnglishText(text: answerModel.title!)
+                          ? TextDirection.ltr
+                          : TextDirection.rtl,
+                      fontSize: answerModel.title!.length > 35
+                          ? 10.sp
+                          : 16.sp, // to resize the Text
+                      textAlign: answerModel.title!.length > 100
+                          ? null
+                          : TextAlign
+                              .center, // if the Text More than 100 Char make it start otherWise make it Center
+                      color: answerModel.answerViewFormat ==
+                              ExamConstatnt.answerViewFormatTextImage
+                          ? Colors.white
+                          : null,
+                      maxLines: 100,
+                    ),
+                  )
+                : const SizedBox(),
           ),
           controller.selectedIndex == index
               ? const RPadding(
@@ -72,7 +103,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
                 )
               : const SizedBox(),
           if (reviewExam)
-            answerUserSelectedID == id && isCorrect
+            answerUserSelectedID == answerModel.id && answerModel.isCorrect!
                 ? const RPadding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(
@@ -80,7 +111,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
                       color: Colors.white,
                       size: 30,
                     ))
-                : isCorrect
+                : answerModel.isCorrect!
                     ? const RPadding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(
@@ -89,7 +120,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
                           size: 30,
                         ),
                       )
-                    : answerUserSelectedID == id
+                    : answerUserSelectedID == answerModel.id
                         ? const RPadding(
                             padding: EdgeInsets.all(8.0),
                             child: Icon(
