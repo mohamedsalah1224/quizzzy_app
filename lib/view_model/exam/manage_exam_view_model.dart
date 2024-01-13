@@ -61,7 +61,17 @@ class ManageExamViewModel extends GetxController {
 
   ExamsModel? _examData;
 
+  final Map<String, dynamic> _mapAnswersOfExam = {};
+
   List<Widget> get examViewList => _examViewList;
+
+  void addAnswerQuestion({required MapEntry<String, dynamic> mapEntry}) {
+    _mapAnswersOfExam.addEntries({mapEntry});
+  }
+
+  void printMapOfAnswerQuestion() {
+    print(_mapAnswersOfExam);
+  }
 
   bool get isLoadChoicePage => _isLoadChoicePage;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
@@ -147,6 +157,7 @@ class ManageExamViewModel extends GetxController {
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
+    _mapAnswersOfExam.clear(); // clear the Map
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -234,8 +245,16 @@ class ManageExamViewModel extends GetxController {
       _sendNoteAndWrongQuestion(noteText, _isClickWrongAnswer);
       print(_isClickWrongAnswer ? 1 : 0);
       print("Text is $noteText");
-    }
+/*
+      _sendAnswer(exam_attempt_id, question_id , given_answer)
 
+      given_answer: map.get('questionId'): getResult
+
+      */
+    }
+    ////////////// Send Answers ///////////////////
+    print(_mapAnswersOfExam); // printAll Question Answer Map
+    ////////////// Send Answers ///////////////////
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
@@ -366,34 +385,129 @@ class ManageExamViewModel extends GetxController {
             isActive: true,
             questions: <QuestionsModel>[
               QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
+                  id: 5,
+                  name: "معني كلمة سيارة",
                   type:
-                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
                   description: null,
                   photo:
-                      "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                      "https://quizzy.makank.online/images/questions/avatar.png",
                   semester: null,
-                  lessonId: 1,
-                  file: null,
-                  fileType: null,
-                  level: "متوسط",
-                  points: "200.00",
-                  time: "20",
+                  points: "15.00",
+                  time: "50",
                   isActive: true,
                   answers: <AnswersModel>[
                     AnswersModel(
-                        id: 13,
-                        title: "اكتب باختصار لايتجاوز السطرين",
-                        questionType: "short_answer",
+                        id: 6,
+                        title: "Car",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: 1,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 3,
+                        title: "Bmw",
+                        questionType: "multiple_choice",
                         answerTwoGapMatch: null,
                         answerViewFormat: "text_image",
                         answerOrder: null,
                         answerSettings: null,
                         photo:
                             "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: null,
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 4,
+                        title:
+                            "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 9,
+                        title: null,
+                        questionType: "multiple_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: false,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
+                      "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo: "",
+                  fileType: "audio",
+                  file:
+                      "https://quizzy.makank.online/images/questions/diqxxvjwu3t4hqDCWRp9kt9jOGbIBnySIpzItM1N.mp3",
+                  semester: null,
+                  points: "15.00",
+                  time: "50",
+                  isActive: true,
+                  // reference: "ثانوية عامة , دليل  التقويم",
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 1,
+                        title:
+                            " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
+                        questionType: "single_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: 1,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: false,
                         createdAt: "2023-10-31T18:26:47.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 3,
+                        title: "القاهرة",
+                        questionType: "single_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: false,
+                        createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                    AnswersModel(
+                        id: 4,
+                        title: "دبي",
+                        questionType: "single_choice",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/avatar.png",
+                        isCorrect: true,
+                        createdAt: "2023-10-31T18:28:53.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                   ],
                   createdAt: "2023-10-31T18:23:49.000000Z",
@@ -436,6 +550,39 @@ class ManageExamViewModel extends GetxController {
                             "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
                         isCorrect: false,
                         createdAt: "2023-10-31T18:27:33.000000Z",
+                        updatedAt: "2023-10-31T18:28:53.000000Z"),
+                  ],
+                  createdAt: "2023-10-31T18:23:49.000000Z",
+                  updatedAt: "2023-10-31T18:23:49.000000Z"),
+              QuestionsModel(
+                  id: 1,
+                  name: "ماهي عاصمة فلسطين ؟",
+                  type:
+                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+                  description: null,
+                  photo:
+                      "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                  semester: null,
+                  lessonId: 1,
+                  file: null,
+                  fileType: null,
+                  level: "متوسط",
+                  points: "200.00",
+                  time: "20",
+                  isActive: true,
+                  answers: <AnswersModel>[
+                    AnswersModel(
+                        id: 13,
+                        title: "اكتب باختصار لايتجاوز السطرين",
+                        questionType: "short_answer",
+                        answerTwoGapMatch: null,
+                        answerViewFormat: "text_image",
+                        answerOrder: null,
+                        answerSettings: null,
+                        photo:
+                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+                        isCorrect: null,
+                        createdAt: "2023-10-31T18:26:47.000000Z",
                         updatedAt: "2023-10-31T18:28:53.000000Z"),
                   ],
                   createdAt: "2023-10-31T18:23:49.000000Z",
@@ -706,8 +853,8 @@ class ManageExamViewModel extends GetxController {
       // SnackBarHelper.instance
       //     .showMessage(message: _examData!.message!.toString());
       _isLoadExamViewPage = true;
+      _startQuizService(examId: _examData!.data!.id!);
       updateTheCurrentExamType(); //update  the Question Type
-      update(['LoadExamViewPage']);
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
   }

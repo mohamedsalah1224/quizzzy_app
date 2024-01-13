@@ -34,15 +34,22 @@ class MultipleChoiceExamViewModel extends ChangeNotifier {
     } else {
       listAnswerIdSelected.remove(idAnswer); // to remove the id from the List
     }
-
+    addAnswer(answerValue: listAnswerIdSelected);
     print("-" * 50);
     print(listAnswerIdSelected);
     print("-" * 50);
   }
 
   int? isIdExist(int index) {
+    // used when make a Review of Question
     return listAnswerIdSelected.contains(listAnswersModel[index].id!)
         ? listAnswersModel[index].id!
         : null;
+  }
+
+  void addAnswer({required List<int> answerValue}) {
+    manageExamViewModel.addAnswerQuestion(
+        mapEntry: MapEntry(questionsModel.id.toString(), answerValue));
+    manageExamViewModel.printMapOfAnswerQuestion();
   }
 }

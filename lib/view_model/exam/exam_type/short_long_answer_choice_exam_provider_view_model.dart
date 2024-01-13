@@ -36,6 +36,14 @@ class ShortLongAnswerViewModel extends ChangeNotifier {
     print(value);
     print("Question Id ${questionsModel.id}");
     print("-" * 50);
+
+    addAnswer(value); //  Add Answer to the MapOfAnswerQuestions
+  }
+
+  void addAnswer(String value) {
+    manageExamViewModel.addAnswerQuestion(
+        mapEntry: MapEntry(questionsModel.id.toString(), value));
+    manageExamViewModel.printMapOfAnswerQuestion();
   }
 
   void setNewContext(BuildContext context) {

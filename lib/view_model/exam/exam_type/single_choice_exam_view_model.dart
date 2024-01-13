@@ -12,7 +12,7 @@ class SingleChoiceExamViewModel extends ChangeNotifier {
   late ManageExamViewModel manageExamViewModel;
   int? selectedIndex;
 
-  int? idQueion; // 4 true
+  // int? idQueion; // 4 true
   int? answerSelectedId; // 3 , 4 , 1
 
   void initObject() {
@@ -22,7 +22,7 @@ class SingleChoiceExamViewModel extends ChangeNotifier {
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
     selectedIndex = null;
-    idQueion = null;
+    // idQueion = null;
     answerSelectedId = null;
     print("+" * 50);
     print("Sucess Init the object SingleChoiceExamViewModel");
@@ -39,12 +39,19 @@ class SingleChoiceExamViewModel extends ChangeNotifier {
   void onTap({required int idAnswerValue, required int index}) {
     if (idAnswerValue == answerSelectedId) return; // to Skip the rebuild
     answerSelectedId = idAnswerValue;
-    idQueion = questionsModel.id;
+    // idQueion = questionsModel.id;
     selectedIndex = index;
     notifyListeners();
     print("-" * 50);
-    print("Question Id $idQueion \n answerSelectedId:$answerSelectedId");
+    print(
+        "Question Id ${questionsModel.id} \n answerSelectedId:$answerSelectedId");
+    addAnswer(answerValue: answerSelectedId!);
     print("-" * 50);
-    print("OK");
+  }
+
+  void addAnswer({required int answerValue}) {
+    manageExamViewModel.addAnswerQuestion(
+        mapEntry: MapEntry(questionsModel.id.toString(), answerValue));
+    manageExamViewModel.printMapOfAnswerQuestion();
   }
 }

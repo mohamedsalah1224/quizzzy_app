@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
@@ -14,12 +13,15 @@ class CustomShortLongChoiceContainer extends StatelessWidget {
   final TextEditingController? controllerText;
   final void Function(String)? onFieldSubmitted;
   final int? maxCharLength;
-
+  final double? width;
+  final double? height;
   const CustomShortLongChoiceContainer({
     super.key,
     required this.answersModel,
     required this.controllerText,
     required this.onFieldSubmitted,
+    this.width = 300,
+    this.height = 200,
     this.maxCharLength,
     this.answerUserSelectedID,
     this.color = Colors.amber,
@@ -37,8 +39,8 @@ class CustomShortLongChoiceContainer extends StatelessWidget {
       alignment: AlignmentDirectional.topEnd,
       children: [
         Container(
-            width: 300.w,
-            height: 200.h,
+            width: width!.w,
+            height: height!.h,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 image: answersModel.answerViewFormat ==
