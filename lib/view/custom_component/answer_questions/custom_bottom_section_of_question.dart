@@ -56,8 +56,8 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
           ),
         ),
         controller.isNoSourceInputForThisQuestion()
-            ? 20.verticalSpace
-            : 10.verticalSpace,
+            ? 30.verticalSpace
+            : 20.verticalSpace,
         StatefulBuilder(
           builder: (context, seState) {
             return Align(
@@ -92,8 +92,8 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
           },
         ),
         controller.isNoSourceInputForThisQuestion()
-            ? 20.verticalSpace
-            : 10.verticalSpace,
+            ? 30.verticalSpace
+            : 20.verticalSpace,
         CustomButton(
             text: 'التالي',
             fontFamily: "Cairo",

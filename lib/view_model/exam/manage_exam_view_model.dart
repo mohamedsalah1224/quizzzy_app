@@ -236,7 +236,7 @@ class ManageExamViewModel extends GetxController {
 
   void nextQuestion() async {
     print("-" * 50);
-    print(_startQuizModel!.data!.id!);
+    // print(_startQuizModel!.data!.id!);
     print("-" * 50);
 
     if (_isClickSendNote || _isClickWrongAnswer) {
@@ -390,12 +390,15 @@ class ManageExamViewModel extends GetxController {
                   type:
                       "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
                   description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  // photo:
+                  //     "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
                   semester: null,
                   points: "15.00",
                   time: "50",
                   isActive: true,
+                  fileType: "audio",
+                  file:
+                      "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/pause.wav",
                   answers: <AnswersModel>[
                     AnswersModel(
                         id: 6,
@@ -462,7 +465,7 @@ class ManageExamViewModel extends GetxController {
                   photo: "",
                   fileType: "audio",
                   file:
-                      "https://quizzy.makank.online/images/questions/diqxxvjwu3t4hqDCWRp9kt9jOGbIBnySIpzItM1N.mp3",
+                      "http://commondatastorage.googleapis.com/codeskulptor-assets/Evillaugh.ogg",
                   semester: null,
                   points: "15.00",
                   time: "50",
@@ -518,8 +521,10 @@ class ManageExamViewModel extends GetxController {
                   type:
                       "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
                   description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
+                  photo: null,
+                  fileType: "audio",
+                  file:
+                      "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/pause.wav",
                   semester: null,
                   points: "25.00",
                   time: "60",

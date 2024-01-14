@@ -36,6 +36,5 @@ class QuestionsTypeBinding implements Bindings {
       // tag: DateTime.now().microsecondsSinceEpoch.toString(),
     );
     Get.lazyPut(() => VideoViewModel());
-    Get.lazyPut(() => AudioViewModel());
   }
 }

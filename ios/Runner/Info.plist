@@ -84,5 +84,11 @@
     <string>24cc1109eb639b54e77c4ea5bb4d04cc</string>
     <key>FacebookDisplayName</key>
     <string>QuizzyApp</string>
+
+	<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
 </dict>
 </plist>
