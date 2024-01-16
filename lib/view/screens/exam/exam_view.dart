@@ -70,12 +70,18 @@ class ExamView extends GetView<ManageExamViewModel> {
                     child: SingleChildScrollView(
                         child: Column(children: [
                       10.verticalSpace,
-                      LinearPercentIndicator(
-                        percent: 0.8,
-                        lineHeight: 12.h,
-                        barRadius: Radius.circular(20),
-                        progressColor: Color(0xff268C6D),
-                        backgroundColor: Color(0xffEEEEEE),
+                      GetBuilder<ManageExamViewModel>(
+                        id: "updateLinearProgres",
+                        builder: (controller) {
+                          return LinearPercentIndicator(
+                            percent: controller.countOfQuestion /
+                                controller.totalOfQuestion,
+                            lineHeight: 12.h,
+                            barRadius: Radius.circular(20),
+                            progressColor: Color(0xff268C6D),
+                            backgroundColor: Color(0xffEEEEEE),
+                          );
+                        },
                       ),
                       25.verticalSpace,
 // Above Section of the Exam

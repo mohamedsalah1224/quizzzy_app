@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/questions_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
@@ -11,6 +12,7 @@ import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
+import 'package:quizzy_app/model/send_note_or_wrong_to_question_mode.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
@@ -41,6 +43,8 @@ class ManageExamViewModel extends GetxController {
   int _currentManageExamsPagesIndex = 0;
   int _currentQuetionIndex = 0;
   int _currentExamTypeIndex = 0;
+  int _countOfQuestion = 1;
+  int _totalOfQuestion = 0;
 
   DataSubjectModel? _subjectSelectedInformation;
   StartQuizModel? _startQuizModel;
@@ -87,6 +91,8 @@ class ManageExamViewModel extends GetxController {
   int get currentQuetionIndex => _currentQuetionIndex;
   int get currentManageExamsPagesIndex => _currentManageExamsPagesIndex;
   int get currentExamTypeIndex => _currentExamTypeIndex;
+  int get totalOfQuestion => _totalOfQuestion;
+  int get countOfQuestion => _countOfQuestion;
   QuestionsModel getCurrentQuestionModel({required int index}) {
     return _examData!.data!.questions![index];
   }
@@ -159,6 +165,8 @@ class ManageExamViewModel extends GetxController {
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
     _mapAnswersOfExam.clear(); // clear the Map
+    _countOfQuestion = 1;
+    _totalOfQuestion = 0;
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -248,45 +256,71 @@ class ManageExamViewModel extends GetxController {
 /////////////////////////////////// Button Action///////////////////////
 
   void nextQuestion() async {
-    print("-" * 50);
-    // print(_startQuizModel!.data!.id!);
-    print("-" * 50);
+    QuestionsModel currentQuestionModel =
+        getCurrentQuestionModel(index: _currentQuetionIndex);
+    debugPrint("-" * 50);
+    debugPrint("Question Id ${currentQuestionModel.id}");
+    debugPrint("-" * 50);
 
+////////////////////////////////// Send Note or Wrong Answer Section /////////////////////////////////////////
+
+// if the Question have a Wrong Answer  or Note Call this
     if (_isClickSendNote || _isClickWrongAnswer) {
-      String noteText = noteController.text;
-      // call Api SendNote and Answer
-      _sendNoteAndWrongQuestion(noteText, _isClickWrongAnswer);
-      print(_isClickWrongAnswer ? 1 : 0);
-      print("Text is $noteText");
-/*
-      _sendAnswer(exam_attempt_id, question_id , given_answer)
-
-      given_answer: map.get('questionId'): getResult
-
-      */
+      _sendNoteAndWrongQuestion(
+              notes: noteController.text,
+              idQuestion: currentQuestionModel.id!,
+              needReview: _isClickWrongAnswer)
+          .then((value) {
+        debugPrint(": " * 50);
+        debugPrint(
+            "Value of Send Note : ${value.message}  ${currentQuestionModel.id}");
+        debugPrint(": " * 50);
+        if (!value.success!) {
+          SnackBarHelper.instance.showMessage(
+              message: value.message.toString(),
+              erro: true); // if the Id of the Question not Found
+        } else {
+          debugPrint("/ " * 50);
+          debugPrint("Send Note : ${value.message}");
+          debugPrint("/ " * 50);
+        }
+      });
     }
-    ////////////// Send Answers ///////////////////
-    print(_mapAnswersOfExam); // printAll Question Answer Map
-    ////////////// Send Answers ///////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////// Send Answers Section ////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////Reset Value Section ////////////////////////////////////////////////////////////
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
     _currentQuetionIndex++; // increment the new Question
-
+    _countOfQuestion++; // increment the number of Question
     resetVideoController(); // to Reset Video Controller
-    if (_currentQuetionIndex < examData.data!.questions!.length) {
-      resetAllController(); // to Reset All Provider Controler
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////// Control Exam Page Section //////////////////////////////////////////////
+    ///
+    if (_currentQuetionIndex < examData.data!.questions!.length) {
+      /*
+      To Solve the Problem of this we need to call resetAllController()
+      // to Reset All Provider Controler to delete the Data if we have  a nested of the Same Controller the Data is Shared betwen them 
+      // the Controller not Removed if we have a Nested Controller of the Sampe Tyep
+      */
+      resetAllController(); // this Solve the Problem of Nested Controller
       update([
+        "updateLinearProgres",
         "updateAboveSection",
         "updateBlewSection"
       ]); // update the Above Section
 
       updateTheCurrentExamType(); // update  the Question Type
     } else {
-      print("-" * 50);
-      print("Exam Finished");
-      print("-" * 50);
+      debugPrint("-" * 50);
+      debugPrint("Exam Finished");
+      debugPrint("-" * 50);
       Get.back();
     }
 
@@ -294,25 +328,21 @@ class ManageExamViewModel extends GetxController {
   }
 
   void sendNote() {
-    // use currentIndex of Quetion
-    print("-" * 50);
-    print(noteController.text);
     _isClickSendNote = true; // hint to know it Click SendNote Button
-    // Call Api
-    print(
-        "QutionId: ${getCurrentQuestionModel(index: _currentQuetionIndex).id} Send Note");
-    print("-" * 50);
+    debugPrint("-" * 50);
+    debugPrint(
+        "QutionId: ${getCurrentQuestionModel(index: _currentQuetionIndex).id} Send Note textOfNote ${noteController.text}");
+    debugPrint("-" * 50);
   }
 
   void wrongQuetion({required bool isWrongQuestion}) {
     _isClickWrongAnswer =
         isWrongQuestion; // hint to know it Click wrongQuetion Button
-    // use currentIndex of Quetion
     if (isWrongQuestion) {
-      print("-" * 50);
-      print(
+      debugPrint("-" * 50);
+      debugPrint(
           "QutionId: ${getCurrentQuestionModel(index: _currentQuetionIndex).id} Wrong Answer");
-      print("-" * 50);
+      debugPrint("-" * 50);
     }
   }
 
@@ -329,7 +359,17 @@ class ManageExamViewModel extends GetxController {
   //////////////////////////////////// Service ///////////////////////////////////
   ///
 
-  void _sendNoteAndWrongQuestion(String text, bool isWrong) {}
+  Future<SendNoteOrWrongToQuestionModel> _sendNoteAndWrongQuestion(
+      {required String notes,
+      required bool needReview,
+      required int idQuestion}) async {
+    try {
+      return await QuestionsRepositoryService().sendNoteOrWrongToQuestionById(
+          id: idQuestion, needReview: needReview, notes: notes);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   void _getSubjects({int? limit, int? skip}) {
     _isLoadChoicePage = false;
@@ -345,7 +385,12 @@ class ManageExamViewModel extends GetxController {
   void _startQuizService({required int examId}) {
     ExamRepositoryService().startQuiz(examId: examId).then((value) {
       _startQuizModel = value;
-      update(['LoadExamViewPage']); //update  the Question Type
+      _totalOfQuestion = _startQuizModel!
+          .data!.totalQuestions!; // intialize the Value of total Question
+      update([
+        'LoadExamViewPage',
+        'updateLinearProgres'
+      ]); //update  the Question Type
     }).catchError((e) => SnackBarHelper.instance
         .showMessage(message: e.toString(), milliseconds: 2000, erro: true));
   }
