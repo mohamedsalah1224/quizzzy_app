@@ -29,7 +29,7 @@ class EndPoint {
   static final String startQuiz = dotenv.get("START_QUIZ");
   static final String answerQuestion = dotenv.get("ANSWER_QUESTION");
   static final String units = dotenv.get('UNITS');
-
+  static final String questions = dotenv.get('QUESTIONS');
   static String showExamById({required int examId}) => "$exams/:$examId";
 
   /*
@@ -42,4 +42,6 @@ ANSWER_QUESTION="/api/exams/answer_question"
   static String getAcademiYearById({required int id}) => "$academiYears/:$id";
   static String getSubjectById({required int id}) => "$subjects/:$id";
   static String getUnitById({required int id}) => "$units/:$id";
+  static String getSendNoteOrWrongToQuestion({required int idQuestion}) =>
+      "$questions/:$idQuestion";
 }

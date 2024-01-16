@@ -64,10 +64,10 @@ class AudioViewModel extends ChangeNotifier {
 
   @override
   void dispose() async {
-    super.dispose();
-
+    // Release decoders and buffers back to the operating system making them
+    // available for other apps to use.
     await audioPlayer.dispose();
-
+    super.dispose();
     print("-" * 50);
     print("Audio View Model is Deleted From Memory");
     print("-" * 50);

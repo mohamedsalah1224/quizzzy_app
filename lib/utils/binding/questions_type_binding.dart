@@ -35,6 +35,5 @@ class QuestionsTypeBinding implements Bindings {
       fenix: true,
       // tag: DateTime.now().microsecondsSinceEpoch.toString(),
     );
-    Get.lazyPut(() => VideoViewModel());
   }
 }

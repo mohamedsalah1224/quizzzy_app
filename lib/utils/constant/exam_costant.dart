@@ -17,17 +17,37 @@ class ExamConstatnt {
   static const String answerViewFormatIamge = "image";
   static const String answerViewFormatText = "text"; // text_image
   static const String answerViewFormatTextImage = "text_image";
+
   // choice_specialist
 
   static const String specialistExam = "choice_specialist";
 
   static const String video = "video";
 
+/////////////////// Audio Video Section ///////////////////
   static BuildContext? _currentContextQuestion;
+  static BuildContext? _currentContextVideo;
+  static BuildContext? _currentContextAudio;
+  static bool? _isPageHasVideo = false;
 
   static void setNewQuestionContext(BuildContext context) {
     _currentContextQuestion = context;
   }
 
+  static void setNewVideoContext(BuildContext context) {
+    _currentContextVideo = context;
+  }
+
+  static void setNewAudioContext(BuildContext context) {
+    _currentContextAudio = context;
+  }
+
+  static void setPageHasVideo({required bool isPageHasVideo}) {
+    _isPageHasVideo = isPageHasVideo;
+  }
+
   static BuildContext get currentContextQuestion => _currentContextQuestion!;
+  static BuildContext get currentContextAudio => _currentContextAudio!;
+  static BuildContext get currentContextVideo => _currentContextVideo!;
+  static bool get isPageHasVideo => _isPageHasVideo!;
 }
