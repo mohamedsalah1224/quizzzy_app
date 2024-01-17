@@ -1,6 +1,7 @@
 // import 'package:get/get.dart';
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:quizzy_app/utils/binding/exam_statistics_binding.dart';
 import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_phone_binding.dart';
@@ -108,8 +109,9 @@ class Routes {
             page: () => const ExamView(),
             binding: QuestionsTypeBinding()),
         GetPage(
-          name: examStatisticsView,
-          page: () => const ExamStatisticsView(),
-        )
+            name: examStatisticsView,
+            page: () => const ExamStatisticsView(),
+            binding: ExamStatisticsBinding()),
+        //ExamStatisticsBinding
       ];
 }

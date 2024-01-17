@@ -30,7 +30,13 @@ class EndPoint {
   static final String answerQuestion = dotenv.get("ANSWER_QUESTION");
   static final String units = dotenv.get('UNITS');
   static final String questions = dotenv.get('QUESTIONS');
-  static String showExamById({required int examId}) => "$exams/:$examId";
+  static final String attemptAnswers = dotenv.get('ATTEMPT_ANSWERS');
+// ATTEMPT_ANSWERS
+
+  static String showExamById({required int examId}) => "$exams/$examId";
+
+  static String getAttemptAnswers({required int examAttemptId}) =>
+      "$attemptAnswers/$examAttemptId";
 
   /*
   EXAMS="/api/exams"
