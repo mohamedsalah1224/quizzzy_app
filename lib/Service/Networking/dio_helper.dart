@@ -21,7 +21,7 @@ class DioHelper {
     var dio = Dio(BaseOptions(
       baseUrl: EndPoint.baseUrl,
       receiveTimeout: const Duration(seconds: 15), // 15 seconds
-      connectTimeout: const Duration(seconds: 15),
+      connectTimeout: const Duration(seconds: 20),
       sendTimeout: const Duration(seconds: 15),
     ));
 

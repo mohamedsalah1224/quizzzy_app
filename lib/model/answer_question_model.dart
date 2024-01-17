@@ -22,13 +22,13 @@ class AnswerQuestionModel {
 }
 
 class Data {
-  String? examAttemptId;
-  String? questionId;
-  String? givenAnswer;
-  String? questionMark;
-  int? achievedMark;
+  int? examAttemptId;
+  int? questionId;
+  dynamic givenAnswer;
+  dynamic questionMark; // dynamic
+  dynamic achievedMark; // dynamic
   int? minusMark;
-  bool? isCorrect; // Check Again if int or bool
+  int? isCorrect; // Check Again if int or bool
   int? examId;
   int? studentId;
   String? updatedAt;

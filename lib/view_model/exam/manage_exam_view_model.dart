@@ -289,6 +289,38 @@ class ManageExamViewModel extends GetxController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////// Send Answers Section ////////////////////////////////////////////////////////
+// printAll Questions Answer Map
+    debugPrint("/ " * 50);
+    debugPrint(" All Current Questions Answer $_mapAnswersOfExam");
+    debugPrint("/ " * 50);
+
+    var resultOfTheCurrentQuestion =
+        _mapAnswersOfExam['${currentQuestionModel.id}'] ?? "";
+    answerQuestionService(
+            questionId: currentQuestionModel.id!,
+            givenAnswer: resultOfTheCurrentQuestion)
+        .then((value) {
+      if (!value!.success!) {
+        SnackBarHelper.instance
+            .showMessage(message: value.message!, erro: true);
+      } else {
+        debugPrint("/ " * 50);
+        debugPrint(
+            "Answer of Question Id ${currentQuestionModel.id}  Message : ${value.message}");
+        debugPrint("/ " * 50);
+
+        SnackBarHelper.instance.showMessage(
+            // isCorrect is null in Short Answer Question
+            message: value.data!.isCorrect == null
+                ? " لم يتم الانتهاء من تطوير التصحيح بالذكاء الاصطناعي ل الاسئلة المقالية"
+                : value.data!.isCorrect == 1
+                    ? "إجابة صحيحة"
+                    : "إجابة خاطئة ",
+            erro: value.data!.isCorrect == null || value.data!.isCorrect == 0);
+      }
+    }).catchError((e) {
+      debugPrint(e.toString());
+    });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
