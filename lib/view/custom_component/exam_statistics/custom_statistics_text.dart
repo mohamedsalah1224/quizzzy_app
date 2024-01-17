@@ -28,7 +28,7 @@ class CustomStatisticsText extends StatelessWidget {
             5.horizontalSpace,
             Container(
               width: 12.w,
-              height: 12,
+              height: 12.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: color,

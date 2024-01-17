@@ -49,4 +49,20 @@ class Assets {
   static const String imagesGoogle = "assets/images/google.png";
   static const String imageSucess = "assets/images/sucess.png";
   static const String imageExam1 = "assets/images/exam1.png";
+
+///////////////////////////////////////Statistics Icon /////////////////////////////////////
+
+  static const String convertPdfStatistics =
+      "assets/images/convertPdf_statistics.png";
+  static const String highPointsStatistics =
+      "assets/images/highPoints_statistics.png";
+// home_statistics
+  static const String homeStatistics = "assets/images/home_statistics.png";
+  static const String repetitionStatistics =
+      "assets/images/repetition_statistics.png";
+// revisionAnswer_statistics
+  static const String revisionAnswerStatistics =
+      "assets/images/revisionAnswer_statistics.png";
+  static const String shareStatistics = "assets/images/share_statistics.png";
+  ////////////////////////////////////////////////////////////////////////////////////////
 }
