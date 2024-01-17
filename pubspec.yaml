@@ -116,6 +116,11 @@ flutter:
     - family: inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans-Regular.ttf
+
+
 
   
   # For details regarding fonts from package dependencies,
