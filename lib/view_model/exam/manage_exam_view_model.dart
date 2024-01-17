@@ -314,10 +314,10 @@ class ManageExamViewModel extends GetxController {
             // isCorrect is null in Short Answer Question
             message: value.data!.isCorrect == null
                 ? " لم يتم الانتهاء من تطوير التصحيح بالذكاء الاصطناعي ل الاسئلة المقالية"
-                : value.data!.isCorrect == 1
+                : value.data!.isCorrect!
                     ? "إجابة صحيحة"
                     : "إجابة خاطئة ",
-            erro: value.data!.isCorrect == null || value.data!.isCorrect == 0);
+            erro: value.data!.isCorrect == null || !value.data!.isCorrect!);
       }
     }).catchError((e) {
       debugPrint(e.toString());
@@ -355,7 +355,7 @@ class ManageExamViewModel extends GetxController {
       debugPrint("Exam Finished");
       debugPrint("-" * 50);
 
-      Get.to(ExamStatisticsView());
+      Get.toNamed(Routes.examStatisticsView);
     }
 
     // if the Exam Entire

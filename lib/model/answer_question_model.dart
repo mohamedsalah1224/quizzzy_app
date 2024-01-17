@@ -25,10 +25,10 @@ class Data {
   int? examAttemptId;
   int? questionId;
   dynamic givenAnswer;
-  dynamic questionMark; // dynamic
-  dynamic achievedMark; // dynamic
-  int? minusMark;
-  int? isCorrect; // Check Again if int or bool
+  String? questionMark; // dynamic
+  String? achievedMark; // dynamic
+  String? minusMark;
+  bool? isCorrect; // Check Again if int or bool
   int? examId;
   int? studentId;
   String? updatedAt;
