@@ -1025,6 +1025,9 @@ class ManageExamViewModel extends GetxController {
       // SnackBarHelper.instance
       //     .showMessage(message: _examData!.message!.toString());
       _isLoadExamViewPage = true;
+      print("*" * 50);
+      print(_examData!.data!.id!);
+      print("*" * 50);
       _startQuizService(examId: _examData!.data!.id!);
       updateTheCurrentExamType(); //update  the Question Type
     }).catchError((e) => SnackBarHelper.instance.showMessage(

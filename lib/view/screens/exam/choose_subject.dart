@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
+import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
 import 'package:quizzy_app/view/custom_component/custom_subject.dart';
 import '../../../view_model/exam/manage_exam_view_model.dart';
 import '../../custom_component/custom_search_field.dart';
@@ -19,12 +20,29 @@ class ChooseSubject extends GetView<ManageExamViewModel> {
             text: "البحث",
           ),
           25.verticalSpace,
-          CustomText(
-            text: "اختر المادة",
-            fontFamily: "Cairo",
-            fontWeight: FontWeight.w500,
-            fontSize: 20.sp,
-            alignment: AlignmentDirectional.topEnd,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 100.w,
+                height: 35.h,
+                child: CustomDropDownFilter(
+                  items: ["الأول", "الثاني", "الثالث"],
+                  value: null,
+                  onChanged: (value) => null,
+                  borderColor: Colors.black54,
+                  defaultValue: "الصف الدراسي",
+                ),
+              ),
+              CustomText(
+                text: "اختر المادة",
+                fontFamily: "Cairo",
+                fontWeight: FontWeight.w500,
+                fontSize: 20.sp,
+                alignment: AlignmentDirectional.topEnd,
+              ),
+            ],
           ),
           20.verticalSpace,
           Expanded(
@@ -51,7 +69,6 @@ class ChooseSubject extends GetView<ManageExamViewModel> {
               },
             ),
           ),
-          30.verticalSpace
         ]));
   }
 }

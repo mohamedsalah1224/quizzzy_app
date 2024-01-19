@@ -8,6 +8,7 @@ class CustomDropDownFilter extends StatelessWidget {
   final String defaultValue;
   final Color borderColor;
   final Widget? icon;
+  final double? height;
 
   const CustomDropDownFilter(
       {super.key,
@@ -16,13 +17,14 @@ class CustomDropDownFilter extends StatelessWidget {
       required this.defaultValue,
       this.icon,
       required this.borderColor,
+      this.height = 45,
       required this.items});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity.w,
-      height: 45.h,
+      height: height!.h,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8).r,

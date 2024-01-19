@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 
 class CustomCircleSumOfPointInformation extends StatelessWidget {

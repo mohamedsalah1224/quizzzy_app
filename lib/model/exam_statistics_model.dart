@@ -40,17 +40,11 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.examAttempt != null) {
-      data['exam_attempt'] = this.examAttempt!.toJson();
-    }
-    if (this.attemptAnswers != null) {
-      data['attempt_answers'] = this.attemptAnswers!.toJson();
-    }
-    if (this.charts != null) {
-      data['charts'] = this.charts!.toJson();
-    }
-    return data;
+    return {
+      'exam_attempt': examAttempt != null ? examAttempt!.toJson() : {},
+      'attempt_answers': attemptAnswers != null ? attemptAnswers!.toJson() : {},
+      'charts': charts != null ? charts!.toJson() : {},
+    };
   }
 }
 
@@ -108,64 +102,63 @@ class ExamAttempt {
       this.numberCorrectAnswer,
       this.numberWrongAnswer});
 
-  ExamAttempt.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    totalQuestions = json['total_questions'];
-    totalAnsweredQuestions = json['total_answered_questions'];
-    totalMarks = json['total_marks'];
-    earnedMarks = json['earned_marks'];
-    attemptInfo = json['attempt_info'];
-    attemptStatus = json['attempt_status'];
-    attemptIp = json['attempt_ip'];
-    attemptStartedAt = json['attempt_started_at'];
-    attemptEndedAt = json['attempt_ended_at'];
-    isManuallyReviewed = json['is_manually_reviewed'];
-    manuallyReviewedAt = json['manually_reviewed_at'];
-    examId = json['exam_id'];
-    subjectId = json['subject_id'];
-    bookId = json['book_id'];
-    studentId = json['student_id'];
-    createdBy = json['created_by'];
-    updatedBy = json['updated_by'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    exam = json['exam'] != null ? new Exam.fromJson(json['exam']) : null;
-    book = json['book'];
-    subject = json['subject'];
-    numberCorrectAnswer = json['number_correct_answer'];
-    numberWrongAnswer = json['number_wrong_answer'];
+  factory ExamAttempt.fromJson(Map<String, dynamic> json) {
+    return ExamAttempt(
+        numberWrongAnswer: json['number_wrong_answer'],
+        numberCorrectAnswer: json['number_correct_answer'],
+        subject: json['subject'],
+        book: json['book'],
+        exam: json['exam'] != null ? Exam.fromJson(json['exam']) : null,
+        updatedAt: json['updated_at'],
+        createdAt: json['created_at'],
+        updatedBy: json['updated_by'],
+        createdBy: json['created_by'],
+        studentId: json['student_id'],
+        bookId: json['book_id'],
+        subjectId: json['subject_id'],
+        examId: json['exam_id'],
+        manuallyReviewedAt: json['manually_reviewed_at'],
+        isManuallyReviewed: json['is_manually_reviewed'],
+        attemptEndedAt: json['attempt_ended_at'],
+        attemptStartedAt: json['attempt_started_at'],
+        attemptIp: json['attempt_ip'],
+        attemptStatus: json['attempt_status'],
+        attemptInfo: json['attempt_info'],
+        earnedMarks: json['earned_marks'],
+        totalMarks: json['total_marks'],
+        totalAnsweredQuestions: json['total_answered_questions'],
+        totalQuestions: json['total_questions'],
+        id: json['id']);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['total_questions'] = this.totalQuestions;
-    data['total_answered_questions'] = this.totalAnsweredQuestions;
-    data['total_marks'] = this.totalMarks;
-    data['earned_marks'] = this.earnedMarks;
-    data['attempt_info'] = this.attemptInfo;
-    data['attempt_status'] = this.attemptStatus;
-    data['attempt_ip'] = this.attemptIp;
-    data['attempt_started_at'] = this.attemptStartedAt;
-    data['attempt_ended_at'] = this.attemptEndedAt;
-    data['is_manually_reviewed'] = this.isManuallyReviewed;
-    data['manually_reviewed_at'] = this.manuallyReviewedAt;
-    data['exam_id'] = this.examId;
-    data['subject_id'] = this.subjectId;
-    data['book_id'] = this.bookId;
-    data['student_id'] = this.studentId;
-    data['created_by'] = this.createdBy;
-    data['updated_by'] = this.updatedBy;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.exam != null) {
-      data['exam'] = this.exam!.toJson();
-    }
-    data['book'] = this.book;
-    data['subject'] = this.subject;
-    data['number_correct_answer'] = this.numberCorrectAnswer;
-    data['number_wrong_answer'] = this.numberWrongAnswer;
-    return data;
+    return {
+      'attempt_status': attemptStatus,
+      'attempt_info': attemptInfo,
+      'earned_marks': earnedMarks,
+      'total_marks': totalMarks,
+      'total_answered_questions': totalAnsweredQuestions,
+      'total_questions': totalQuestions,
+      'id': id,
+      'attempt_ip': attemptIp,
+      'created_by': createdBy,
+      'student_id': studentId,
+      'book_id': bookId,
+      'subject_id': subjectId,
+      'exam_id': examId,
+      'manually_reviewed_at': manuallyReviewedAt,
+      'is_manually_reviewed': isManuallyReviewed,
+      'attempt_ended_at': attemptEndedAt,
+      'attempt_started_at': attemptStartedAt,
+      'created_at': createdAt,
+      'updated_by': createdBy,
+      'updated_at': updatedAt,
+      'number_wrong_answer': numberWrongAnswer,
+      'number_correct_answer': numberCorrectAnswer,
+      'subject': subject,
+      'book': book,
+      'exam': exam != null ? exam!.toJson() : {}
+    };
   }
 }
 
@@ -173,18 +166,18 @@ class Exam {
   int? id;
   String? name;
   String? type;
-  Null? questionTypes;
-  Null? level;
+  String? questionTypes;
+  String? level;
   String? typeAssessment;
-  Null? description;
+  String? description;
   String? photo;
   String? semester;
-  Null? points;
+  String? points;
   String? time;
-  Null? subjectId;
-  Null? bookId;
-  Null? unitId;
-  Null? lessonId;
+  int? subjectId;
+  int? bookId;
+  int? unitId;
+  int? lessonId;
   bool? isActive;
   String? createdAt;
   String? updatedAt;
@@ -526,36 +519,38 @@ class Answers {
       this.createdAt,
       this.updatedAt});
 
-  Answers.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    questionType = json['question_type'];
-    answerTwoGapMatch = json['answer_two_gap_match'];
-    answerViewFormat = json['answer_view_format'];
-    answerOrder = json['answer_order'];
-    answerSettings = json['answer_settings'];
-    questionId = json['question_id'];
-    photo = json['photo'];
-    isCorrect = json['is_correct'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+  factory Answers.fromJson(Map<String, dynamic> json) {
+    return Answers(
+      id: json['id'],
+      updatedAt: json['updated_at'],
+      createdAt: json['created_at'],
+      isCorrect: json['is_correct'],
+      photo: json['photo'],
+      questionId: json['question_id'],
+      answerSettings: json['answer_settings'],
+      answerOrder: json['answer_order'],
+      answerViewFormat: json['answer_view_format'],
+      answerTwoGapMatch: json['answer_two_gap_match'],
+      questionType: json['question_type'],
+      title: json['title'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['question_type'] = this.questionType;
-    data['answer_two_gap_match'] = this.answerTwoGapMatch;
-    data['answer_view_format'] = this.answerViewFormat;
-    data['answer_order'] = this.answerOrder;
-    data['answer_settings'] = this.answerSettings;
-    data['question_id'] = this.questionId;
-    data['photo'] = this.photo;
-    data['is_correct'] = this.isCorrect;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
+    return {
+      'question_type': questionType,
+      'title': title,
+      'id': id,
+      'answer_two_gap_match': answerTwoGapMatch,
+      'question_id': questionId,
+      'answer_settings': answerSettings,
+      'answer_order': answerOrder,
+      'answer_view_format': answerViewFormat,
+      'updated_at': updatedAt,
+      'created_at': createdAt,
+      'is_correct': isCorrect,
+      'photo': photo,
+    };
   }
 }
 
@@ -566,18 +561,13 @@ class Links {
 
   Links({this.url, this.label, this.active});
 
-  Links.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
+  factory Links.fromJson(Map<String, dynamic> json) {
+    return Links(
+        active: json['active'], label: json['label'], url: json['url']);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
-    return data;
+    return {'url': url, 'label': label, 'active': active};
   }
 }
 
@@ -586,39 +576,39 @@ class Charts {
 
   Charts({this.isCorrect});
 
-  Charts.fromJson(Map<String, dynamic> json) {
+  factory Charts.fromJson(Map<String, dynamic> json) {
+    List<IsCorrect> listIsCorrect = [];
     if (json['is_correct'] != null) {
-      isCorrect = <IsCorrect>[];
       json['is_correct'].forEach((v) {
-        isCorrect!.add(new IsCorrect.fromJson(v));
+        listIsCorrect.add(IsCorrect.fromJson(v));
       });
     }
+
+    return Charts(isCorrect: listIsCorrect);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.isCorrect != null) {
-      data['is_correct'] = this.isCorrect!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return {
+      'is_correct':
+          isCorrect != null ? isCorrect!.map((v) => v.toJson()).toList() : []
+    };
   }
 }
 
 class IsCorrect {
-  int? num;
+  int? number;
   int? label;
 
-  IsCorrect({this.num, this.label});
+  IsCorrect({this.number, this.label});
 
-  IsCorrect.fromJson(Map<String, dynamic> json) {
-    num = json['num'];
-    label = json['label'];
+  factory IsCorrect.fromJson(Map<String, dynamic> json) {
+    return IsCorrect(label: json['label'], number: json['num']);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['num'] = this.num;
-    data['label'] = this.label;
-    return data;
+    return {
+      'label': label,
+      'num': number,
+    };
   }
 }
