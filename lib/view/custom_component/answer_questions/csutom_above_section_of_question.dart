@@ -20,6 +20,7 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
     return Column(
       children: [
         CustomQuestionSourceType(
+            imageDimensionsModel: questionsModel.imageDimensions,
             fileSourceLink: questionsModel.file,
             questionSourceType: questionsModel.fileType == null
                 ? questionsModel.photo != null

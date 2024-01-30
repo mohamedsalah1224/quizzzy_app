@@ -16,6 +16,7 @@ import 'package:quizzy_app/model/send_note_or_wrong_to_question_mode.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
@@ -46,6 +47,7 @@ class ManageExamViewModel extends GetxController {
   int _currentExamTypeIndex = 0;
   int _countOfQuestion = 1;
   int _totalOfQuestion = 0;
+  bool _isAfterFinish = false;
 
   DataSubjectModel? _subjectSelectedInformation;
   StartQuizModel? _startQuizModel;
@@ -67,7 +69,7 @@ class ManageExamViewModel extends GetxController {
 
   ExamsModel? _examData;
 
-  final Map<String, dynamic> _mapAnswersOfExam = {};
+  Map<String, dynamic> _mapAnswersOfExam = {};
 
   List<Widget> get examViewList => _examViewList;
 
@@ -81,6 +83,18 @@ class ManageExamViewModel extends GetxController {
 
   bool get isLoadChoicePage => _isLoadChoicePage;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
+  void setAfterFinish() => _isAfterFinish = true;
+  bool get isAfterFinish => _isAfterFinish;
+  Map<String, dynamic> get answerSelectedByUser => _mapAnswersOfExam;
+  void resetValueOfLoadExamViewPage() => _isLoadExamViewPage = false;
+  void resetMapAnswer() => _mapAnswersOfExam = {};
+  void resetValueOfRepitionExam() {
+    _isLoadExamViewPage = false;
+    _mapAnswersOfExam.clear();
+    resetVideoController(); // to Reset Video Controller
+    resetAllController(); // this Solve the Problem of Nested Controller
+  }
+
   List<DataSubjectModel> get subjectList => _subjectList;
 
   DataSubjectModel get getSubjectSelectedInformation =>
@@ -94,6 +108,9 @@ class ManageExamViewModel extends GetxController {
   int get currentExamTypeIndex => _currentExamTypeIndex;
   int get totalOfQuestion => _totalOfQuestion;
   int get countOfQuestion => _countOfQuestion;
+  bool get isFirstQuestion => (_currentQuetionIndex == 0);
+  bool get isLastQuestion =>
+      (_currentQuetionIndex == examData.data!.questions!.length - 1);
   QuestionsModel getCurrentQuestionModel({required int index}) {
     return _examData!.data!.questions![index];
   }
@@ -128,7 +145,10 @@ class ManageExamViewModel extends GetxController {
     // _currentIndex = 3;
     // update();
     // call api to create Exam Based on Filter information
-
+    // if it Choce the typeOfAssessment AfterFinish
+    if (ExamConstatnt.typeAssessmentAfterFinish == typeAssessment) {
+      _isAfterFinish = true;
+    }
     _choiceExamService(
         leasonId: leasonId,
         level: level,
@@ -168,6 +188,7 @@ class ManageExamViewModel extends GetxController {
     _mapAnswersOfExam.clear(); // clear the Map
     _countOfQuestion = 1;
     _totalOfQuestion = 0;
+    _isAfterFinish = false;
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -182,8 +203,10 @@ class ManageExamViewModel extends GetxController {
     const SingleChoiceExam()
   ];
     */
+
     String typeOfQuestion =
         _examData!.data!.questions![_currentQuetionIndex].type!;
+
     print("-" * 50);
     print(typeOfQuestion);
     print("-" * 50);
@@ -219,34 +242,48 @@ class ManageExamViewModel extends GetxController {
       Provider.of<VideoViewModel>(ExamConstatnt.currentContextVideo,
               listen: false)
           .deleteControllerManually();
+      print("-" * 50);
+      print("Delete it Manually");
+      print("-" * 50);
     }
   }
 
   Future<void> resetAllController() async {
+    print("/" * 60);
+    print("Current Exam Type : $_currentExamTypeIndex");
+    print("/" * 60);
+
+    String typeOfQuestion =
+        _examData!.data!.questions![_currentQuetionIndex].type!;
+
     switch (_currentExamTypeIndex) {
       // case 0:
       //   await Get.delete<CompareChoiceExamViewModel>(force: true);
 
       //   break;
       case 1:
+        if (typeOfQuestion != ExamConstatnt.shortAnswer) return;
         Provider.of<ShortLongAnswerViewModel>(
                 ExamConstatnt.currentContextQuestion,
                 listen: false)
             .initObject();
         break;
       case 2:
+        if (typeOfQuestion != ExamConstatnt.multipleChoice) return;
         Provider.of<MultipleChoiceExamViewModel>(
                 ExamConstatnt.currentContextQuestion,
                 listen: false)
             .initObject();
         break;
       case 3:
+        if (typeOfQuestion != ExamConstatnt.trueFalse) return;
         Provider.of<TrueFalseExamViewModel>(
                 ExamConstatnt.currentContextQuestion,
                 listen: false)
             .initObject();
         break;
       case 4:
+        if (typeOfQuestion != ExamConstatnt.singleChoice) return;
         Provider.of<SingleChoiceExamViewModel>(
                 ExamConstatnt.currentContextQuestion,
                 listen: false)
@@ -255,6 +292,32 @@ class ManageExamViewModel extends GetxController {
     }
   }
 /////////////////////////////////// Button Action///////////////////////
+  ///
+
+  void backQuestion() {
+    noteController.clear(); // to clear the note Controller
+    _isClickSendNote = false; // to Clear it
+    _isClickWrongAnswer = false; // to Clear it
+
+    resetVideoController(); // to Reset Video Controller
+
+    if (_currentQuetionIndex > 0) {
+      _currentQuetionIndex--; // decrement the index of the  Question
+      _countOfQuestion--; // decrement the number of Question
+      resetAllController(); // this Solve the Problem of Nested Controller
+      update([
+        "updateLinearProgres",
+        "updateAboveSection",
+        "updateBlewSection"
+      ]); // update the Above Section
+
+      updateTheCurrentExamType(); // update  the Question Type
+    } else {
+      debugPrint("-" * 50);
+      debugPrint("This is the First Question");
+      debugPrint("-" * 50);
+    }
+  }
 
   void nextQuestion() async {
     QuestionsModel currentQuestionModel =
@@ -293,35 +356,49 @@ class ManageExamViewModel extends GetxController {
 // printAll Questions Answer Map
     debugPrint("/ " * 50);
     debugPrint(" All Current Questions Answer $_mapAnswersOfExam");
+    debugPrint(
+        " The Answer of Current Question($_currentQuetionIndex), Questin Id(${currentQuestionModel.id})  Answer ${_mapAnswersOfExam['${currentQuestionModel.id}']}");
     debugPrint("/ " * 50);
 
-    var resultOfTheCurrentQuestion =
-        _mapAnswersOfExam['${currentQuestionModel.id}'] ?? "";
-    answerQuestionService(
-            questionId: currentQuestionModel.id!,
-            givenAnswer: resultOfTheCurrentQuestion)
-        .then((value) {
-      if (!value!.success!) {
-        SnackBarHelper.instance
-            .showMessage(message: value.message!, erro: true);
-      } else {
-        debugPrint("/ " * 50);
-        debugPrint(
-            "Answer of Question Id ${currentQuestionModel.id}  Message : ${value.message}");
-        debugPrint("/ " * 50);
+    // send Anser if the TypeAssestment Direct
 
-        SnackBarHelper.instance.showMessage(
-            // isCorrect is null in Short Answer Question
-            message: value.data!.isCorrect == null
-                ? " لم يتم الانتهاء من تطوير التصحيح بالذكاء الاصطناعي ل الاسئلة المقالية"
-                : value.data!.isCorrect!
-                    ? "إجابة صحيحة"
-                    : "إجابة خاطئة ",
-            erro: value.data!.isCorrect == null || !value.data!.isCorrect!);
-      }
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
+    if (!_isAfterFinish) {
+      var resultOfTheCurrentQuestion =
+          _mapAnswersOfExam['${currentQuestionModel.id}'];
+
+      resultOfTheCurrentQuestion ??=
+          ExamConstatnt.multipleChoice == currentQuestionModel.type ? [] : null;
+
+      DialogHelper.showLoading(); // Show Diallog
+
+      await answerQuestionService(
+              questionId: currentQuestionModel.id!,
+              givenAnswer: resultOfTheCurrentQuestion)
+          .then((value) {
+        DialogHelper.hideLoading(); // Hide Diallog
+        if (!value!.success!) {
+          SnackBarHelper.instance
+              .showMessage(message: value.message!, erro: true);
+        } else {
+          debugPrint("/ " * 50);
+          debugPrint(
+              "Answer of Question Id ${currentQuestionModel.id}  Message : ${value.message}");
+          debugPrint("/ " * 50);
+
+          SnackBarHelper.instance.showMessage(
+              // isCorrect is null in Short Answer Question
+              message: value.data!.isCorrect == null
+                  ? " لم يتم الانتهاء من تطوير التصحيح بالذكاء الاصطناعي ل الاسئلة المقالية"
+                  : value.data!.isCorrect!
+                      ? "إجابة صحيحة"
+                      : "إجابة خاطئة ",
+              erro: value.data!.isCorrect == null || !value.data!.isCorrect!);
+        }
+      }).catchError((e) {
+        debugPrint(e.toString());
+        DialogHelper.hideLoading(); // Hide Diallog if any Erro Occur
+      });
+    }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -342,6 +419,7 @@ class ManageExamViewModel extends GetxController {
       // to Reset All Provider Controler to delete the Data if we have  a nested of the Same Controller the Data is Shared betwen them 
       // the Controller not Removed if we have a Nested Controller of the Sampe Tyep
       */
+
       resetAllController(); // this Solve the Problem of Nested Controller
       update([
         "updateLinearProgres",
@@ -355,10 +433,57 @@ class ManageExamViewModel extends GetxController {
       debugPrint("Exam Finished");
       debugPrint("-" * 50);
 
+      if (_isAfterFinish) {
+        await senAnswerAfterFinish(); // if is After Finish Send Answer
+      }
+      // when End The Exam Finsish Reset the currentQuestionIndex , countOfQuestion
+      _currentQuetionIndex =
+          0; // we will use it When Repetion , reviseons Answer The Exam
+      _countOfQuestion =
+          1; // set we will use it When Repetion , reviseons Answer The Exam
       Get.toNamed(Routes.examStatisticsView);
     }
 
     // if the Exam Entire
+  }
+
+  Future<void> senAnswerAfterFinish() async {
+    DialogHelper.showLoading(
+        message: 'يتم الان إرسال الإجابات ....',
+        textDirection: TextDirection.rtl); // Show Diallog
+
+    for (int currentIndex = 0;
+        currentIndex < examData.data!.questions!.length;
+        currentIndex++) {
+      QuestionsModel currentQuestionModel =
+          getCurrentQuestionModel(index: currentIndex);
+      var resultOfTheCurrentQuestion =
+          _mapAnswersOfExam['${currentQuestionModel.id}'];
+
+      resultOfTheCurrentQuestion ??=
+          ExamConstatnt.multipleChoice == currentQuestionModel.type ? [] : null;
+      await answerQuestionService(
+              questionId: currentQuestionModel.id!,
+              givenAnswer: resultOfTheCurrentQuestion)
+          .then((value) {
+        if (!value!.success!) {
+          debugPrint("/ " * 50);
+          debugPrint(
+              "Answer of Question Id ${currentQuestionModel.id}  Message : ${value.message}");
+          debugPrint("/ " * 50);
+        } else {
+          debugPrint("/ " * 50);
+          debugPrint(
+              "Answer of Question Id ${currentQuestionModel.id}  Message : ${value.message}");
+          debugPrint("/ " * 50);
+        }
+      }).catchError((e) {
+        debugPrint("/ " * 50);
+        debugPrint(e.toString());
+        debugPrint("/ " * 50);
+      });
+    }
+    DialogHelper.hideLoading(); // Hide Diallog
   }
 
   void sendNote() {
@@ -416,11 +541,13 @@ class ManageExamViewModel extends GetxController {
         SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
   }
 
-  void _startQuizService({required int examId}) {
+  Future<void> startQuizService({required int examId}) async {
     ExamRepositoryService().startQuiz(examId: examId).then((value) {
       _startQuizModel = value;
       _totalOfQuestion = _startQuizModel!
           .data!.totalQuestions!; // intialize the Value of total Question
+      _isLoadExamViewPage = true; // to updateScreen
+      updateTheCurrentExamType();
       update([
         'LoadExamViewPage',
         'updateLinearProgres'
@@ -443,8 +570,15 @@ class ManageExamViewModel extends GetxController {
     return answerQuestionModel;
   }
 
+  void repetitionExam() {
+    _isLoadExamViewPage = false;
+    startQuizService(examId: _examData!.data!.id!);
+    updateTheCurrentExamType(); //update  the Question Type
+  }
+
   void _randomExamService() {
     _isLoadExamViewPage = false;
+    _isAfterFinish = false; // must be false
 
     // ExamRepositoryService()
     //     .storeExam(
@@ -1012,7 +1146,7 @@ class ManageExamViewModel extends GetxController {
 
   void _aiExamService() {
     _isLoadExamViewPage = false;
-
+    _isAfterFinish = true; // must be false
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
@@ -1024,12 +1158,12 @@ class ManageExamViewModel extends GetxController {
       _examData = value;
       // SnackBarHelper.instance
       //     .showMessage(message: _examData!.message!.toString());
-      _isLoadExamViewPage = true;
+
       print("*" * 50);
       print(_examData!.data!.id!);
       print("*" * 50);
-      _startQuizService(examId: _examData!.data!.id!);
-      updateTheCurrentExamType(); //update  the Question Type
+      startQuizService(examId: _examData!.data!.id!);
+      // updateTheCurrentExamType(); //update  the Question Type
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
   }
@@ -1055,14 +1189,15 @@ class ManageExamViewModel extends GetxController {
                 time: time.toString()))
         .then((value) {
       _examData = value;
-      _isLoadExamViewPage = true;
-      _startQuizService(examId: _examData!.data!.id!);
+
+      startQuizService(examId: _examData!.data!.id!);
       updateTheCurrentExamType();
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
   }
 
   void _specialistExamService() {
+    _isAfterFinish = false; // must be false
     _isLoadExamViewPage = false;
   }
 }

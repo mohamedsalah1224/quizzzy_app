@@ -13,9 +13,11 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
       required this.onPressedSendNote,
       this.currentValue = false,
       required this.onChanged,
+      this.onTapBackQuestion,
       required this.onTapNextQuestion});
   final void Function()? onPressedSendNote;
   final void Function()? onTapNextQuestion;
+  final void Function()? onTapBackQuestion;
   final void Function(bool)? onChanged;
 
   bool currentValue;
@@ -48,7 +50,7 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
                 hintText: "ارسال ملاحظة....",
                 hintStyle: TextStyle(
                     fontSize: 14.sp,
-                    color: Color(0xff268C6D),
+                    color: const Color(0xff268C6D),
                     fontFamily: "Cairo",
                     fontWeight: FontWeight.w400),
                 hintTextDirection: TextDirection.rtl),
@@ -94,12 +96,42 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
         controller.isNoSourceInputForThisQuestion()
             ? 30.verticalSpace
             : 20.verticalSpace,
-        CustomButton(
-            text: 'التالي',
-            fontFamily: "Cairo",
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-            onTap: onTapNextQuestion)
+        Row(
+          children: [
+            controller.isAfterFinish
+                ? Expanded(
+                    child: CustomButton(
+                        text: 'السابق',
+                        colorOfContainer: controller.isFirstQuestion
+                            ? const Color(0xff268C6D).withOpacity(0.4)
+                            : const Color(0xff268C6D),
+                        fontFamily: "Cairo",
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        onTap: controller.isFirstQuestion
+                            ? null
+                            : onTapBackQuestion),
+                  )
+                : const SizedBox(),
+            controller.isAfterFinish ? 15.horizontalSpace : const SizedBox(),
+            Expanded(
+              child: controller.isLastQuestion
+                  ? CustomButton(
+                      text: 'إرسال الإمتحان',
+                      fontFamily: "Cairo",
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      colorOfContainer: Colors.red,
+                      onTap: onTapNextQuestion)
+                  : CustomButton(
+                      text: 'التالي',
+                      fontFamily: "Cairo",
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      onTap: onTapNextQuestion),
+            ),
+          ],
+        ),
       ],
     );
   }

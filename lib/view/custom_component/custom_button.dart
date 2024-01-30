@@ -9,12 +9,14 @@ class CustomButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? fontSize;
   final void Function()? onTap;
+  final Color? colorOfContainer;
 
   const CustomButton(
       {super.key,
       required this.text,
       this.fontFamily,
       required this.onTap,
+      this.colorOfContainer = const Color(0xff268C6D),
       this.fontSize,
       this.fontWeight});
 
@@ -28,7 +30,7 @@ class CustomButton extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 4.h),
         decoration: BoxDecoration(
-          color: Color(0xff268C6D),
+          color: colorOfContainer,
           borderRadius: BorderRadius.circular(12).r,
         ),
         child: CustomText(

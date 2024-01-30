@@ -30,7 +30,8 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                           child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30).r,
+                                borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(30).r),
                                 color: const Color(0xff268C6D),
                               ),
                               child: CustomCircleSumOfPointInformation(
@@ -48,9 +49,8 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                             child: Column(
                               children: [
                                 const Expanded(child: SizedBox()),
-                                50.verticalSpace,
                                 Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: Container(
                                     decoration: const BoxDecoration(
                                         color: Colors.white),
@@ -61,13 +61,15 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                                         Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const CustomStatisticsIcon(
+                                            CustomStatisticsIcon(
                                               text: 'اعادة الاختبار',
                                               color: Color(0xff40C2E0),
                                               cacheHeight: 21,
                                               cacheWidth: 21,
                                               iconAssetPath:
                                                   Assets.repetitionStatistics,
+                                              onTap: () =>
+                                                  controller.repetitionExam(),
                                             ),
                                             30.verticalSpace,
                                             const CustomStatisticsIcon(
@@ -105,13 +107,15 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                                         Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const CustomStatisticsIcon(
+                                            CustomStatisticsIcon(
                                               text: 'الرئيسية',
                                               color: Color(0xffAD8AE8),
                                               cacheHeight: 18,
                                               cacheWidth: 24,
                                               iconAssetPath:
                                                   Assets.homeStatistics,
+                                              onTap: () =>
+                                                  controller.goToHomePage(),
                                             ),
                                             30.verticalSpace,
                                             const CustomStatisticsIcon(

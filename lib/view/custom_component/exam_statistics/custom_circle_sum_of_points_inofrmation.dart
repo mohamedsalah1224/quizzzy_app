@@ -21,12 +21,12 @@ class CustomCircleSumOfPointInformation extends StatelessWidget {
                 color: const Color.fromRGBO(255, 255, 255, 0.25),
                 // strokeAlign: ,
 
-                width: 20),
+                width: 20.r),
             shape: BoxShape.circle,
           ),
           child: Container(
-            width: 150.w,
-            height: 150.w,
+            width: 150.r,
+            height: 150.r,
             decoration: BoxDecoration(
                 // rgba(255, 255, 255, 0.25)
                 border: Border.all(
@@ -34,7 +34,7 @@ class CustomCircleSumOfPointInformation extends StatelessWidget {
                         const Color.fromRGBO(0, 167, 50, 0.20), // inside first
                     // strokeAlign: ,
 
-                    width: 15),
+                    width: 15.r),
                 shape: BoxShape.circle,
                 color: const Color.fromRGBO(255, 255, 255, 1)),
             child: Column(

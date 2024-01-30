@@ -16,13 +16,16 @@ class ManageBottomNavigationViewModel extends GetxController {
     const AccountView(),
   ];
 
-  int currentIndex = 0;
+  int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
 
   void changeIndex(int value) {
-    if (currentIndex == 2 && value != 2) {
+    if (_currentIndex == 2 && value != 2) {
+      print("Resest The MangeVieModel");
       manageExamViewModel.resetController();
     }
-    currentIndex = value;
+    _currentIndex = value;
     update();
   }
 

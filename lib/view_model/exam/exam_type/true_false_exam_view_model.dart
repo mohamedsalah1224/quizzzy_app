@@ -20,9 +20,22 @@ class TrueFalseExamViewModel extends ChangeNotifier {
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
-    selectedIndex = null;
-    // idQueion = null;
-    answerSelectedId = null;
+// when click the Button Back Show the Current Resut that Choice it before
+
+    print("Question Id ${questionsModel.id}");
+    print(manageExamViewModel.answerSelectedByUser['${questionsModel.id}']);
+    if (manageExamViewModel.isAfterFinish &&
+        manageExamViewModel.answerSelectedByUser['${questionsModel.id}'] !=
+            null) {
+      print("TRUE SUCESS");
+      answerSelectedId =
+          manageExamViewModel.answerSelectedByUser['${questionsModel.id}'];
+      selectedIndex = getCurrentIndex(answerSelectedId!);
+    } else {
+      selectedIndex = null;
+      answerSelectedId = null;
+    }
+
     print("+" * 50);
     print("Sucess Init the object TrueFalseExamViewModel");
     print("+" * 50);
@@ -54,5 +67,14 @@ class TrueFalseExamViewModel extends ChangeNotifier {
     manageExamViewModel.addAnswerQuestion(
         mapEntry: MapEntry(questionsModel.id.toString(), answerValue));
     manageExamViewModel.printMapOfAnswerQuestion();
+  }
+
+  int? getCurrentIndex(int answerSelectedId) {
+    for (int i = 0; i < listAnswersModel.length; i++) {
+      if (listAnswersModel[i].id == answerSelectedId) {
+        return i;
+      }
+    }
+    return null;
   }
 }

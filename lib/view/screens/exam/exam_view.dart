@@ -110,6 +110,9 @@ class ExamView extends GetView<ManageExamViewModel> {
                             onTapNextQuestion: () {
                               controller.nextQuestion();
                             },
+                            onTapBackQuestion: () {
+                              controller.backQuestion();
+                            },
                             onChanged: (value) {
                               print(value);
                               controller.wrongQuetion(isWrongQuestion: value);

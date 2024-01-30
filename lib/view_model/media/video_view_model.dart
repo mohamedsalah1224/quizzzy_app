@@ -21,6 +21,9 @@ class VideoViewModel extends ChangeNotifier {
   }
   ChewieController get chewieController => _chewieController!;
   Future<void> initObject(String url) async {
+    print(" / " * 50);
+    print("VideoViewModel Model is intlize Constractor ");
+    print(" / " * 50);
     _videoPlayerController = null;
     _chewieController = null;
     ExamConstatnt.setPageHasVideo(
@@ -38,6 +41,11 @@ class VideoViewModel extends ChangeNotifier {
           showControlsOnInitialize: false,
           autoPlay: true,
           autoInitialize: true);
+
+      Future.delayed(const Duration(seconds: 2), () async {
+        notifyListeners();
+      });
+
       // if (!isFirstTimeIntialize) {
       //   notifyListeners();
       // } else {

@@ -16,7 +16,19 @@ class MultipleChoiceExamViewModel extends ChangeNotifier {
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
-    listAnswerIdSelected = [];
+
+    print("Question Id ${questionsModel.id}");
+    print(manageExamViewModel.answerSelectedByUser['${questionsModel.id}']);
+    if (manageExamViewModel.isAfterFinish &&
+        manageExamViewModel.answerSelectedByUser['${questionsModel.id}'] !=
+            null) {
+      print("TRUE SUCESS");
+      listAnswerIdSelected =
+          manageExamViewModel.answerSelectedByUser['${questionsModel.id}'];
+    } else {
+      listAnswerIdSelected = [];
+    }
+
     print("+" * 50);
     print("Sucess Init the object MultipleChoiceExamViewModel");
     print("+" * 50);
@@ -45,6 +57,12 @@ class MultipleChoiceExamViewModel extends ChangeNotifier {
     return listAnswerIdSelected.contains(listAnswersModel[index].id!)
         ? listAnswersModel[index].id!
         : null;
+  }
+
+  bool isActive(int currentIndex) {
+    return listAnswerIdSelected.contains(listAnswersModel[currentIndex].id!)
+        ? true
+        : false;
   }
 
   void addAnswer({required List<int> answerValue}) {

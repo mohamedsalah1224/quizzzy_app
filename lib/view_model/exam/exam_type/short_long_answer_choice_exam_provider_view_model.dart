@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
@@ -18,11 +19,23 @@ class ShortLongAnswerViewModel extends ChangeNotifier {
 
   void initObject() {
     manageExamViewModel = Get.find<ManageExamViewModel>();
-
-    answerTextController = TextEditingController();
     questionsModel = manageExamViewModel.getCurrentQuestionModel(
         index: manageExamViewModel.currentQuetionIndex);
     listAnswersModel = questionsModel.answers!;
+
+    print("Question Id ${questionsModel.id}");
+    print(manageExamViewModel.answerSelectedByUser['${questionsModel.id}']);
+    if (manageExamViewModel.isAfterFinish &&
+        manageExamViewModel.answerSelectedByUser['${questionsModel.id}'] !=
+            null) {
+      print("TRUE SUCESS");
+
+      answerTextController = TextEditingController(
+          text: manageExamViewModel.answerSelectedByUser['${questionsModel.id}']
+              .toString());
+    } else {
+      answerTextController = TextEditingController();
+    }
     print("+" * 50);
     print("Sucess Init the ShortLongAnswerViewModel");
     print("+" * 50);

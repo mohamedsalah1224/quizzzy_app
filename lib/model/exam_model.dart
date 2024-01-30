@@ -1,3 +1,4 @@
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 
 class ExamModel {
@@ -15,6 +16,7 @@ class ExamModel {
   String? time;
   bool? isActive;
   int? subjectId;
+  ImageDimensionsModel? imageDimensions;
 
   List<QuestionsModel>? questions;
   String? createdAt;
@@ -34,6 +36,7 @@ class ExamModel {
       this.semester,
       this.points,
       this.time,
+      this.imageDimensions,
       this.isActive,
       this.questions,
       this.createdAt,
@@ -51,6 +54,9 @@ class ExamModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       id: json['id'],
+      imageDimensions: json['image_dimensions'] != null
+          ? ImageDimensionsModel.fromJson(json['image_dimensions'])
+          : null,
       name: json['name'],
       type: json['type'],
       questionTypes: json['question_types'],
@@ -86,6 +92,8 @@ class ExamModel {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'image_dimensions':
+          imageDimensions != null ? imageDimensions!.toJson() : {},
       'questions':
           questions != null ? questions!.map((v) => v.toJson()).toList() : []
     };

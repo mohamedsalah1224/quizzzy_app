@@ -1,3 +1,5 @@
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
+
 class AnswersModel {
   int? id;
   String? title;
@@ -10,6 +12,7 @@ class AnswersModel {
   bool? isCorrect;
   String? createdAt;
   String? updatedAt;
+  ImageDimensionsModel? imageDimensions;
 
   AnswersModel(
       {this.id,
@@ -20,6 +23,7 @@ class AnswersModel {
       this.answerOrder,
       this.answerSettings,
       this.photo,
+      this.imageDimensions,
       this.isCorrect,
       this.createdAt,
       this.updatedAt});
@@ -34,6 +38,9 @@ class AnswersModel {
         answerOrder: json['answer_order'],
         answerSettings: json['answer_settings'],
         photo: json['photo'],
+        imageDimensions: json['image_dimensions'] != null
+            ? ImageDimensionsModel.fromJson(json['image_dimensions'])
+            : null,
         createdAt: json['created_at'],
         isCorrect: json['is_correct'],
         updatedAt: json['updated_at']);
@@ -51,7 +58,9 @@ class AnswersModel {
       'photo': photo,
       'is_correct': isCorrect,
       'created_at': createdAt,
-      'updated_at': updatedAt
+      'updated_at': updatedAt,
+      'image_dimensions':
+          imageDimensions != null ? imageDimensions!.toJson() : {},
     };
   }
 }

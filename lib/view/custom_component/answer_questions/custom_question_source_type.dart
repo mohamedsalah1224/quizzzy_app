@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/view/custom_component/source_type/audio/custom_source_audio.dart';
@@ -14,9 +15,11 @@ class CustomQuestionSourceType extends StatelessWidget {
   final QuestionSourceType questionSourceType;
   final String? imageSourceLink;
   final String? fileSourceLink;
+  final ImageDimensionsModel? imageDimensionsModel;
   const CustomQuestionSourceType(
       {super.key,
       required this.questionSourceType,
+      this.imageDimensionsModel,
       this.fileSourceLink,
       this.imageSourceLink = ""});
 
@@ -26,7 +29,10 @@ class CustomQuestionSourceType extends StatelessWidget {
       return 50.verticalSpace;
     } else if (questionSourceType == QuestionSourceType.image) {
       return (imageSourceLink != null && imageSourceLink!.isNotEmpty)
-          ? CustomSourceImage(imageSourceLink: imageSourceLink)
+          ? CustomSourceImage(
+              imageSourceLink: imageSourceLink,
+              imageDimensionsModel: imageDimensionsModel,
+            )
           : const CustomMessageSource(
               message: "غير قادر علي تحميل الصورة",
             );

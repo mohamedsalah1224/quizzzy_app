@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/image_helper/custom_image_helper.dart';
+import 'package:quizzy_app/utils/image_helper/custom_image_viewer.dart';
 import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
 
@@ -72,6 +75,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
                       text: answerModel.title ?? "",
                       fontFamily: "Cairo",
                       fontWeight: FontWeight.w400,
+
                       textDirection: Validation.instance
                               .isEnglishText(text: answerModel.title!)
                           ? TextDirection.ltr
@@ -129,7 +133,27 @@ class CustomTrueFalseChoice extends StatelessWidget {
                               size: 30,
                             ),
                           )
-                        : const SizedBox()
+                        : const SizedBox(),
+          answerModel.answerViewFormat == ExamConstatnt.answerViewFormatIamge ||
+                  answerModel.answerViewFormat ==
+                      ExamConstatnt.answerViewFormatTextImage
+              ? Positioned(
+                  left: 5,
+                  right: 5,
+                  child: RPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: CustomImageViewer(
+                        isShowIconZoomOut: true,
+                        child: CustomImageHelper(
+                          // hieght= (width / aspect ratio)
+                          imageDimensionsModel: answerModel.imageDimensions ??
+                              ImageDimensionsModel(),
+
+                          imageUrl: answerModel.photo ?? "",
+                        )),
+                  ),
+                )
+              : const SizedBox()
         ],
       ),
     );
