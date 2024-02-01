@@ -31,6 +31,8 @@ class EndPoint {
   static final String units = dotenv.get('UNITS');
   static final String questions = dotenv.get('QUESTIONS');
   static final String attemptAnswers = dotenv.get('ATTEMPT_ANSWERS');
+  static final String achievements = dotenv.get('ACHIEVEMENTS');
+  // ACHIEVEMENTS
 // ATTEMPT_ANSWERS
 
   static String showExamById({required int examId}) => "$exams/$examId";
@@ -48,6 +50,8 @@ ANSWER_QUESTION="/api/exams/answer_question"
   static String getAcademiYearById({required int id}) => "$academiYears/$id";
   static String getSubjectById({required int id}) => "$subjects/$id";
   static String getUnitById({required int id}) => "$units/$id";
+  static String getAchievementsBySubjectId({required int subjectId}) =>
+      "$exams/$subjectId$achievements";
   static String getSendNoteOrWrongToQuestion({required int idQuestion}) =>
       "$questions/$idQuestion";
 }

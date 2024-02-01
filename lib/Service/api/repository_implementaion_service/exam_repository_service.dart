@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/exam_repository.dart';
+import 'package:quizzy_app/model/achievement_model.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
@@ -92,6 +94,21 @@ class ExamRepositoryService implements ExamRepository {
       throw ValidationErroModel.fromJson(e.response!.data).message.toString();
     } catch (e, s) {
       debugPrint(s.toString()); // to print the Erro Stack Lines
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AchievementModel> getAchievement({required int subjectId}) async {
+    try {
+      var response = await DioHelper()
+          .get(EndPoint.getAchievementsBySubjectId(subjectId: subjectId));
+      return AchievementModel.fromJson(response);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } catch (e, s) {
+      debugPrint(s.toString());
       rethrow;
     }
   }
