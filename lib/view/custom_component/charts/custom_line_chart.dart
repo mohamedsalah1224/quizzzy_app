@@ -1,0 +1,67 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quizzy_app/view/custom_component/charts/title_data_line_chart.dart';
+
+class CustomLineChart extends StatelessWidget {
+  final double? maxY;
+  const CustomLineChart({
+    this.maxY = 1000,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RPadding(
+      padding: REdgeInsets.only(top: 20, right: 20),
+      child: LineChart(
+        LineChartData(
+            minX: 0,
+            minY: 0,
+            maxY: maxY,
+            titlesData: CustomTitleDataLineChart.getTitles(),
+            lineBarsData: [
+              LineChartBarData(
+                color: const Color.fromRGBO(164, 236, 244, 0.49),
+                barWidth: 1,
+                dotData: const FlDotData(
+                    show:
+                        false), // to disable the digit of the point show in the Figure
+                isCurved: true, //to make the graph
+                belowBarData: BarAreaData(
+                    show: true,
+                    color: const Color.fromRGBO(164, 236, 244, 0.49)),
+                spots: [
+                  const FlSpot(0, 100),
+                  const FlSpot(2, 150),
+                  const FlSpot(3, 50),
+                  const FlSpot(4, 27),
+                  const FlSpot(6, 200),
+                  const FlSpot(6, 250),
+                  const FlSpot(7, 100),
+                ],
+              ),
+            ],
+            borderData: FlBorderData(
+                show: true,
+                border: Border.all(width: 1, color: const Color(0xffF0F0F0))),
+            gridData: FlGridData(
+                show: true,
+                getDrawingHorizontalLine: (value) {
+                  return const FlLine(
+                    color: Color(0xffF0F0F0),
+                    strokeWidth: 1,
+                  );
+                },
+                getDrawingVerticalLine: (value) {
+                  return const FlLine(
+                    color: Color(0xffF0F0F0),
+                    strokeWidth: 1,
+                  );
+                },
+                drawHorizontalLine: true,
+                drawVerticalLine: true)),
+      ),
+    );
+  }
+}
