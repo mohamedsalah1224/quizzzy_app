@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/charts/custom_line_chart.dart';
+import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/account_view_model.dart';
 
 import '../../custom_component/custom_achievement.dart';
 
-class AccountView extends StatelessWidget {
+class AccountView extends GetView<AccountViewModel> {
   const AccountView({super.key});
 
   @override
@@ -55,7 +58,7 @@ class AccountView extends StatelessWidget {
                             REdgeInsets.symmetric(vertical: 12, horizontal: 4),
                         child: CustomText(
                           text:
-                              "مجموع نقاطك هذا الاسبوع في الجبر 20000000000 نقطة",
+                              "مجموع نقاطك هذا الاسبوع في الجبر ${controller.achievementModel!.data!.chart!.totalEarnedMarks!} نقطة",
                           fontFamily: "Cairo",
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
@@ -63,9 +66,13 @@ class AccountView extends StatelessWidget {
                         ),
                       ),
                       const Divider(),
-                      const Expanded(
+                      Expanded(
                           child: AspectRatio(
-                              aspectRatio: 2, child: CustomLineChart()))
+                              aspectRatio: 2,
+                              child: CustomLineChart(
+                                maxY: controller.maxNumberInCharts(),
+                                listData: controller.chartListData,
+                              )))
                     ],
                   ),
                 ),
@@ -77,29 +84,23 @@ class AccountView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 111.w,
-                          height: 26.h,
-                          padding: EdgeInsets.symmetric(horizontal: 10).w,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xff9ADFEF), width: 2),
-                              borderRadius: BorderRadius.circular(14)),
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: DropdownButton(
-                              underline: Text(""),
-                              value: "الجبر",
-                              isExpanded: true,
-                              items: [
-                                DropdownMenuItem(
-                                  value: "الجبر",
-                                  child: Text("الجبر"),
-                                )
-                              ],
-                              onChanged: (value) {},
-                            ),
-                          ),
+                        GetBuilder<AccountViewModel>(
+                          id: "updateSubject",
+                          builder: (controller) {
+                            return SizedBox(
+                              height: 26.h,
+                              width: 111.w,
+                              child: CustomDropDownFilter(
+                                items: controller.subjectListDropDownValues,
+                                value: controller.subjectValue,
+                                isSubject: true,
+                                onChanged: (value) =>
+                                    controller.updateSubject(value!),
+                                borderColor: const Color(0xff9ADFEF),
+                                defaultValue: "اختر المادة",
+                              ),
+                            );
+                          },
                         ),
                         CustomText(
                           text: "إنجازاتك",
@@ -115,12 +116,16 @@ class AccountView extends StatelessWidget {
                       children: [
                         CustomAchievement(
                           text: "سؤال",
-                          number: 200,
+                          number: controller
+                                  .achievementModel!.data!.totalQuestions ??
+                              "0",
                           assetImage: Assets.imagesCorrectansswer,
                         ),
                         CustomAchievement(
                           text: "نقطة",
-                          number: 1000,
+                          number: controller
+                              .achievementModel!.data!.totalEarnedMarks
+                              .toString(),
                           assetImage: Assets.imagesPoints,
                         ),
                       ],
@@ -131,12 +136,16 @@ class AccountView extends StatelessWidget {
                       children: [
                         CustomAchievement(
                           text: "النجاح",
-                          number: 130,
+                          number: controller
+                              .achievementModel!.data!.numberCorrectAnswer
+                              .toString(),
                           assetImage: Assets.imagesFire,
                         ),
                         CustomAchievement(
                           text: "من الأوائل",
-                          number: 11,
+                          number:
+                              controller.achievementModel!.data!.yourRanking ??
+                                  "0",
                           assetImage: Assets.imagesMedal,
                         ),
                       ],

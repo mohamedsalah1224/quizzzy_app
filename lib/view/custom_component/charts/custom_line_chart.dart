@@ -5,8 +5,10 @@ import 'package:quizzy_app/view/custom_component/charts/title_data_line_chart.da
 
 class CustomLineChart extends StatelessWidget {
   final double? maxY;
+  final List<double> listData;
   const CustomLineChart({
-    this.maxY = 1000,
+    this.maxY = 100,
+    required this.listData,
     super.key,
   });
 
@@ -18,29 +20,23 @@ class CustomLineChart extends StatelessWidget {
         LineChartData(
             minX: 0,
             minY: 0,
-            maxY: maxY,
+            maxY: maxY == 0
+                ? 100
+                : maxY, // if the max equal 0 make the Defualt Value 10
             titlesData: CustomTitleDataLineChart.getTitles(),
             lineBarsData: [
               LineChartBarData(
-                color: const Color.fromRGBO(164, 236, 244, 0.49),
-                barWidth: 1,
-                dotData: const FlDotData(
-                    show:
-                        false), // to disable the digit of the point show in the Figure
-                isCurved: true, //to make the graph
-                belowBarData: BarAreaData(
-                    show: true,
-                    color: const Color.fromRGBO(164, 236, 244, 0.49)),
-                spots: [
-                  const FlSpot(0, 100),
-                  const FlSpot(2, 150),
-                  const FlSpot(3, 50),
-                  const FlSpot(4, 27),
-                  const FlSpot(6, 200),
-                  const FlSpot(6, 250),
-                  const FlSpot(7, 100),
-                ],
-              ),
+                  color: const Color.fromRGBO(164, 236, 244, 0.49),
+                  barWidth: 1,
+                  dotData: const FlDotData(
+                      show:
+                          false), // to disable the digit of the point show in the Figure
+                  isCurved: true, //to make the graph
+                  belowBarData: BarAreaData(
+                      show: true,
+                      color: const Color.fromRGBO(164, 236, 244, 0.49)),
+                  spots: List.generate(listData.length,
+                      (index) => FlSpot(index.toDouble(), listData[index])))
             ],
             borderData: FlBorderData(
                 show: true,

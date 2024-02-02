@@ -9,6 +9,7 @@ class CustomDropDownFilter extends StatelessWidget {
   final Color borderColor;
   final Widget? icon;
   final double? height;
+  final bool? isSubject;
 
   const CustomDropDownFilter(
       {super.key,
@@ -16,6 +17,7 @@ class CustomDropDownFilter extends StatelessWidget {
       required this.value,
       required this.defaultValue,
       this.icon,
+      this.isSubject = false,
       required this.borderColor,
       this.height = 45,
       required this.items});
@@ -27,9 +29,13 @@ class CustomDropDownFilter extends StatelessWidget {
       height: height!.h,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8).r,
+          borderRadius: isSubject!
+              ? BorderRadius.circular(14).r
+              : BorderRadius.circular(8).r,
           border: Border.all(color: borderColor, width: 2.r)),
-      padding: const EdgeInsets.all(5).r,
+      padding: isSubject!
+          ? const EdgeInsets.symmetric(horizontal: 10).w
+          : const EdgeInsets.all(5).r,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: DropdownButton(
@@ -38,7 +44,9 @@ class CustomDropDownFilter extends StatelessWidget {
             hint: Text(
               defaultValue,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 5).w,
+            padding: !isSubject!
+                ? const EdgeInsets.symmetric(horizontal: 5).w
+                : null,
             // underline: const Text(""),
             iconEnabledColor: borderColor,
             icon: icon,

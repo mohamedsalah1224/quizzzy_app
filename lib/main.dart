@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,8 @@ void main() async {
       : await Firebase.initializeApp();
 
   await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+
   runApp(const MyApp());
 }
 

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'custom_text.dart';
 
 class CustomAchievement extends StatelessWidget {
-  final int number;
+  final String number;
   final String text;
   final String assetImage;
   final bool isMedal;
@@ -27,22 +27,28 @@ class CustomAchievement extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomText(
-                text: "$number",
-                fontFamily: "Cairo",
-                fontWeight: FontWeight.w800,
-                fontSize: 15.sp,
-              ),
-              CustomText(
-                text: "$text",
-                fontFamily: "Cairo",
-                fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: CustomText(
+                    text: "$number",
+                    fontFamily: "Cairo",
+                    fontWeight: FontWeight.w800,
+                    fontSize: number.length > 8 ? 12.sp : 15.sp,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                CustomText(
+                  text: "$text",
+                  fontFamily: "Cairo",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                ),
+              ],
+            ),
           ),
           15.horizontalSpace,
           Padding(
