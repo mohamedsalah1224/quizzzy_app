@@ -1,3 +1,4 @@
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
 
 class DataSubjectModel {
@@ -10,12 +11,14 @@ class DataSubjectModel {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
+  ImageDimensionsModel? imageDimensions;
 
   DataSubjectModel(
       {this.id,
       this.name,
       this.photo,
       this.semester,
+      this.imageDimensions,
       this.academicYearId,
       this.academicYear,
       this.isActive,
@@ -28,6 +31,9 @@ class DataSubjectModel {
         academicYearId: json['academic_year_id'],
         name: json['name'],
         photo: json['photo'],
+        imageDimensions: json['image_dimensions'] != null
+            ? ImageDimensionsModel.fromJson(json['image_dimensions'])
+            : null,
         semester: json['semester'],
         isActive: json['is_active'],
         createdAt: json['created_at'],
@@ -47,6 +53,8 @@ class DataSubjectModel {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'image_dimensions':
+          imageDimensions != null ? imageDimensions!.toJson() : {},
       'academic_year': academicYear != null ? academicYear!.toJson() : {}
     };
   }

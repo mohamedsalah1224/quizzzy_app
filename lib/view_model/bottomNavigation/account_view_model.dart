@@ -101,6 +101,15 @@ class AccountViewModel extends GetxController {
 
     ExamRepositoryService().getAchievement(subjectId: subjectId).then((value) {
       _achievementModel = value;
+      _achievementModel = AchievementModel(
+          data: Data(
+              chart: Chart(
+                  data: [100, 200, 200, 300, 500, 400, 600],
+                  totalEarnedMarks: 500),
+              numberCorrectAnswer: 20,
+              totalEarnedMarks: 4454545454,
+              totalQuestions: "1000000",
+              yourRanking: "5"));
       _chartListData = _achievementModel.data!.chart!.data!
           .map((e) => e.toDouble())
           .toList();
