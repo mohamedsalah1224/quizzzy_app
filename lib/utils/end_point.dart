@@ -32,6 +32,8 @@ class EndPoint {
   static final String questions = dotenv.get('QUESTIONS');
   static final String attemptAnswers = dotenv.get('ATTEMPT_ANSWERS');
   static final String achievements = dotenv.get('ACHIEVEMENTS');
+  static final String ads = dotenv.get('ADS');
+  //ADS
   // ACHIEVEMENTS
 // ATTEMPT_ANSWERS
 
