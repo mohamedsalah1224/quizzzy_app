@@ -1,3 +1,4 @@
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/leasons_model.dart';
 
 class UnitDataModel {
@@ -9,14 +10,17 @@ class UnitDataModel {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
-
+  String? semester;
+  ImageDimensionsModel? imageDimensions;
   UnitDataModel(
       {this.id,
       this.name,
       this.description,
       this.photo,
+      this.imageDimensions,
       this.lessons,
       this.isActive,
+      this.semester,
       this.createdAt,
       this.updatedAt});
 
@@ -37,6 +41,10 @@ class UnitDataModel {
         isActive: json['is_active'],
         createdAt: json['created_at'],
         updatedAt: json['updated_at'],
+        semester: json['semester'],
+        imageDimensions: json['image_dimensions'] != null
+            ? ImageDimensionsModel.fromJson(json['image_dimensions'])
+            : null,
         lessons: listLeaseon);
   }
 
@@ -49,6 +57,9 @@ class UnitDataModel {
       'is_active': isActive,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'semester': semester,
+      'image_dimensions':
+          imageDimensions != null ? imageDimensions!.toJson() : {},
       'lessons': lessons != null ? lessons!.map((v) => v.toJson()).toList() : []
     };
   }

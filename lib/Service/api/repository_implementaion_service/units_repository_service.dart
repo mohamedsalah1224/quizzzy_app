@@ -25,12 +25,18 @@ class UnitsRepositoryService implements UnitsRepository {
 
   @override
   Future<UnitsModel> getUnits(
-      {int? skip, int? limit, required int subjectId}) async {
+      {int? skip,
+      int? limit,
+      required int subjectId,
+      required int bookId,
+      String? semester}) async {
     try {
       var response = await DioHelper().get(EndPoint.units, queryParameters: {
         'skip': skip,
         'limit': limit,
-        'subject_id': subjectId
+        'subject_id': subjectId,
+        'book_id': bookId,
+        'semester': semester,
       });
       return UnitsModel.fromJson(response);
     } on DioException catch (e, s) {

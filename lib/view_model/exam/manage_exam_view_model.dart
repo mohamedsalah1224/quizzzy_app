@@ -21,7 +21,7 @@ import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
 import 'package:quizzy_app/view/screens/exam/choose_subject.dart';
-import 'package:quizzy_app/view/screens/exam/exam_statistics_view.dart';
+
 import 'package:quizzy_app/view/screens/exam/exam_type/compare_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/long_short_answer_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/multiple_choice_exam.dart';
@@ -1150,10 +1150,10 @@ class ManageExamViewModel extends GetxController {
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
-                type: ExamConstatnt.aiExam,
-                typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-                subjectId: _subjectSelectedInformation!.id,
-                semester: _subjectSelectedInformation!.semester))
+      type: ExamConstatnt.aiExam,
+      typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+      subjectId: _subjectSelectedInformation!.id,
+    ))
         .then((value) {
       _examData = value;
       // SnackBarHelper.instance

@@ -20,10 +20,14 @@ class SubjectsRepositoryService implements SubjectsRepository {
   }
 
   @override
-  Future<SubjectsModel> getSubjects({int? skip, int? limit}) async {
+  Future<SubjectsModel> getSubjects(
+      {int? skip, int? limit, int? academicYearId}) async {
     try {
-      var response = await DioHelper().get(EndPoint.subjects,
-          queryParameters: {'skip': skip, 'limit': limit});
+      var response = await DioHelper().get(EndPoint.subjects, queryParameters: {
+        'skip': skip,
+        'limit': limit,
+        'academic_year_id': academicYearId
+      });
       return SubjectsModel.fromJson(response);
     } on DioException catch (e) {
       throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);

@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:quizzy_app/model/ads_model.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/view/custom_component/custom_ads_and_offer.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
 
@@ -41,7 +43,7 @@ class HomeView extends GetView<HomeViewModel> {
       ),
       body: GetBuilder<HomeViewModel>(
         builder: (controller) {
-          return controller.text == null
+          return !controller.isLoadHomeViewPage
               ? Center(child: CircularProgressIndicator())
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.h),
@@ -162,27 +164,28 @@ class HomeView extends GetView<HomeViewModel> {
                           fontSize: 18.sp,
                         ),
                         10.verticalSpace,
-                        Container(
-                          alignment: AlignmentDirectional.centerEnd,
-                          width: double.infinity.w,
-                          height: 130.h,
-                          padding: EdgeInsets.only(
-                              bottom: 15.h, left: 15.w, right: 15.w),
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              image: DecorationImage(
-                                  image: AssetImage(Assets.imagesElan),
-                                  fit: BoxFit.cover),
-                              borderRadius: BorderRadius.circular(12.r)),
-                          child: CustomText(
-                            text:
-                                " يكتب هنا الإعلان يكتب هنا الإعلان أو العرض يكتب هنا الإعلان أو العرض أو العرض أو العرض يكتب هنا الإعلان أو العرض  ",
-                            fontSize: 18.sp,
-                            fontFamily: "Cairo",
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
+                        GetBuilder<HomeViewModel>(
+                          id: 'updateAds',
+                          builder: (controller) {
+                            return controller.adsList.isEmpty
+                                ? CustomAdsAndOffer(
+                                    adsModel: AdsData(
+                                        // photo:
+                                        //     'https://quizzy.makank.online/images/ads/2nFmSi5tt9PgeYsGIXlNRc9LlRike6TGODZXoDXC.png',
+                                        // // title:
+                                        // //     " الخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخولي  محمد صلاح الخولي",
+                                        ))
+                                : ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return CustomAdsAndOffer(
+                                          adsModel: controller.adsList[index]);
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox();
+                                    },
+                                    itemCount: controller.adsList.length);
+                          },
                         ),
                         15.verticalSpace,
                         Row(

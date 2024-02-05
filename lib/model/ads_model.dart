@@ -1,16 +1,16 @@
 class AdsModel {
   bool? success;
-  List<Data>? data;
+  List<AdsData>? data;
   String? message;
 
   AdsModel({this.success, this.data, this.message});
 
   factory AdsModel.fromJson(Map<String, dynamic> json) {
-    List<Data> list = [];
+    List<AdsData> list = [];
 
     if (json['data'] != null) {
       json['data'].forEach((v) {
-        list.add(Data.fromJson(v));
+        list.add(AdsData.fromJson(v));
       });
     }
 
@@ -27,7 +27,7 @@ class AdsModel {
   }
 }
 
-class Data {
+class AdsData {
   int? id;
   String? title;
   String? photo;
@@ -35,7 +35,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data(
+  AdsData(
       {this.id,
       this.title,
       this.photo,
@@ -43,8 +43,8 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
+  factory AdsData.fromJson(Map<String, dynamic> json) {
+    return AdsData(
       id: json['id'],
       title: json['title'],
       photo: json['photo'],
