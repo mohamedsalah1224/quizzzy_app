@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/units_repository_service.dart';
 import 'package:quizzy_app/model/leasons_model.dart';
@@ -8,7 +9,7 @@ import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class FilterQuestionsViewModel extends GetxController {
   bool _isLoadFilterPage = false;
-  List<String> semester = ["الأول", "الثاني"];
+  List<String> semester = ["الكل", "الأول", "الثاني", "الثالث", "الرابع"];
   List<String> levelOfExam = ["سهل", "متوسط", "صعب"];
   List<String> time = ['10', '15', '20', '30', '60'];
   List<String> typeOfQuestion = [
@@ -29,7 +30,8 @@ class FilterQuestionsViewModel extends GetxController {
   String? unitValue;
   String? leasonValue;
   List<LessonsModel> listLeaseon = [];
-  late List<UnitDataModel> listUnits;
+  late List<UnitDataModel> unitsModel;
+  List<UnitDataModel> unitValueList = [];
 
   bool get isLoadFilterPage => _isLoadFilterPage;
 
@@ -44,11 +46,29 @@ class FilterQuestionsViewModel extends GetxController {
 
   void updateSemester(String? value) {
     semesterValue = value;
-    update(["updateSemester"]);
+    String? idSemester = getIdOfSemester(value!);
+    unitValue = null;
+    leasonValue = null;
+
+    unitValueList = idSemester != null
+        ? unitsModel
+            .where(((element) => element.semester == idSemester))
+            .toList()
+        : unitsModel;
+
+    print("-" * 50);
+
+    print("List of Unit : $unitValueList");
+    print("-" * 50);
+    // listLeaseon =
+    //     listUnits.firstWhere((element) => (element.name == value)).lessons ??
+    //         [];
+    update(["updateSemester", "updateUnits", "updateLeasons"]);
   }
 
   void updateTime(String? value) {
     timeValue = value;
+
     update(["updateTime"]);
   }
 
@@ -64,9 +84,11 @@ class FilterQuestionsViewModel extends GetxController {
 
   void updateUnits(String value) {
     unitValue = value;
-    listLeaseon =
-        listUnits.firstWhere((element) => (element.name == value)).lessons ??
-            [];
+    leasonValue = null;
+    listLeaseon = unitValueList
+            .firstWhere((element) => (element.name == value))
+            .lessons ??
+        [];
 
     update(["updateUnits"]);
     update(["updateLeasons"]);
@@ -82,15 +104,17 @@ class FilterQuestionsViewModel extends GetxController {
 
   void _getUnits() {
     _isLoadFilterPage = false;
+    ManageExamViewModel manageExamViewModel = Get.find<ManageExamViewModel>();
     UnitsRepositoryService()
         .getUnits(
-            subjectId: Get.find<ManageExamViewModel>()
-                .getSubjectSelectedInformation
-                .id!)
+      subjectId: manageExamViewModel.getSubjectSelectedInformation.id!,
+      bookId: manageExamViewModel.getBookSelected.id!,
+      // semester:semesterId, // to Load All Unit
+    )
         .then((value) {
       if (value.success!) {
-        listUnits = value.data!;
-
+        unitsModel = value.data!;
+        semesterValue = null;
         _isLoadFilterPage = true;
         update(['updateLoadFilterPage']);
       }
@@ -98,22 +122,20 @@ class FilterQuestionsViewModel extends GetxController {
             .showMessage(message: e.toString(), erro: true));
   }
 
-  List<String> get unitsValueList => listUnits.map((e) => e.name!).toList();
+  List<String> get unitsValueList => unitValueList.map((e) => e.name!).toList();
   List<String> get leasonsValueList => listLeaseon.map((e) => e.name!).toList();
 
   int? get unitId => unitValue != null
-      ? listUnits.firstWhere((element) => (element.name == unitValue)).id
+      ? unitValueList.firstWhere((element) => (element.name == unitValue)).id
       : null;
 
   int? get leasonId => leasonValue != null
       ? listLeaseon.firstWhere((element) => (element.name == leasonValue)).id
       : null;
 
-  String? get semesterId => semesterValue != null
-      ? semesterValue == "الأول"
-          ? "1"
-          : "2"
-      : null;
+  String get semesterOfUnit => unitValueList
+      .firstWhere((element) => (element.name == unitValue))
+      .semester!;
 
   int? get getTimeSecounds =>
       timeValue != null ? int.parse(timeValue!) * 60 : null;
@@ -129,7 +151,7 @@ class FilterQuestionsViewModel extends GetxController {
     super.onClose();
 
     print("-" * 50);
-    print("semester $semesterId");
+    print("semester $semesterOfUnit");
     print("unit $unitId");
     print("leason $leasonId");
     print("time $getTimeSecounds");
@@ -138,14 +160,43 @@ class FilterQuestionsViewModel extends GetxController {
     print("-" * 50);
   }
 
-  void confirmFilter() {
+  void confirmFilter(BuildContext context) {
+    if (semesterValue == null || unitValue == null) {
+      SnackBarHelper.instance.showMessage(
+          erro: true,
+          isEnglish: false,
+          message: semesterValue == null
+              ? 'يجب عليك اختيار الصف الدراسي'
+              : 'يجب عليك اختيار الوحدة');
+
+      return;
+    }
     Get.find<ManageExamViewModel>().confirmFilter(
       leasonId: leasonId,
       level: getlevelofExam,
-      semesterId: semesterId,
+      semesterId: semesterOfUnit,
       time: getTimeSecounds,
       typeAssessment: getEvaluation,
       unitId: unitId,
     );
+  }
+
+  String? getIdOfSemester(String value) {
+    // ["الكل", "الأول", "الثاني", "الثالث", "الرابع"];
+    if (value == "الأول") {
+      return "1";
+    } else if (value == "الثاني") {
+      return "2";
+    } else if (value == "الثالث") {
+      return "3";
+    } else if (value == "الرابع") {
+      return "4";
+    } else {
+      return null; // null mean it Selecte All
+    }
+  }
+
+  void backFromFilter() {
+    Get.find<ManageExamViewModel>().backFromFilter();
   }
 }

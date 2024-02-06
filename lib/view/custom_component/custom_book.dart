@@ -1,21 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quizzy_app/model/data_subject_model.dart';
+import 'package:quizzy_app/model/book_model.dart';
+
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 
 import 'custom_text.dart';
 
-class CustomSubject extends StatelessWidget {
+class CustomBook extends StatelessWidget {
   final bool isShowArrow;
   final void Function()? onTap;
-  final DataSubjectModel subjectModel;
+  final BookModel bookModel;
 
-  const CustomSubject({
+  const CustomBook({
     super.key,
-    required this.subjectModel,
+    required this.bookModel,
     this.isShowArrow = true,
     this.onTap,
   });
@@ -31,21 +33,23 @@ class CustomSubject extends StatelessWidget {
             color:
                 GeneralUtils.instance.generateColor(), // to genearate a Color
             borderRadius: BorderRadius.circular(17).r,
-            boxShadow: [
-              const BoxShadow(
+            boxShadow: const [
+              BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   blurRadius: 5,
-                  offset: const Offset(0, 4))
+                  offset: Offset(0, 4))
             ]),
-        child: subjectModel.photo == null || subjectModel.photo!.isEmpty
+        child: bookModel.photo == null ||
+                bookModel.photo!.isEmpty ||
+                bookModel.photo == ExamConstatnt.isDeafultImage
             ? Center(
                 child: CustomText(
-                  text: subjectModel.name!,
+                  text: bookModel.name!,
                   fontFamily: "Cairo",
                   fontWeight: FontWeight.w800,
                   fontSize: 12.sp,
                   color: Colors.white,
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.center,
                 ),
               )
             : Column(
@@ -55,7 +59,7 @@ class CustomSubject extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(right: 15.w, top: 10.h),
                     child: CustomText(
-                      text: subjectModel.name!,
+                      text: bookModel.name!,
                       fontFamily: "Cairo",
                       fontWeight: FontWeight.w800,
                       fontSize: 12.sp,
@@ -75,9 +79,9 @@ class CustomSubject extends StatelessWidget {
                   ),
                   Expanded(
                     child: CachedNetworkImage(
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fill,
                       width: double.infinity,
-                      imageUrl: subjectModel.photo!,
+                      imageUrl: bookModel.photo!,
                       fadeInDuration: const Duration(seconds: 1),
                       placeholder: (context, url) =>
                           const CustomCircularProgressIndicator(),

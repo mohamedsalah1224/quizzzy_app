@@ -17,7 +17,8 @@ class ExamConstatnt {
   static const String answerViewFormatIamge = "image";
   static const String answerViewFormatText = "text"; // text_image
   static const String answerViewFormatTextImage = "text_image";
-
+  static const String isDeafultImage =
+      "https://quizzy.makank.online/images/books/avatar.png";
   // choice_specialist
 
   static const String specialistExam = "choice_specialist";

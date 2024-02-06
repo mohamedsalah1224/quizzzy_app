@@ -9,14 +9,20 @@ class SnackBarHelper {
   static SnackBarHelper get instance => _instance ??= SnackBarHelper._();
 
   showMessage(
-      {required String message, int milliseconds = 2000, bool erro = false}) {
+      {required String message,
+      int milliseconds = 2000,
+      bool erro = false,
+      bool isEnglish = true}) {
     ScaffoldMessenger.of(navigatorKey.currentState!.context)
         .showSnackBar(SnackBar(
       elevation: 0.0,
       backgroundColor: erro ? Colors.deepOrange : Colors.deepPurple,
       //behavior: SnackBarBehavior.floating,
 
-      content: Text(message),
+      content: Text(
+        message,
+        textDirection: isEnglish ? TextDirection.ltr : TextDirection.rtl,
+      ),
       duration: Duration(milliseconds: milliseconds),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

@@ -7,6 +7,7 @@ import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_rep
 import 'package:quizzy_app/Service/api/repository_implementaion_service/questions_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
+import 'package:quizzy_app/model/book_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
@@ -19,6 +20,7 @@ import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view/screens/exam/choose_book.dart';
 
 import 'package:quizzy_app/view/screens/exam/choose_subject.dart';
 
@@ -48,11 +50,14 @@ class ManageExamViewModel extends GetxController {
   int _countOfQuestion = 1;
   int _totalOfQuestion = 0;
   bool _isAfterFinish = false;
+  String _examTypeMessage = "الإختبار";
 
   DataSubjectModel? _subjectSelectedInformation;
+  BookModel? _bookSelected;
   StartQuizModel? _startQuizModel;
   bool _isLoadExamViewPage = false;
   late List<DataSubjectModel> _subjectList;
+  List<BookModel> _bookList = [];
   final List<Widget> _examTypeList = [
     const CompareExam(),
     const LongShortAnswerExam(),
@@ -61,7 +66,8 @@ class ManageExamViewModel extends GetxController {
     const SingleChoiceExam(),
   ];
   final List<Widget> _examViewList = const [
-    ChooseSubject(),
+    ChooseSubjectView(),
+    ChooseBookView(),
     QuizTypeView(),
     FilterQuestionsView(),
     // ExamView(),
@@ -83,6 +89,7 @@ class ManageExamViewModel extends GetxController {
 
   bool get isLoadChoicePage => _isLoadChoicePage;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
+  String get examTypeMessage => _examTypeMessage;
   void setAfterFinish() => _isAfterFinish = true;
   bool get isAfterFinish => _isAfterFinish;
   Map<String, dynamic> get answerSelectedByUser => _mapAnswersOfExam;
@@ -96,15 +103,20 @@ class ManageExamViewModel extends GetxController {
   }
 
   List<DataSubjectModel> get subjectList => _subjectList;
+  List<BookModel> get bookList => _bookList;
 
   DataSubjectModel get getSubjectSelectedInformation =>
       _subjectSelectedInformation!;
-
+  BookModel get getBookSelected => _bookSelected!;
   StartQuizModel get startQuizModel => _startQuizModel!;
   ExamsModel get examData => _examData!;
+  bool get isNoQuestionExist =>
+      _examData!.data!.questions!.isEmpty ? true : false;
   List<Widget> get examTypeList => _examTypeList;
   int get currentQuetionIndex => _currentQuetionIndex;
   int get currentManageExamsPagesIndex => _currentManageExamsPagesIndex;
+  void setCurrentManageExamsPagesIndex(int index) =>
+      _currentManageExamsPagesIndex = index;
   int get currentExamTypeIndex => _currentExamTypeIndex;
   int get totalOfQuestion => _totalOfQuestion;
   int get countOfQuestion => _countOfQuestion;
@@ -125,15 +137,39 @@ class ManageExamViewModel extends GetxController {
 
   void chooseSubject({required DataSubjectModel subjectSelectedInformation}) {
     _subjectSelectedInformation = subjectSelectedInformation;
+    _bookList = _subjectSelectedInformation!.books ?? [];
     _currentManageExamsPagesIndex = 1;
-    update();
+    update(['updateCurrentManageExamsPagesIndex']);
+  }
+
+  void chooseBook({required BookModel bookModel}) {
+    _bookSelected = bookModel;
+    _currentManageExamsPagesIndex = 2; // update Book Index
+    update(['updateCurrentManageExamsPagesIndex']);
+  }
+
+  void backFromChooseBookView() {
+    _currentManageExamsPagesIndex = 0;
+    update(['updateCurrentManageExamsPagesIndex']);
+  }
+
+  void backFromQuizViewType() {
+    _currentManageExamsPagesIndex = 1;
+    update(['updateCurrentManageExamsPagesIndex']);
+  }
+
+  void backFromFilter() {
+    _currentManageExamsPagesIndex = 2;
+    update(['updateCurrentManageExamsPagesIndex']);
   }
 
   void createYourExamByFilter() {
-    _currentManageExamsPagesIndex = 2;
-    update();
+    _currentManageExamsPagesIndex = 3;
+    update(['updateCurrentManageExamsPagesIndex']);
     // call api Repositry for filter Question
   }
+
+  void getTheTypeOfExamMessage() {}
 
   void confirmFilter(
       {int? leasonId,
@@ -148,7 +184,10 @@ class ManageExamViewModel extends GetxController {
     // if it Choce the typeOfAssessment AfterFinish
     if (ExamConstatnt.typeAssessmentAfterFinish == typeAssessment) {
       _isAfterFinish = true;
+    } else {
+      _isAfterFinish = false;
     }
+    _examTypeMessage = "الإختبار الإختياري";
     _choiceExamService(
         leasonId: leasonId,
         level: level,
@@ -166,10 +205,13 @@ class ManageExamViewModel extends GetxController {
     // ( quizType== QuizType.ai ) // call Api for Ai Reposirty
 
     if (QuizType.ai == quizType) {
+      _examTypeMessage = "الإختبار لمعالجة الضعف بالذكاء الاصطناعي";
       _aiExamService();
     } else if (QuizType.random == quizType) {
+      _examTypeMessage = "الإختبار العشوائي";
       _randomExamService();
     } else {
+      _examTypeMessage = "الإختبار من مختص";
       _specialistExamService();
     }
     Get.toNamed(Routes.examView);
@@ -293,6 +335,11 @@ class ManageExamViewModel extends GetxController {
   }
 /////////////////////////////////// Button Action///////////////////////
   ///
+
+  void backFromExam() {
+    Get.back();
+    resetAllController();
+  }
 
   void backQuestion() {
     noteController.clear(); // to clear the note Controller
@@ -543,11 +590,15 @@ class ManageExamViewModel extends GetxController {
 
   Future<void> startQuizService({required int examId}) async {
     ExamRepositoryService().startQuiz(examId: examId).then((value) {
+      _countOfQuestion = 1;
+      _currentQuetionIndex = 0;
       _startQuizModel = value;
       _totalOfQuestion = _startQuizModel!
           .data!.totalQuestions!; // intialize the Value of total Question
       _isLoadExamViewPage = true; // to updateScreen
-      updateTheCurrentExamType();
+      if (!isNoQuestionExist) {
+        updateTheCurrentExamType();
+      }
       update([
         'LoadExamViewPage',
         'updateLinearProgres'
@@ -1150,10 +1201,11 @@ class ManageExamViewModel extends GetxController {
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
-      type: ExamConstatnt.aiExam,
-      typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-      subjectId: _subjectSelectedInformation!.id,
-    ))
+                type: ExamConstatnt.aiExam,
+                typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+                subjectId: _subjectSelectedInformation!.id,
+                bookId: _bookSelected!.id!,
+                semester: null))
         .then((value) {
       _examData = value;
       // SnackBarHelper.instance
@@ -1179,9 +1231,10 @@ class ManageExamViewModel extends GetxController {
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
-                type: ExamConstatnt.randomlyExam,
-                typeAssessment: typeAssessment,
                 subjectId: _subjectSelectedInformation!.id,
+                bookId: _bookSelected!.id!,
+                type: ExamConstatnt.choiceExam,
+                typeAssessment: typeAssessment,
                 semester: semesterId,
                 lessonId: leasonId,
                 level: level,
@@ -1191,9 +1244,11 @@ class ManageExamViewModel extends GetxController {
       _examData = value;
 
       startQuizService(examId: _examData!.data!.id!);
-      updateTheCurrentExamType();
-    }).catchError((e) => SnackBarHelper.instance.showMessage(
-            message: e.toString(), milliseconds: 2000, erro: true));
+    }).catchError((e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance
+          .showMessage(message: e.toString(), milliseconds: 2000, erro: true);
+    });
   }
 
   void _specialistExamService() {

@@ -12,16 +12,18 @@ class StoreExamModel {
   final int? lessonId;
   final int? subjectId;
   final String? time;
+  final int? bookId;
 
   StoreExamModel(
       {this.description,
       this.isActive = '1',
       this.level,
       this.time,
+      required this.bookId,
       this.name,
       this.photo,
       this.questionTypes,
-      required this.semester,
+      this.semester,
       this.type,
       this.lessonId,
       required this.subjectId,
