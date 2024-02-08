@@ -1,7 +1,7 @@
 class StoreExamModel {
   final String? name;
   final String? type;
-  final String? questionTypes;
+  final List<String>? questionTypes;
   final String? level;
   final String? typeAssessment;
   final String? description;

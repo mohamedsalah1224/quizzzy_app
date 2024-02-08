@@ -5,7 +5,9 @@ import 'package:quizzy_app/model/leasons_model.dart';
 import 'package:quizzy_app/model/unit_data_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
+import 'package:quizzy_app/view_model/utils/multiselectDropdown/multiselect_dropdown_view_model.dart';
 
 class FilterQuestionsViewModel extends GetxController {
   bool _isLoadFilterPage = false;
@@ -116,6 +118,7 @@ class FilterQuestionsViewModel extends GetxController {
         unitsModel = value.data!;
         semesterValue = null;
         _isLoadFilterPage = true;
+
         update(['updateLoadFilterPage']);
       }
     }).catchError((e) => SnackBarHelper.instance
@@ -161,23 +164,23 @@ class FilterQuestionsViewModel extends GetxController {
   }
 
   void confirmFilter(BuildContext context) {
-    if (semesterValue == null || unitValue == null) {
+    if (semesterValue == null) {
       SnackBarHelper.instance.showMessage(
           erro: true,
           isEnglish: false,
-          message: semesterValue == null
-              ? 'يجب عليك اختيار الصف الدراسي'
-              : 'يجب عليك اختيار الوحدة');
+          message: 'يجب عليك اختيار الصف الدراسي');
 
       return;
     }
     Get.find<ManageExamViewModel>().confirmFilter(
       leasonId: leasonId,
       level: getlevelofExam,
-      semesterId: semesterOfUnit,
+      semesterId: getIdOfSemester(semesterValue!),
       time: getTimeSecounds,
       typeAssessment: getEvaluation,
       unitId: unitId,
+      questionTypes:
+          Get.find<MultiSelectDropDownViewModel>().getEnglishSelectedQuestion(),
     );
   }
 

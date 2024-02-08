@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view_model/exam/filter_questions_view_model.dart';
+import 'package:quizzy_app/view_model/utils/multiselectDropdown/multiselect_dropdown_view_model.dart';
 
 import '../../../utils/app_images.dart';
 import '../../custom_component/custom_button.dart';
@@ -15,6 +17,7 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key("FilterQuestionsView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -117,35 +120,78 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r)),
                         padding: const EdgeInsets.symmetric(horizontal: 12).w,
-                        child: TextFormField(
-                          readOnly: true,
-                          onTap: () {
-                            print("show Dialog Here");
-                          },
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                              isCollapsed: true,
-                              prefixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Color(0xff268C6D),
-                                    size: 17,
+                        child: GetBuilder<MultiSelectDropDownViewModel>(
+                          builder: (controller) {
+                            return TextFormField(
+                              readOnly: true,
+                              onTap: () {
+                                controller.showMultiSelect(context);
+                                print("show Dialog Here");
+                              },
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                  isCollapsed: true,
+                                  prefixIcon: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Color(0xff268C6D),
+                                        size: 17,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 0),
-                              border: InputBorder.none,
-                              hintText: "نوع الاسئلة",
-                              hintStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontFamily: "Cairo",
-                                  fontWeight: FontWeight.w400),
-                              hintTextDirection: TextDirection.rtl),
-                          textDirection: TextDirection.rtl,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 0),
+                                  border: InputBorder.none,
+                                  hintText: "نوع الاسئلة",
+                                  hintStyle: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontFamily: "Cairo",
+                                      fontWeight: FontWeight.w400),
+                                  hintTextDirection: TextDirection.rtl),
+                              textDirection: TextDirection.rtl,
+                            );
+                          },
                         ),
+                      ),
+                      10.verticalSpace,
+                      GetBuilder<MultiSelectDropDownViewModel>(
+                        id: "updateWrapTypeOfQuestion",
+                        builder: (controller) {
+                          return Wrap(
+                            direction: Axis.horizontal,
+                            children: controller.selectedItem
+                                .map(
+                                  (e) => Padding(
+                                    padding: REdgeInsets.only(left: 10),
+                                    child: Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Chip(
+                                          backgroundColor:
+                                              const Color(0xffE2E2E2)
+                                                  .withOpacity(0.6),
+                                          onDeleted: () {
+                                            controller.removeElementFromWrap(e);
+                                          },
+                                          deleteIconColor: erroColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20).r),
+                                          side: const BorderSide(
+                                              color: Colors.green, width: 1),
+                                          label: CustomText(
+                                            text:
+                                                e.replaceAll('سؤال', "").trim(),
+                                            color: primayColor,
+                                            fontSize: 13.sp,
+                                          )),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        },
                       ),
                       10.verticalSpace,
                       GetBuilder<FilterQuestionsViewModel>(

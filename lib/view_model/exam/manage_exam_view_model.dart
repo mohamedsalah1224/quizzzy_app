@@ -177,11 +177,16 @@ class ManageExamViewModel extends GetxController {
       String? semesterId,
       int? time,
       String? typeAssessment,
+      List<String>? questionTypes,
       int? unitId}) {
     // _currentIndex = 3;
     // update();
     // call api to create Exam Based on Filter information
     // if it Choce the typeOfAssessment AfterFinish
+
+    print("*" * 50);
+    print(questionTypes);
+    print("*" * 50);
     if (ExamConstatnt.typeAssessmentAfterFinish == typeAssessment) {
       _isAfterFinish = true;
     } else {
@@ -194,6 +199,7 @@ class ManageExamViewModel extends GetxController {
         semesterId: semesterId,
         time: time,
         typeAssessment: typeAssessment,
+        questionTypes: questionTypes,
         unitId: unitId);
     Get.toNamed(Routes.examView);
   }
@@ -1201,11 +1207,11 @@ class ManageExamViewModel extends GetxController {
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
-                type: ExamConstatnt.aiExam,
-                typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-                subjectId: _subjectSelectedInformation!.id,
-                bookId: _bookSelected!.id!,
-                semester: null))
+      type: ExamConstatnt.aiExam,
+      typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+      subjectId: _subjectSelectedInformation!.id,
+      bookId: _bookSelected!.id!,
+    ))
         .then((value) {
       _examData = value;
       // SnackBarHelper.instance
@@ -1226,6 +1232,7 @@ class ManageExamViewModel extends GetxController {
       int? leasonId,
       int? time,
       String? level,
+      List<String>? questionTypes,
       String? typeAssessment}) {
     _isLoadExamViewPage = false;
     ExamRepositoryService()
@@ -1237,6 +1244,7 @@ class ManageExamViewModel extends GetxController {
                 typeAssessment: typeAssessment,
                 semester: semesterId,
                 lessonId: leasonId,
+                questionTypes: questionTypes,
                 level: level,
                 unitId: unitId,
                 time: time.toString()))

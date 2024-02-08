@@ -15,6 +15,7 @@ class QuizTypeView extends GetView<ManageExamViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key("QuizTypeView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

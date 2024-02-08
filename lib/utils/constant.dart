@@ -4,6 +4,8 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Color primayColor = const Color(0xff268C6D);
 
+Color erroColor = const Color(0xffcc0000);
+
 enum Source { camera, gallary }
 
 enum SourceLoginType { email, phone }

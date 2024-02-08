@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'constant.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/view/custom_component/custom_text.dart';
 
 class SnackBarHelper {
   SnackBarHelper._();
@@ -13,6 +13,22 @@ class SnackBarHelper {
       int milliseconds = 2000,
       bool erro = false,
       bool isEnglish = true}) {
+    // By Getx
+    Get.showSnackbar(GetSnackBar(
+      snackPosition: SnackPosition.TOP,
+      duration: Duration(milliseconds: milliseconds),
+      backgroundColor: erro ? Colors.deepOrange : Colors.deepPurple,
+      borderRadius: 14,
+      messageText: CustomText(
+        text: message,
+        color: Colors.white,
+        textDirection: isEnglish ? TextDirection.ltr : TextDirection.rtl,
+      ),
+    ));
+/*
+
+By Default:-
+
     ScaffoldMessenger.of(navigatorKey.currentState!.context)
         .showSnackBar(SnackBar(
       elevation: 0.0,
@@ -34,6 +50,6 @@ class SnackBarHelper {
       //   label: 'OK',
       //   onPressed: () {},
       // ),
-    ));
+    ));*/
   }
 }

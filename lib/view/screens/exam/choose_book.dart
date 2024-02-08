@@ -14,6 +14,7 @@ class ChooseBookView extends GetView<ManageExamViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key("ChooseBookView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
