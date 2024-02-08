@@ -175,19 +175,24 @@ class HomeView extends GetView<HomeViewModel> {
                                         // // title:
                                         // //     " الخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخولي  محمد صلاح الخولي",
                                         ))
-                                : ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return CustomAdsAndOffer(
-                                          adsModel: controller.adsList[index]);
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return const SizedBox();
-                                    },
-                                    itemCount: controller.adsList.length);
+                                : SizedBox(
+                                    height: 150.h,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return CustomAdsAndOffer(
+                                            adsModel:
+                                                controller.adsList[index]);
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return 10.horizontalSpace;
+                                      },
+                                      itemCount: controller.adsList.length,
+                                    ),
+                                  );
                           },
                         ),
-                        15.verticalSpace,
+                        20.verticalSpace,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

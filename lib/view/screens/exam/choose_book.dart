@@ -14,7 +14,6 @@ class ChooseBookView extends GetView<ManageExamViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: const Key("ChooseBookView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -36,8 +35,9 @@ class ChooseBookView extends GetView<ManageExamViewModel> {
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.h),
           child: Column(children: [
-            const CustomSearchField(
+            CustomSearchField(
               text: "البحث عن كتاب",
+              onChanged: (value) => controller.searchBook(value: value),
             ),
             25.verticalSpace,
             CustomText(
@@ -52,25 +52,30 @@ class ChooseBookView extends GetView<ManageExamViewModel> {
               child: GetBuilder<ManageExamViewModel>(
                 id: "updateBook",
                 builder: (controller) {
-                  return controller.bookList.isEmpty
+                  return controller.seachBookList.isEmpty &&
+                          controller.bookList.isEmpty
                       ? const CustomAlertMessage(
                           text: "لا يوجد كتب لهذه المادة")
-                      : GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisSpacing: 50.h,
-                                  crossAxisSpacing: 50.w,
-                                  crossAxisCount: 2),
-                          itemCount: controller.bookList.length,
-                          itemBuilder: (context, index) {
-                            return CustomBook(
-                              bookModel: controller.bookList[index],
-                              onTap: () {
-                                controller.chooseBook(
-                                    bookModel: controller.bookList[index]);
-                              },
-                            );
-                          });
+                      : controller.seachBookList.isEmpty
+                          ? const CustomAlertMessage(
+                              text: "لايوجد كتب بهذا الإسم")
+                          : GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      mainAxisSpacing: 50.h,
+                                      crossAxisSpacing: 50.w,
+                                      crossAxisCount: 2),
+                              itemCount: controller.seachBookList.length,
+                              itemBuilder: (context, index) {
+                                return CustomBook(
+                                  bookModel: controller.seachBookList[index],
+                                  onTap: () {
+                                    controller.chooseBook(
+                                        bookModel:
+                                            controller.seachBookList[index]);
+                                  },
+                                );
+                              });
                 },
               ),
             ),

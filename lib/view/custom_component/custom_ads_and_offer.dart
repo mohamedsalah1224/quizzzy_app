@@ -15,47 +15,50 @@ class CustomAdsAndOffer extends StatelessWidget {
     return Container(
       // alignment: AlignmentDirectional.centerEnd,
       // // alignment: null,
-      // // width: double.infinity.w,
-      height: 130.h,
+
       clipBehavior: Clip.antiAliasWithSaveLayer,
       // margin: EdgeInsets.only(bottom: 15.h, left: 15.w, right: 15.w),
-      decoration: BoxDecoration(
-          color: Colors.amber, borderRadius: BorderRadius.circular(12.r)),
-      child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          adsModel.photo != null
-              ? CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  imageUrl: adsModel!.photo!,
-                  fadeInDuration: const Duration(seconds: 1),
-                  placeholder: (context, url) =>
-                      const CustomCircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                )
-              : Image.asset(
-                  Assets.imagesElan,
-                  fit: BoxFit.fill,
-                ),
-          adsModel.title != null
-              ? Padding(
-                  padding: REdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  child: SingleChildScrollView(
-                    child: CustomText(
-                      textDirection: TextDirection.rtl,
-                      text: adsModel.title!,
-                      fontSize: 18.sp,
-                      fontFamily: "Cairo",
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                      maxLines: 500,
-                    ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.r)),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            maxHeight: 150.h, maxWidth: ScreenUtil().screenWidth * 0.80),
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            adsModel.photo != null
+                ? CachedNetworkImage(
+                    fit: BoxFit.fill,
+                    imageUrl: adsModel!.photo!,
+                    fadeInDuration: const Duration(seconds: 1),
+                    placeholder: (context, url) =>
+                        const CustomCircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
+                : Image.asset(
+                    Assets.imagesElan,
+                    fit: BoxFit.fill,
                   ),
-                )
-              : const SizedBox(),
-        ],
+            adsModel.title != null
+                ? Padding(
+                    padding: REdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    child: SingleChildScrollView(
+                      child: CustomText(
+                        textDirection: TextDirection.rtl,
+                        text: adsModel.title!,
+                        fontSize: 18.sp,
+                        fontFamily: "Cairo",
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        textAlign: TextAlign.center,
+                        maxLines: 500,
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
+          ],
+        ),
       ),
     );
   }

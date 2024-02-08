@@ -5,8 +5,8 @@ import '../../utils/app_images.dart';
 
 class CustomSearchField extends StatelessWidget {
   final String text;
-  const CustomSearchField({super.key, required this.text});
-
+  const CustomSearchField({super.key, required this.text, this.onChanged});
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,16 +23,17 @@ class CustomSearchField extends StatelessWidget {
               Assets.imagesSearch,
               cacheHeight: 17,
               cacheWidth: 17,
-              color: Color(0xffC6C6C6),
+              color: const Color(0xffC6C6C6),
             ),
             border: InputBorder.none,
             hintText: text,
             hintStyle: TextStyle(
                 fontSize: 16.sp,
-                color: Color(0xffC6C6C6),
+                color: const Color(0xffC6C6C6),
                 fontFamily: "Cairo",
                 fontWeight: FontWeight.w400),
             hintTextDirection: TextDirection.rtl),
+        onChanged: onChanged,
         textDirection: TextDirection.rtl,
       ),
     );

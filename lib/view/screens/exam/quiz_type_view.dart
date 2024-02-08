@@ -15,7 +15,6 @@ class QuizTypeView extends GetView<ManageExamViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: const Key("QuizTypeView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -37,10 +36,10 @@ class QuizTypeView extends GetView<ManageExamViewModel> {
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.h),
           child: Column(children: [
-            const CustomSearchField(
-              text: "البحث",
-            ),
-            25.verticalSpace,
+            // const CustomSearchField(
+            //   text: "البحث",
+            // ),
+            50.verticalSpace,
             CustomText(
               text: "نوع الاختبار",
               fontFamily: "Cairo",

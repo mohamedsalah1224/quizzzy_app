@@ -14,8 +14,9 @@ class HomeViewModel extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    getAds();
+
     super.onInit();
+    getAds();
   }
 
   @override
@@ -39,6 +40,7 @@ class HomeViewModel extends GetxController {
       _adsList = _adsModel.data ?? [];
       _isLoadHomeViewPage = true;
       update(['updateAds']);
+
       update();
     }).catchError((e) => SnackBarHelper.instance
         .showMessage(message: e.toString(), milliseconds: 2000, erro: true));

@@ -57,7 +57,10 @@ class ManageExamViewModel extends GetxController {
   StartQuizModel? _startQuizModel;
   bool _isLoadExamViewPage = false;
   late List<DataSubjectModel> _subjectList;
+  List<DataSubjectModel> _searchSubjectList = [];
   List<BookModel> _bookList = [];
+  List<BookModel> _seachBookList = [];
+
   final List<Widget> _examTypeList = [
     const CompareExam(),
     const LongShortAnswerExam(),
@@ -103,7 +106,9 @@ class ManageExamViewModel extends GetxController {
   }
 
   List<DataSubjectModel> get subjectList => _subjectList;
+  List<DataSubjectModel> get searchSubjectList => _searchSubjectList;
   List<BookModel> get bookList => _bookList;
+  List<BookModel> get seachBookList => _seachBookList;
 
   DataSubjectModel get getSubjectSelectedInformation =>
       _subjectSelectedInformation!;
@@ -136,13 +141,18 @@ class ManageExamViewModel extends GetxController {
   }
 
   void chooseSubject({required DataSubjectModel subjectSelectedInformation}) {
+    _searchSubjectList =
+        subjectList; // to make the Search has a Defualt Value of the Subject
     _subjectSelectedInformation = subjectSelectedInformation;
     _bookList = _subjectSelectedInformation!.books ?? [];
+    _seachBookList = _bookList; // to peformSearch
     _currentManageExamsPagesIndex = 1;
     update(['updateCurrentManageExamsPagesIndex']);
   }
 
   void chooseBook({required BookModel bookModel}) {
+    _seachBookList =
+        bookList; // to make the Search has a Defualt Value of the Book
     _bookSelected = bookModel;
     _currentManageExamsPagesIndex = 2; // update Book Index
     update(['updateCurrentManageExamsPagesIndex']);
@@ -161,6 +171,7 @@ class ManageExamViewModel extends GetxController {
   void backFromFilter() {
     _currentManageExamsPagesIndex = 2;
     update(['updateCurrentManageExamsPagesIndex']);
+    Get.delete<FilterQuestionsView>(force: true);
   }
 
   void createYourExamByFilter() {
@@ -237,6 +248,8 @@ class ManageExamViewModel extends GetxController {
     _countOfQuestion = 1;
     _totalOfQuestion = 0;
     _isAfterFinish = false;
+    _searchSubjectList =
+        _subjectList; // to Solve problem when selecte an Page from BottomSheet
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -588,8 +601,10 @@ class ManageExamViewModel extends GetxController {
     SubjectsRepositoryService().getSubjects(limit: limit, skip: skip).then(
         (value) {
       _subjectList = value.data!;
+      _searchSubjectList = _subjectList; // to peformSearch
       _isLoadChoicePage = true;
-      update(['loadingChoicePage']);
+
+      update(['updateSubject', 'loadingChoicePage']);
     }).catchError((e) =>
         SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
   }
@@ -1262,5 +1277,32 @@ class ManageExamViewModel extends GetxController {
   void _specialistExamService() {
     _isAfterFinish = false; // must be false
     _isLoadExamViewPage = false;
+  }
+
+  ///////////////////////////////////////////////// Search Service ////////////////////////////////////////////////
+
+  void searchSubject({required String value}) {
+    if (value.isEmpty) {
+      // if clear All and The Search become Empty
+      _searchSubjectList = _subjectList;
+    } else {
+      _searchSubjectList = _subjectList
+          .where((element) => element.name!.contains(value))
+          .toList();
+    }
+
+    update(['updateSubject']);
+  }
+
+  void searchBook({required String value}) {
+    if (value.isEmpty) {
+      // if clear All and The Search become Empty
+      _seachBookList = _bookList;
+    } else {
+      _seachBookList =
+          _bookList.where((element) => element.name!.contains(value)).toList();
+    }
+
+    update(['updateBook']);
   }
 }

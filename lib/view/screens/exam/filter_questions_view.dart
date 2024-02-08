@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view_model/exam/filter_questions_view_model.dart';
+import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 import 'package:quizzy_app/view_model/utils/multiselectDropdown/multiselect_dropdown_view_model.dart';
 
 import '../../../utils/app_images.dart';
@@ -11,13 +12,12 @@ import '../../custom_component/custom_button.dart';
 import '../../custom_component/custom_dropdown_filter.dart';
 import '../../custom_component/custom_text.dart';
 
-class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
+class FilterQuestionsView extends StatelessWidget {
   const FilterQuestionsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: const Key("FilterQuestionsView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -32,11 +32,13 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            controller.backFromFilter();
+            // controller.backFromFilter();
+            Get.find<ManageExamViewModel>().backFromFilter();
           },
         ),
       ),
       body: GetBuilder<FilterQuestionsViewModel>(
+        init: FilterQuestionsViewModel(),
         id: 'updateLoadFilterPage',
         builder: (controller) {
           return !controller.isLoadFilterPage
@@ -207,29 +209,7 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
                           );
                         },
                       ),
-                      20.verticalSpace,
-                      // GetBuilder<FilterQuestionsViewModel>(
-                      //   id: "updateEvaluation",
-                      //   builder: (controller) {
-                      //     return Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         CustomRadioButton(
-                      //           groupValue: controller.evaluationGroupValue,
-                      //           value: 1,
-                      //           text: "التقييم عند الانتهاء",
-                      //           onChanged: (value) => controller.updateEvaluation(value!),
-                      //         ),
-                      //         CustomRadioButton(
-                      //           groupValue: controller.evaluationGroupValue,
-                      //           value: 2,
-                      //           text: "التقييم مباشرة",
-                      //           onChanged: (value) => controller.updateEvaluation(value!),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // ),
+                      15.verticalSpace,
                       GetBuilder<FilterQuestionsViewModel>(
                         id: 'updateEvaluation',
                         builder: (controller) {
@@ -238,62 +218,76 @@ class FilterQuestionsView extends GetView<FilterQuestionsViewModel> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: " التقييم عند الانتهاء",
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.bold,
+                                InkWell(
+                                  onTap: () => controller.updateEvaluation(1),
+                                  child: Padding(
+                                    padding: REdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        CustomText(
+                                          text: " التقييم عند الانتهاء",
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        4.horizontalSpace,
+                                        Radio(
+                                          visualDensity: const VisualDensity(
+                                            horizontal:
+                                                VisualDensity.minimumDensity,
+                                            vertical:
+                                                VisualDensity.minimumDensity,
+                                          ),
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          value: 1,
+                                          groupValue:
+                                              controller.evaluationGroupValue,
+                                          activeColor: const Color(0xff268C6D),
+                                          onChanged: (value) => controller
+                                              .updateEvaluation(value!),
+                                        )
+                                      ],
                                     ),
-                                    4.horizontalSpace,
-                                    Radio(
-                                      visualDensity: const VisualDensity(
-                                        horizontal:
-                                            VisualDensity.minimumDensity,
-                                        vertical: VisualDensity.minimumDensity,
-                                      ),
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      value: 1,
-                                      groupValue:
-                                          controller.evaluationGroupValue,
-                                      activeColor: const Color(0xff268C6D),
-                                      onChanged: (value) =>
-                                          controller.updateEvaluation(value!),
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: "التقييم مباشرة",
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.bold,
+                                InkWell(
+                                  onTap: () => controller.updateEvaluation(2),
+                                  child: Padding(
+                                    padding: REdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        CustomText(
+                                          text: "التقييم مباشرة",
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        4.horizontalSpace,
+                                        Radio(
+                                          visualDensity: const VisualDensity(
+                                            horizontal:
+                                                VisualDensity.minimumDensity,
+                                            vertical:
+                                                VisualDensity.minimumDensity,
+                                          ),
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          value: 2,
+                                          groupValue:
+                                              controller.evaluationGroupValue,
+                                          activeColor: const Color(0xff268C6D),
+                                          onChanged: (value) => controller
+                                              .updateEvaluation(value!),
+                                        )
+                                      ],
                                     ),
-                                    4.horizontalSpace,
-                                    Radio(
-                                      visualDensity: const VisualDensity(
-                                        horizontal:
-                                            VisualDensity.minimumDensity,
-                                        vertical: VisualDensity.minimumDensity,
-                                      ),
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      value: 2,
-                                      groupValue:
-                                          controller.evaluationGroupValue,
-                                      activeColor: const Color(0xff268C6D),
-                                      onChanged: (value) =>
-                                          controller.updateEvaluation(value!),
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
                           );
                         },
                       ),
-                      20.verticalSpace,
+                      15.verticalSpace,
                       CustomButton(
                         text: "التالي",
                         fontFamily: "Cairo",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/view/custom_component/custom_alert_message.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_subject.dart';
 import '../../../view_model/exam/manage_exam_view_model.dart';
@@ -14,7 +15,6 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: const Key("ChooseSubjectView"),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,8 +50,9 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.h),
           child: Column(children: [
-            const CustomSearchField(
-              text: "البحث",
+            CustomSearchField(
+              text: "البحث عن مادة",
+              onChanged: (value) => controller.searchSubject(value: value),
             ),
             25.verticalSpace,
             CustomText(
@@ -64,26 +65,31 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
             20.verticalSpace,
             Expanded(
               child: GetBuilder<ManageExamViewModel>(
+                id: "updateSubject",
                 builder: (controller) {
                   return !controller.isLoadChoicePage
                       ? const CustomCircularProgressIndicator()
-                      : GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisSpacing: 50.h,
-                                  crossAxisSpacing: 50.w,
-                                  crossAxisCount: 2),
-                          itemCount: controller.subjectList.length,
-                          itemBuilder: (context, index) {
-                            return CustomSubject(
-                              subjectModel: controller.subjectList[index],
-                              onTap: () {
-                                controller.chooseSubject(
-                                    subjectSelectedInformation:
-                                        controller.subjectList[index]);
-                              },
-                            );
-                          });
+                      : controller.searchSubjectList.isEmpty
+                          ? const CustomAlertMessage(
+                              text: "لايوجد مواد بهذا الإسم")
+                          : GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      mainAxisSpacing: 50.h,
+                                      crossAxisSpacing: 50.w,
+                                      crossAxisCount: 2),
+                              itemCount: controller.searchSubjectList.length,
+                              itemBuilder: (context, index) {
+                                return CustomSubject(
+                                  subjectModel:
+                                      controller.searchSubjectList[index],
+                                  onTap: () {
+                                    controller.chooseSubject(
+                                        subjectSelectedInformation: controller
+                                            .searchSubjectList[index]);
+                                  },
+                                );
+                              });
                 },
               ),
             ),

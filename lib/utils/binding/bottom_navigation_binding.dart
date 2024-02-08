@@ -17,6 +17,6 @@ class BottomNavigationBinding implements Bindings {
     Get.put(ManageExamViewModel());
     Get.put(AccountViewModel());
     Get.lazyPut(() => FilterQuestionsViewModel(), fenix: true);
-    Get.lazyPut(() => MultiSelectDropDownViewModel(), fenix: false);
+    Get.lazyPut(() => MultiSelectDropDownViewModel(), fenix: true);
   }
 }

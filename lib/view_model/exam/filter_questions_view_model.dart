@@ -5,7 +5,6 @@ import 'package:quizzy_app/model/leasons_model.dart';
 import 'package:quizzy_app/model/unit_data_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
-import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 import 'package:quizzy_app/view_model/utils/multiselectDropdown/multiselect_dropdown_view_model.dart';
 
@@ -41,6 +40,7 @@ class FilterQuestionsViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     _getUnits();
+
     super.onInit();
   }
 
@@ -80,6 +80,8 @@ class FilterQuestionsViewModel extends GetxController {
   }
 
   void updateEvaluation(int value) {
+    if (evaluationGroupValue == value) return;
+    print(value);
     evaluationGroupValue = value;
     update(["updateEvaluation"]);
   }
@@ -88,7 +90,8 @@ class FilterQuestionsViewModel extends GetxController {
     unitValue = value;
     leasonValue = null;
     listLeaseon = unitValueList
-            .firstWhere((element) => (element.name == value))
+            .firstWhere((element) => (element.name == value),
+                orElse: () => UnitDataModel())
             .lessons ??
         [];
 
@@ -129,16 +132,23 @@ class FilterQuestionsViewModel extends GetxController {
   List<String> get leasonsValueList => listLeaseon.map((e) => e.name!).toList();
 
   int? get unitId => unitValue != null
-      ? unitValueList.firstWhere((element) => (element.name == unitValue)).id
+      ? unitValueList
+          .firstWhere((element) => (element.name == unitValue),
+              orElse: () => UnitDataModel())
+          .id
       : null;
 
   int? get leasonId => leasonValue != null
-      ? listLeaseon.firstWhere((element) => (element.name == leasonValue)).id
+      ? listLeaseon
+          .firstWhere((element) => (element.name == leasonValue),
+              orElse: () => LessonsModel())
+          .id
       : null;
 
-  String get semesterOfUnit => unitValueList
-      .firstWhere((element) => (element.name == unitValue))
-      .semester!;
+  String? get semesterOfUnit => unitValueList
+      .firstWhere((element) => (element.name == unitValue),
+          orElse: () => UnitDataModel())
+      .semester;
 
   int? get getTimeSecounds =>
       timeValue != null ? int.parse(timeValue!) * 60 : null;
@@ -199,7 +209,9 @@ class FilterQuestionsViewModel extends GetxController {
     }
   }
 
-  void backFromFilter() {
-    Get.find<ManageExamViewModel>().backFromFilter();
+  void resetController() {
+    semesterValue = null;
+    unitValue = null;
+    leasonValue = null;
   }
 }
