@@ -13,12 +13,17 @@ class CustomMultiSelectDropDown extends GetView<MultiSelectDropDownViewModel> {
   Widget build(BuildContext context) {
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceEvenly,
-      title: CustomText(
-        text: "اختر نوع الأسئلة",
-        // textDirection: TextDirection.rtl,
-        textAlign: TextAlign.center,
-        fontSize: 20.sp,
-        fontFamily: "Cairo",
+      title: Container(
+        color: primayColor,
+        width: double.infinity,
+        child: CustomText(
+          text: "اختر نوع الأسئلة",
+          // textDirection: TextDirection.rtl,
+          textAlign: TextAlign.center,
+          fontSize: 20.sp,
+          fontFamily: "Cairo",
+          color: Colors.white,
+        ),
       ),
       content: SingleChildScrollView(
         child: GetBuilder<MultiSelectDropDownViewModel>(
@@ -41,19 +46,19 @@ class CustomMultiSelectDropDown extends GetView<MultiSelectDropDownViewModel> {
       ),
       actions: [
         TextButton(
-            //   style: TextButton.styleFrom(backgroundColor: primayColor),
+            style: TextButton.styleFrom(backgroundColor: erroColor),
             onPressed: () => controller.cancel(),
             child: CustomText(
               text: "إلغاء",
-              color: primayColor,
+              color: Colors.white,
               fontSize: 13.sp,
             )),
         TextButton(
-            //  style: TextButton.styleFrom(backgroundColor: primayColor),
+            style: TextButton.styleFrom(backgroundColor: primayColor),
             onPressed: () => controller.submit(),
             child: CustomText(
               text: "تأكيد",
-              color: primayColor,
+              color: Colors.white,
               fontSize: 13.sp,
             ))
       ],

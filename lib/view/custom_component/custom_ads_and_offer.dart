@@ -29,7 +29,7 @@ class CustomAdsAndOffer extends StatelessWidget {
             adsModel.photo != null
                 ? CachedNetworkImage(
                     fit: BoxFit.fill,
-                    imageUrl: adsModel!.photo!,
+                    imageUrl: adsModel.photo!,
                     fadeInDuration: const Duration(seconds: 1),
                     placeholder: (context, url) =>
                         const CustomCircularProgressIndicator(),
