@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/attempt_answers_repository_service.dart';
+import 'package:quizzy_app/model/exam_attempt_model.dart';
 import 'package:quizzy_app/model/exam_statistics_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
@@ -12,10 +13,10 @@ import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 class ExamStatisticsViewModel extends GetxController {
   bool _isLoadExamStatisticsViewPage = false;
   late ExamStatisticsModel _examStatisticsModel;
-  late ExamAttempt _examAttemptStatisticsInofrmation;
+  late ExamAttemptModel _examAttemptStatisticsInofrmation;
   bool get isLoadExamStatisticsViewPage => _isLoadExamStatisticsViewPage;
   ExamStatisticsModel get examStatisticsModel => _examStatisticsModel;
-  ExamAttempt get examAttemptStatisticsInofrmation =>
+  ExamAttemptModel get examAttemptStatisticsInofrmation =>
       _examAttemptStatisticsInofrmation;
 
   ManageExamViewModel controllerOfMangeExamViewModel =

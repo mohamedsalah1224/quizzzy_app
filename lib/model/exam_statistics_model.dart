@@ -1,3 +1,5 @@
+import 'package:quizzy_app/model/exam_attempt_model.dart';
+
 class ExamStatisticsModel {
   bool? success;
   Data? data;
@@ -22,7 +24,7 @@ class ExamStatisticsModel {
 }
 
 class Data {
-  ExamAttempt? examAttempt;
+  ExamAttemptModel? examAttempt;
   AttemptAnswers? attemptAnswers;
   Charts? charts;
 
@@ -35,7 +37,7 @@ class Data {
             : null,
         charts: json['charts'] != null ? Charts.fromJson(json['charts']) : null,
         examAttempt: json['exam_attempt'] != null
-            ? ExamAttempt.fromJson(json['exam_attempt'])
+            ? ExamAttemptModel.fromJson(json['exam_attempt'])
             : null);
   }
 
@@ -45,205 +47,6 @@ class Data {
       'attempt_answers': attemptAnswers != null ? attemptAnswers!.toJson() : {},
       'charts': charts != null ? charts!.toJson() : {},
     };
-  }
-}
-
-class ExamAttempt {
-  int? id;
-  int? totalQuestions;
-  int? totalAnsweredQuestions;
-  String? totalMarks;
-  String? earnedMarks;
-  String? attemptInfo;
-  String? attemptStatus;
-  String? attemptIp;
-  String? attemptStartedAt;
-  String? attemptEndedAt;
-  bool? isManuallyReviewed; //  review it
-  String? manuallyReviewedAt;
-  int? examId;
-  int? subjectId;
-  int? bookId;
-  int? studentId;
-  String? createdBy;
-  String? updatedBy;
-  String? createdAt;
-  String? updatedAt;
-  Exam? exam;
-  String? book; // reviw
-  String? subject; //review
-  int? numberCorrectAnswer;
-  int? numberWrongAnswer;
-
-  ExamAttempt(
-      {this.id,
-      this.totalQuestions,
-      this.totalAnsweredQuestions,
-      this.totalMarks,
-      this.earnedMarks,
-      this.attemptInfo,
-      this.attemptStatus,
-      this.attemptIp,
-      this.attemptStartedAt,
-      this.attemptEndedAt,
-      this.isManuallyReviewed,
-      this.manuallyReviewedAt,
-      this.examId,
-      this.subjectId,
-      this.bookId,
-      this.studentId,
-      this.createdBy,
-      this.updatedBy,
-      this.createdAt,
-      this.updatedAt,
-      this.exam,
-      this.book,
-      this.subject,
-      this.numberCorrectAnswer,
-      this.numberWrongAnswer});
-
-  factory ExamAttempt.fromJson(Map<String, dynamic> json) {
-    return ExamAttempt(
-        numberWrongAnswer: json['number_wrong_answer'],
-        numberCorrectAnswer: json['number_correct_answer'],
-        subject: json['subject'],
-        book: json['book'],
-        exam: json['exam'] != null ? Exam.fromJson(json['exam']) : null,
-        updatedAt: json['updated_at'],
-        createdAt: json['created_at'],
-        updatedBy: json['updated_by'],
-        createdBy: json['created_by'],
-        studentId: json['student_id'],
-        bookId: json['book_id'],
-        subjectId: json['subject_id'],
-        examId: json['exam_id'],
-        manuallyReviewedAt: json['manually_reviewed_at'],
-        isManuallyReviewed: json['is_manually_reviewed'],
-        attemptEndedAt: json['attempt_ended_at'],
-        attemptStartedAt: json['attempt_started_at'],
-        attemptIp: json['attempt_ip'],
-        attemptStatus: json['attempt_status'],
-        attemptInfo: json['attempt_info'],
-        earnedMarks: json['earned_marks'],
-        totalMarks: json['total_marks'],
-        totalAnsweredQuestions: json['total_answered_questions'],
-        totalQuestions: json['total_questions'],
-        id: json['id']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'attempt_status': attemptStatus,
-      'attempt_info': attemptInfo,
-      'earned_marks': earnedMarks,
-      'total_marks': totalMarks,
-      'total_answered_questions': totalAnsweredQuestions,
-      'total_questions': totalQuestions,
-      'id': id,
-      'attempt_ip': attemptIp,
-      'created_by': createdBy,
-      'student_id': studentId,
-      'book_id': bookId,
-      'subject_id': subjectId,
-      'exam_id': examId,
-      'manually_reviewed_at': manuallyReviewedAt,
-      'is_manually_reviewed': isManuallyReviewed,
-      'attempt_ended_at': attemptEndedAt,
-      'attempt_started_at': attemptStartedAt,
-      'created_at': createdAt,
-      'updated_by': createdBy,
-      'updated_at': updatedAt,
-      'number_wrong_answer': numberWrongAnswer,
-      'number_correct_answer': numberCorrectAnswer,
-      'subject': subject,
-      'book': book,
-      'exam': exam != null ? exam!.toJson() : {}
-    };
-  }
-}
-
-class Exam {
-  int? id;
-  String? name;
-  String? type;
-  String? questionTypes;
-  String? level;
-  String? typeAssessment;
-  String? description;
-  String? photo;
-  String? semester;
-  String? points;
-  String? time;
-  int? subjectId;
-  int? bookId;
-  int? unitId;
-  int? lessonId;
-  bool? isActive;
-  String? createdAt;
-  String? updatedAt;
-
-  Exam(
-      {this.id,
-      this.name,
-      this.type,
-      this.questionTypes,
-      this.level,
-      this.typeAssessment,
-      this.description,
-      this.photo,
-      this.semester,
-      this.points,
-      this.time,
-      this.subjectId,
-      this.bookId,
-      this.unitId,
-      this.lessonId,
-      this.isActive,
-      this.createdAt,
-      this.updatedAt});
-
-  Exam.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    type = json['type'];
-    questionTypes = json['question_types'];
-    level = json['level'];
-    typeAssessment = json['type_assessment'];
-    description = json['description'];
-    photo = json['photo'];
-    semester = json['semester'];
-    points = json['points'];
-    time = json['time'];
-    subjectId = json['subject_id'];
-    bookId = json['book_id'];
-    unitId = json['unit_id'];
-    lessonId = json['lesson_id'];
-    isActive = json['is_active'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['question_types'] = this.questionTypes;
-    data['level'] = this.level;
-    data['type_assessment'] = this.typeAssessment;
-    data['description'] = this.description;
-    data['photo'] = this.photo;
-    data['semester'] = this.semester;
-    data['points'] = this.points;
-    data['time'] = this.time;
-    data['subject_id'] = this.subjectId;
-    data['book_id'] = this.bookId;
-    data['unit_id'] = this.unitId;
-    data['lesson_id'] = this.lessonId;
-    data['is_active'] = this.isActive;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
   }
 }
 
