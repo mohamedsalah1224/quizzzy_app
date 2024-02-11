@@ -33,12 +33,15 @@ class EndPoint {
   static final String attemptAnswers = dotenv.get('ATTEMPT_ANSWERS');
   static final String achievements = dotenv.get('ACHIEVEMENTS');
   static final String ads = dotenv.get('ADS');
-  //ADS
-  // ACHIEVEMENTS
-// ATTEMPT_ANSWERS
+  static final String topStudent = dotenv.get('TOP_STUDENTS');
+  static final String examAttempts = dotenv.get('EXAM_ATTEMPTS');
+/*
+TOP_STUDENTS="/api/exams/students/top"
+EXAM_ATTEMPTS="/api/exams/exam_attempts/attempts"
+*/
 
   static String showExamById({required int examId}) => "$exams/$examId";
-
+  static String showExamAttempt({required int id}) => "$examAttempts/$id";
   static String getAttemptAnswers({required int examAttemptId}) =>
       "$attemptAnswers/$examAttemptId";
 

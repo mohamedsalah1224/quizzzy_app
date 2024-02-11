@@ -5,9 +5,12 @@ import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/exam_repository.dart';
 import 'package:quizzy_app/model/achievement_model.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
+import 'package:quizzy_app/model/exam_attempts_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
+import 'package:quizzy_app/model/show_exam_attempts_model.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
+import 'package:quizzy_app/model/top_student_point_model.dart';
 import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
 
@@ -105,6 +108,53 @@ class ExamRepositoryService implements ExamRepository {
       var response = await DioHelper()
           .get(EndPoint.getAchievementsBySubjectId(subjectId: subjectId));
       return AchievementModel.fromJson(response);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ExamAttemptsModel> getExamAttempts() async {
+    try {
+      var response = await DioHelper().get(EndPoint.examAttempts);
+      return ExamAttemptsModel.fromJson(response);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ShowExamAttemptsModel> showExamAttempts({required int id}) async {
+    try {
+      var response = await DioHelper().get(EndPoint.showExamAttempt(id: id));
+      return ShowExamAttemptsModel.fromJson(response);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TopStudentPointModel> getTopStudentPoints(
+      {int? examIdOfStartQuiz, int? selectedSubjectId}) async {
+    try {
+      var response = await DioHelper().get(EndPoint.topStudent,
+          queryParameters: {
+            'selected_subject_id': selectedSubjectId,
+            'selected_exam_id': examIdOfStartQuiz
+          });
+      return TopStudentPointModel.fromJson(response);
     } on DioException catch (e, s) {
       debugPrint(s.toString());
       throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
