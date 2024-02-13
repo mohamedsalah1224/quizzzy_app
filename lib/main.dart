@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/book_model.dart';
@@ -41,6 +42,7 @@ void main() async {
   Hive.registerAdapter(BookModelAdapter());
   Hive.registerAdapter(ImageDimensionsModelAdapter());
   await AuthRouteService.instance.init();
+  await CacheUserService.instance.init();
 
   runApp(const MyApp());
 }

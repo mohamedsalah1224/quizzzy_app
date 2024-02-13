@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/model/ads_model.dart';
+import 'package:quizzy_app/model/user_model.dart';
 
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_ads_and_offer.dart';
@@ -42,8 +44,12 @@ class HomeView extends GetView<HomeViewModel> {
             ),
             onPressed: () async {
               print("Ok");
+              print("Ok");
               // Remove tHE rOUTE PROCESS
               await AuthRouteService.instance.logout();
+
+              // // Remove tHE rOUTE PROCESS
+              // await AuthRouteService.instance.logout();
             },
           ),
         ],

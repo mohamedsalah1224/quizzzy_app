@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthRouteService {
@@ -15,9 +16,7 @@ class AuthRouteService {
 
   bool readRoute() {
     bool result = myBox.get(_key, defaultValue: false)!;
-    print("*" * 50);
-    print("Read Routes : $result");
-    print("*" * 50);
+
     return result;
   }
 
@@ -26,6 +25,6 @@ class AuthRouteService {
   }
 
   Future<void> logout() async {
-    await myBox.delete(_key).then((value) => print("Delted"));
+    await myBox.delete(_key).then((value) => debugPrint("delted the Route"));
   }
 }

@@ -8,6 +8,7 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/login_model.dart';
@@ -101,10 +102,16 @@ class LoginViewModel extends GetxController {
       if (authModel == null) {
         return; // if any erro occur skip return from this method
       }
+
+      await CacheUserService.instance
+          .updateUser(user: authModel.data!.user!); // to cache the User Object
+
       if (!authModel.data!.user!.hasVerifiedEmail!) {
         Get.offAndToNamed(Routes.verifyEmailView);
         // to verify Email
       } else {
+        await CacheUserService.instance.updateUser(
+            user: authModel.data!.user!); // to cache the User Object
         await AuthRouteService.instance.logIn();
         Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
       }
@@ -113,6 +120,8 @@ class LoginViewModel extends GetxController {
 
   void logoutButton() async {
     await AuthRouteService.instance.logout();
+    await CacheUserService.instance
+        .deleteUser(); // to delete user from the Cache
     // remove UserCache
   }
 
@@ -169,12 +178,14 @@ class LoginViewModel extends GetxController {
 
       if (autModel == null) return; // if any erro occur in social Service
 
+      await CacheUserService.instance
+          .updateUser(user: autModel.data!.user!); // to cache the User Object
       // check Veify Phone or Not
-
       if (!autModel.data!.user!.phoneVerified!) {
         Get.offAndToNamed(Routes.verifyPhoneView);
       } else {
         await AuthRouteService.instance.logIn();
+
         Get.offAllNamed(Routes.bottomNavgation);
       }
     } else {
