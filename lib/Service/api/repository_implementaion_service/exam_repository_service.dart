@@ -118,9 +118,10 @@ class ExamRepositoryService implements ExamRepository {
   }
 
   @override
-  Future<ExamAttemptsModel> getExamAttempts() async {
+  Future<ExamAttemptsModel> getExamAttempts({int? page, int? limit}) async {
     try {
-      var response = await DioHelper().get(EndPoint.examAttempts);
+      var response = await DioHelper().get(EndPoint.examAttempts,
+          queryParameters: {'page': page, 'limit': limit});
       return ExamAttemptsModel.fromJson(response);
     } on DioException catch (e, s) {
       debugPrint(s.toString());
@@ -147,13 +148,18 @@ class ExamRepositoryService implements ExamRepository {
 
   @override
   Future<TopStudentPointModel> getTopStudentPoints(
-      {int? examIdOfStartQuiz, int? selectedSubjectId}) async {
+      {int? examIdOfStartQuiz,
+      int? selectedSubjectId,
+      int? page,
+      int? limit}) async {
     try {
-      var response = await DioHelper().get(EndPoint.topStudent,
-          queryParameters: {
-            'selected_subject_id': selectedSubjectId,
-            'selected_exam_id': examIdOfStartQuiz
-          });
+      var response =
+          await DioHelper().get(EndPoint.topStudent, queryParameters: {
+        'selected_subject_id': selectedSubjectId,
+        'selected_exam_id': examIdOfStartQuiz,
+        'page': page,
+        'limit': limit
+      });
       return TopStudentPointModel.fromJson(response);
     } on DioException catch (e, s) {
       debugPrint(s.toString());

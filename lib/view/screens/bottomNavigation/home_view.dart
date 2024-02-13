@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quizzy_app/model/ads_model.dart';
+
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_ads_and_offer.dart';
+import 'package:quizzy_app/view/custom_component/custom_alert_message.dart';
+import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
+import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
+import 'package:quizzy_app/view/custom_component/custom_exam_attempt.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view/custom_component/custom_top_student_point.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
 
 import '../../custom_component/custom_search_field.dart';
@@ -44,118 +48,97 @@ class HomeView extends GetView<HomeViewModel> {
       body: GetBuilder<HomeViewModel>(
         builder: (controller) {
           return !controller.isLoadHomeViewPage
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CustomCircularProgressIndicator())
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.h),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomSearchField(
-                          text: "البحث",
+                        CustomSearchField(
+                          text: "البحث عن استئناف امتحان",
+                          onChanged: (value) =>
+                              controller.searchExamAttempts(value: value),
                         ),
                         50.verticalSpace,
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              alignment: AlignmentDirectional.center,
-                              width: double.infinity.w,
-                              height: 150.h,
-                              padding: EdgeInsets.symmetric(horizontal: 8).w,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  color: Color(0xff268C6D)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomText(
-                                        text: "هل تود استئناف امتحان",
-                                        fontFamily: "Cairo",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18.sp,
-                                        color: Colors.white,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                              width: 30.w,
-                                              height: 30.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.r),
-                                                color: Colors.white,
-                                              ),
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.arrow_back,
-                                                  size: 16.w,
-                                                  color: Colors.green,
-                                                ),
-                                                onPressed: () {
-                                                  print("Good");
-                                                },
-                                              )),
-                                          SizedBox(
-                                            width: 12,
-                                          ),
-                                          CustomText(
-                                            text: "التاريخ ؟",
-                                            fontFamily: "Cairo",
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18.sp,
-                                            color: Colors.white,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              top: -30.h,
-                              left: -18.w,
-                              child: Image.asset(
-                                Assets.imagesStudent,
-                                cacheWidth: 150,
-                                cacheHeight: 500,
-                                filterQuality: FilterQuality.high,
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                            Positioned(
-                              top: -45.h,
-                              left: 125.w,
-                              child: Container(
-                                padding: EdgeInsets.all(5).h,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white),
-                                child: CircularPercentIndicator(
-                                  radius: 35.r,
-                                  percent: 0.3,
-                                  backgroundColor: Colors.white,
-                                  progressColor: Colors.blueAccent,
-                                  center: CustomText(
-                                    color: Colors.blue,
-                                    text: "18",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                        SizedBox(
+                          height: 150.h,
+                          child: GetBuilder<HomeViewModel>(
+                            id: 'updateExamAttempts',
+                            builder: (controller) {
+                              return controller
+                                          .searchExamAttemptsList.isEmpty &&
+                                      controller.listExamAttempts.isEmpty
+                                  ? CustomExamAttempts(
+                                      isEmpty: true,
+                                      onPressed: () =>
+                                          controller.onTapExamAttempt(),
+                                    )
+                                  : controller.searchExamAttemptsList.isEmpty
+                                      ? CustomExamAttempts(
+                                          isEmpty: true,
+                                          showSearchEmpty: true,
+                                          onPressed: () =>
+                                              controller.onTapExamAttempt(),
+                                        )
+                                      : ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          controller: controller
+                                              .examAttemptScrollController,
+                                          itemBuilder: (context, index) {
+                                            if (index <
+                                                controller
+                                                    .searchExamAttemptsList
+                                                    .length) {
+                                              return CustomExamAttempts(
+                                                onPressed: () =>
+                                                    controller.onTapExamAttempt(
+                                                        index: index),
+                                                examAttemptsDataModel: controller
+                                                        .searchExamAttemptsList[
+                                                    index],
+                                              );
+                                            } else {
+                                              return controller.hasMoreDataExam
+                                                  ? Padding(
+                                                      padding:
+                                                          REdgeInsets.symmetric(
+                                                              horizontal: 12),
+                                                      child:
+                                                          const CustomCircularProgressIndicator(),
+                                                    )
+                                                  : !controller.hasNextPageExam
+                                                      ? Padding(
+                                                          padding: REdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      12),
+                                                          child:
+                                                              const CustomAlertMessage(
+                                                            text:
+                                                                "No More Data",
+                                                          ))
+                                                      : const SizedBox();
+                                            }
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return 10.horizontalSpace;
+                                          },
+                                          itemCount: controller
+                                                      .hasMoreDataExam ||
+                                                  !controller.hasNextPageExam
+                                              ? controller
+                                                      .searchExamAttemptsList
+                                                      .length +
+                                                  1
+                                              : controller
+                                                  .searchExamAttemptsList
+                                                  .length,
+                                        );
+                            },
+                          ),
                         ),
-                        15.verticalSpace,
+                        25.verticalSpace,
                         CustomText(
                           text: "اعلانات وعروض خاصة",
                           fontFamily: "Cairo",
@@ -163,18 +146,12 @@ class HomeView extends GetView<HomeViewModel> {
                           fontWeight: FontWeight.w500,
                           fontSize: 18.sp,
                         ),
-                        10.verticalSpace,
+                        15.verticalSpace,
                         GetBuilder<HomeViewModel>(
                           id: 'updateAds',
                           builder: (controller) {
                             return controller.adsList.isEmpty
-                                ? CustomAdsAndOffer(
-                                    adsModel: AdsData(
-                                        // photo:
-                                        //     'https://quizzy.makank.online/images/ads/2nFmSi5tt9PgeYsGIXlNRc9LlRike6TGODZXoDXC.png',
-                                        // // title:
-                                        // //     " الخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخوليالخولي  محمد صلاح الخولي",
-                                        ))
+                                ? CustomAdsAndOffer(adsModel: AdsData())
                                 : SizedBox(
                                     height: 150.h,
                                     child: ListView.separated(
@@ -192,33 +169,27 @@ class HomeView extends GetView<HomeViewModel> {
                                   );
                           },
                         ),
-                        20.verticalSpace,
+                        25.verticalSpace,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 111.w,
-                              height: 26.h,
-                              padding: EdgeInsets.symmetric(horizontal: 10).w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xff9ADFEF), width: 2),
-                                  borderRadius: BorderRadius.circular(14)),
-                              child: Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: DropdownButton(
-                                  underline: Text(""),
-                                  value: "الجبر",
-                                  isExpanded: true,
-                                  items: [
-                                    DropdownMenuItem(
-                                      value: "الجبر",
-                                      child: Text("الجبر"),
-                                    )
-                                  ],
-                                  onChanged: (value) {},
-                                ),
-                              ),
+                            GetBuilder<HomeViewModel>(
+                              id: "updateSubject",
+                              builder: (controller) {
+                                return SizedBox(
+                                  height: 26.h,
+                                  width: 111.w,
+                                  child: CustomDropDownFilter(
+                                    items: controller.subjectListDropDownValues,
+                                    value: controller.subjectValue,
+                                    isSubject: true,
+                                    onChanged: (value) =>
+                                        controller.updateSubject(value!),
+                                    borderColor: const Color(0xff9ADFEF),
+                                    defaultValue: "اختر المادة",
+                                  ),
+                                );
+                              },
                             ),
                             CustomText(
                               text: "الأعلي تقييم",
@@ -227,41 +198,60 @@ class HomeView extends GetView<HomeViewModel> {
                             ),
                           ],
                         ),
-                        10.verticalSpace,
-                        Column(
-                          children: [
-                            Container(
-                              width: 60.w,
-                              height: 60.h,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      width: 3, color: Color(0xff4490BA)),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        Assets.imagesManFace,
-                                      ))),
-                            ),
-                            CustomText(
-                              text: "الاء سعيد",
-                              fontFamily: "Cairo",
-                              fontSize: 14.sp,
-                            ),
-                            Container(
-                              width: 60,
-                              alignment: AlignmentDirectional.center,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffFBECFF),
-                                  borderRadius: BorderRadius.circular(12).r),
-                              child: CustomText(
-                                text: "203pt",
-                                fontSize: 14.sp,
-                                fontFamily: "Cairo",
-                              ),
-                            ),
-                          ],
-                        ),
+                        15.verticalSpace,
+                        SizedBox(
+                          height: 130.h,
+                          child: GetBuilder<HomeViewModel>(
+                            id: "updateTopStudent",
+                            builder: (controller) {
+                              return controller.listTopStudent.isEmpty
+                                  ? const CustomAlertMessage(
+                                      text:
+                                          "لايوجد  حاليا الأعلي تقييم في هذه المادة")
+                                  : ListView.separated(
+                                      controller:
+                                          controller.topStudentScrollController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        if (index <
+                                            controller.listTopStudent.length) {
+                                          return CustomTopStudentPoints(
+                                              topStudentDataModel: controller
+                                                  .listTopStudent[index]);
+                                        } else {
+                                          return controller
+                                                  .hasMoreDataTopStudent
+                                              ? Padding(
+                                                  padding:
+                                                      REdgeInsets.symmetric(
+                                                          horizontal: 12),
+                                                  child:
+                                                      const CustomCircularProgressIndicator(),
+                                                )
+                                              : !controller
+                                                      .hasNextPageTopStudent
+                                                  ? Padding(
+                                                      padding:
+                                                          REdgeInsets.symmetric(
+                                                              horizontal: 12),
+                                                      child:
+                                                          const CustomAlertMessage(
+                                                        text: "No More Data",
+                                                      ))
+                                                  : const SizedBox();
+                                        }
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return 10.horizontalSpace;
+                                      },
+                                      itemCount: controller
+                                                  .hasMoreDataTopStudent ||
+                                              !controller.hasMoreDataTopStudent
+                                          ? controller.listTopStudent.length + 1
+                                          : controller.listTopStudent.length);
+                            },
+                          ),
+                        )
                       ],
                     ),
                   ),

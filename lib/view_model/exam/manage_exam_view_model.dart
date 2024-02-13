@@ -1218,12 +1218,12 @@ class ManageExamViewModel extends GetxController {
 
   void _aiExamService() {
     _isLoadExamViewPage = false;
-    _isAfterFinish = true; // must be false
+    _isAfterFinish = false; // must be false
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
       type: ExamConstatnt.aiExam,
-      typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
+      typeAssessment: ExamConstatnt.typeAssessmenDirect,
       subjectId: _subjectSelectedInformation!.id,
       bookId: _bookSelected!.id!,
     ))

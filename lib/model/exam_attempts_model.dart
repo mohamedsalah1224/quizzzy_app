@@ -1,3 +1,4 @@
+import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/links_model.dart';
 import 'package:quizzy_app/model/meta_model.dart';
 
@@ -60,7 +61,7 @@ class ExamAttemptsDataModel {
   int? totalQuestions;
   int? totalAnsweredQuestions;
   int? studentId;
-  String? subject;
+  Subject? subject;
 
   ExamAttemptsDataModel(
       {this.id,
@@ -75,7 +76,8 @@ class ExamAttemptsDataModel {
         totalQuestions: json['total_questions'],
         totalAnsweredQuestions: json['total_answered_questions'],
         studentId: json['student_id'],
-        subject: json['subject']);
+        subject:
+            json['subject'] != null ? Subject.fromJson(json['subject']) : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -84,7 +86,63 @@ class ExamAttemptsDataModel {
       'total_questions': totalQuestions,
       'total_answered_questions': totalAnsweredQuestions,
       'student_id': studentId,
-      'subject': subject,
+      'subject': subject != null ? subject!.toJson() : {},
+    };
+  }
+}
+
+class Subject {
+  int? id;
+  String? name;
+  String? semester;
+  String? photo;
+  int? academicYearId;
+  bool? isActive;
+  String? createdAt;
+  String? updatedAt;
+  String? fullName;
+  AcademicYearModel? academicYear;
+
+  Subject(
+      {this.id,
+      this.name,
+      this.semester,
+      this.photo,
+      this.academicYearId,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.fullName,
+      this.academicYear});
+
+  factory Subject.fromJson(Map<String, dynamic> json) {
+    return Subject(
+        id: json['id'],
+        name: json['name'],
+        semester: json['semester'],
+        photo: json['photo'],
+        academicYearId: json['academic_year_id'],
+        isActive: json['is_active'],
+        updatedAt: json['updated_at'],
+        createdAt: json['created_at'],
+        fullName: json['full_name'],
+        academicYear: json['academic_year'] != null
+            ? AcademicYearModel.fromJson(json['academic_year'])
+            : null);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'semester': semester,
+      'photo': photo,
+      'academic_year_id': academicYearId,
+      'is_active': isActive,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'full_name': fullName,
+      'academic_year': academicYear != null ? academicYear!.toJson() : {}
     };
   }
 }

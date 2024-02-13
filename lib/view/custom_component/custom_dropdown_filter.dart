@@ -25,7 +25,7 @@ class CustomDropDownFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity.w,
+      // width: double.infinity.w,
       height: height!.h,
       decoration: BoxDecoration(
           color: Colors.white,

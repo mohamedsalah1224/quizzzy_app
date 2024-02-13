@@ -10,7 +10,7 @@ class CustomText extends StatelessWidget {
   final TextAlign? textAlign;
   final int? maxLines;
   final TextDirection? textDirection;
-
+  final TextOverflow? overflow;
   final Color? backgroundColor;
   const CustomText(
       {super.key,
@@ -19,6 +19,7 @@ class CustomText extends StatelessWidget {
       this.color,
       this.fontSize,
       this.backgroundColor,
+      this.overflow,
       this.textDirection,
       this.maxLines = 4,
       this.textAlign,
@@ -35,6 +36,7 @@ class CustomText extends StatelessWidget {
           maxLines: maxLines,
           textDirection: textDirection,
           style: TextStyle(
+              overflow: overflow,
               backgroundColor: backgroundColor,
               color: color,
               fontSize: fontSize,
