@@ -1,9 +1,19 @@
+import 'package:hive_flutter/hive_flutter.dart';
+part 'academic_year_model.g.dart';
+
+@HiveType(typeId: 2)
 class AcademicYearModel {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? photo;
+  @HiveField(3)
   bool? isActive;
+  @HiveField(4)
   String? createdAt;
+  @HiveField(5)
   String? updatedAt;
 
   AcademicYearModel(

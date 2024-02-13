@@ -1,8 +1,15 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 
+part 'subjects_model.g.dart';
+
+@HiveType(typeId: 3)
 class SubjectsModel {
+  @HiveField(0)
   bool? success;
+  @HiveField(1)
   List<DataSubjectModel>? data;
+  @HiveField(2)
   String? message;
 
   SubjectsModel({this.success, this.data, this.message});

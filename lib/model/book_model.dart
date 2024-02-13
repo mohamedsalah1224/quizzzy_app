@@ -1,12 +1,22 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
+part 'book_model.g.dart';
 
+@HiveType(typeId: 5)
 class BookModel {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? photo;
+  @HiveField(3)
   ImageDimensionsModel? imageDimensions;
+  @HiveField(4)
   bool? isActive;
+  @HiveField(5)
   String? createdAt;
+  @HiveField(6)
   String? updatedAt;
 
   BookModel(

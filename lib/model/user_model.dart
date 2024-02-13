@@ -1,27 +1,53 @@
-import 'academic_year_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'academic_year_model.dart';
+part 'user_model.g.dart';
+
+@HiveType(typeId: 1)
 class User {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? username;
+  @HiveField(3)
   String? email;
+  @HiveField(4)
   String? phone;
+  @HiveField(5)
   String? photo;
+  @HiveField(6)
   String? dateOfBirth;
+  @HiveField(7)
   String? governorate;
+  @HiveField(8)
   String? area;
+  @HiveField(9)
   String? residenceArea;
+  @HiveField(10)
   String? specialization;
+  @HiveField(11)
   int? academicYearId;
+  @HiveField(12)
   String? providerId;
+  @HiveField(13)
   String? providerType;
+  @HiveField(14)
   String? deviceToken;
+  @HiveField(15)
   AcademicYearModel? academicYear;
+  @HiveField(16)
   bool? isActive;
+  @HiveField(17)
   String? createdAt;
+  @HiveField(18)
   String? updatedAt;
+  @HiveField(19)
   bool? hasVerifiedEmail;
+  @HiveField(20)
   bool? phoneVerified;
+  @HiveField(21)
   String? locationArea;
 
   User(

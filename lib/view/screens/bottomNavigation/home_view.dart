@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/model/ads_model.dart';
 
 import 'package:quizzy_app/utils/app_images.dart';
@@ -39,8 +40,10 @@ class HomeView extends GetView<HomeViewModel> {
               Assets.imagesNotification,
               color: Colors.black,
             ),
-            onPressed: () {
+            onPressed: () async {
               print("Ok");
+              // Remove tHE rOUTE PROCESS
+              await AuthRouteService.instance.logout();
             },
           ),
         ],

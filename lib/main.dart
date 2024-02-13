@@ -6,6 +6,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
+import 'package:quizzy_app/model/academic_year_model.dart';
+import 'package:quizzy_app/model/book_model.dart';
+import 'package:quizzy_app/model/data_subject_model.dart';
+import 'package:quizzy_app/model/subjects_model.dart';
+import 'package:quizzy_app/model/user_model.dart';
 
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
 import 'package:quizzy_app/utils/constant.dart';
@@ -26,6 +33,14 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
+
+  Hive.registerAdapter(AcademicYearModelAdapter());
+  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(SubjectsModelAdapter());
+  Hive.registerAdapter(DataSubjectModelAdapter());
+  Hive.registerAdapter(BookModelAdapter());
+  Hive.registerAdapter(ImageDimensionsModelAdapter());
+  await AuthRouteService.instance.init();
 
   runApp(const MyApp());
 }

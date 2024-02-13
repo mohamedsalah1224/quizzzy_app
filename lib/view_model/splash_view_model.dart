@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
 class SplashViewModel extends GetxController {
@@ -11,7 +13,15 @@ class SplashViewModel extends GetxController {
     super.onInit();
 
     Timer(const Duration(seconds: 2), () async {
-      Get.offAllNamed(Routes.loginView);
+      bool result = AuthRouteService.instance.readRoute();
+      debugPrint("-" * 50);
+      debugPrint("Route Exit : $result");
+      debugPrint("-" * 50);
+      if (result) {
+        Get.offAllNamed(Routes.bottomNavgation);
+      } else {
+        Get.offAllNamed(Routes.loginView);
+      }
     });
   }
 

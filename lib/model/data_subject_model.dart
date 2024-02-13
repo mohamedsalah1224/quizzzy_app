@@ -1,18 +1,31 @@
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/book_model.dart';
 
-class DataSubjectModel {
-  int? id;
-  String? name;
-  String? photo;
-  List<BookModel>? books;
+part 'data_subject_model.g.dart';
 
+@HiveType(typeId: 4)
+class DataSubjectModel {
+  @HiveField(0)
+  int? id;
+  @HiveField(1)
+  String? name;
+  @HiveField(2)
+  String? photo;
+  @HiveField(3)
+  List<BookModel>? books;
+  @HiveField(4)
   int? academicYearId;
+  @HiveField(5)
   AcademicYearModel? academicYear;
+  @HiveField(6)
   bool? isActive;
+  @HiveField(7)
   String? createdAt;
+  @HiveField(8)
   String? updatedAt;
+  @HiveField(9)
   ImageDimensionsModel? imageDimensions;
 
   DataSubjectModel(

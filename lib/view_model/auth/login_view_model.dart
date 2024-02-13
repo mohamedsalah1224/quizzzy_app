@@ -6,6 +6,7 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
+import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/genral_response_mode.dart';
@@ -14,7 +15,6 @@ import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/model/social_service_response_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
-import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view_model/auth/register_view_model.dart';
@@ -105,9 +105,15 @@ class LoginViewModel extends GetxController {
         Get.offAndToNamed(Routes.verifyEmailView);
         // to verify Email
       } else {
+        await AuthRouteService.instance.logIn();
         Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
       }
     }
+  }
+
+  void logoutButton() async {
+    await AuthRouteService.instance.logout();
+    // remove UserCache
   }
 
 ///////////////////////////////////// Social Logain Logic /////////////////////////////////////////////
@@ -120,6 +126,7 @@ class LoginViewModel extends GetxController {
       if (authModel.success!) {
         await _cacheAcessToken(
             acessToken: authModel.data!.accessToken!); // Cache Acess Token
+
         print('*' * 50);
         print("Acess Toke ${authModel.data!.accessToken}");
         print('*' * 50);
@@ -163,9 +170,13 @@ class LoginViewModel extends GetxController {
       if (autModel == null) return; // if any erro occur in social Service
 
       // check Veify Phone or Not
-      !autModel.data!.user!.phoneVerified!
-          ? Get.offAndToNamed(Routes.verifyPhoneView)
-          : Get.offAllNamed(Routes.bottomNavgation);
+
+      if (!autModel.data!.user!.phoneVerified!) {
+        Get.offAndToNamed(Routes.verifyPhoneView);
+      } else {
+        await AuthRouteService.instance.logIn();
+        Get.offAllNamed(Routes.bottomNavgation);
+      }
     } else {
       // this mean the provider id must collect a some of Inforamtion
       // go to Sign Up View
