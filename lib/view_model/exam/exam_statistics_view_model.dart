@@ -8,7 +8,9 @@ import 'package:quizzy_app/model/exam_statistics_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class ExamStatisticsViewModel extends GetxController {
@@ -28,9 +30,9 @@ class ExamStatisticsViewModel extends GetxController {
     super.onInit();
     int examAttemptId = controllerOfMangeExamViewModel.startQuizModel.data!.id!;
 
-    // _removeExamAttempt(
-    //     examAttemptId:
-    //         examAttemptId); // to remove the ExamAttempt From the List in the HomeviewModel
+    _removeExamAttempt(
+        examAttemptId:
+            examAttemptId); // to remove the ExamAttempt From the List in the HomeviewModel
 
     _attemptAnswersService(examAttemptId: examAttemptId!);
   }
@@ -91,29 +93,38 @@ class ExamStatisticsViewModel extends GetxController {
     }); // to call the StartQuiz Again
   }
 
-  // void _removeExamAttempt({required int examAttemptId}) {
-  //   // use in go to Home , ReptionExam
-  //   if (controllerOfMangeExamViewModel.isExamAttempt) {
-  //     // Remove this Exam from the HomView
-  //     print("*" * 50);
-  //     print(examAttemptId);
-  //     print("*" * 50);
-  //     Get.find<HomeViewModel>()
-  //         .removeAnExamAttemptById(examAttemptId: examAttemptId);
-  //   }
-  // }
+  void _removeExamAttempt({required int examAttemptId}) {
+    // use in go to Home , ReptionExam
+    if (controllerOfMangeExamViewModel.isExamAttempt) {
+      // Remove this Exam from the HomView
+      print("*" * 50);
+      print(examAttemptId);
+      print("*" * 50);
+      Get.find<HomeViewModel>()
+          .removeAnExamAttemptById(examAttemptId: examAttemptId);
+    }
+  }
 
   void goToHomePage() {
     controllerOfMangeExamViewModel.resetAllController();
-    Get.offAllNamed(Routes.bottomNavgation);
-    // if (controllerOfMangeExamViewModel.isExamAttempt) {
-    //   Get.offAllNamed(Routes.bottomNavgation);
-    // } else {
-    //   Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
-    // }
+    ManageBottomNavigationViewModel manageBottomNavigationViewModel =
+        Get.find<ManageBottomNavigationViewModel>();
 
-    // if (controllerOfMangeExamViewModel.isExamAttempt) {
-    //   update(['updateExamAttempts']);
-    // }
+    HomeViewModel homeViewModel = Get.find<HomeViewModel>();
+    if (controllerOfMangeExamViewModel.isExamAttempt) {
+      // Get.offAllNamed(Routes.bottomNavgation);
+      manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
+
+      homeViewModel.setIsLoadHomeViewPage(show: false); // to diable homeView
+      Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
+
+      Timer(const Duration(seconds: 1), () {
+        homeViewModel.setIsLoadHomeViewPage(
+            show: true); // to update the HomeView
+      });
+    } else {
+      manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
+      Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
+    }
   }
 }

@@ -53,4 +53,15 @@ class ManageBottomNavigationViewModel extends GetxController {
     // use it to change the index without click on the Screen
     update();
   }
+
+  void gotToHomePageManuallyWithoutClickOnIt() {
+    _currentIndex = 0;
+    final dynamic curvedNavigation = bottomNavgationGlobalKey
+        .currentState; // bottomNavgationGlobalKey on the Curver
+    curvedNavigation.setPage(0);
+    // use it to change the index without click on the Screen
+    update();
+  }
+
+  bool isCurrentHomePage() => (currentIndex == 0);
 }

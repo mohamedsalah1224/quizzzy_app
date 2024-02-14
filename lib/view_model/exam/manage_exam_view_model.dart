@@ -32,6 +32,8 @@ import 'package:quizzy_app/view/screens/exam/exam_type/single_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/true_false_exam.dart';
 import 'package:quizzy_app/view/screens/exam/filter_questions_view.dart';
 import 'package:quizzy_app/view/screens/exam/quiz_type_view.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/short_long_answer_choice_exam_provider_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
@@ -203,6 +205,20 @@ class ManageExamViewModel extends GetxController {
   void backFromQuizViewType() {
     _currentManageExamsPagesIndex = 1;
     update(['updateCurrentManageExamsPagesIndex']);
+  }
+
+  void backFromExamViewPage() {
+    resetController();
+
+    if (Get.find<ManageBottomNavigationViewModel>().isCurrentHomePage()) {
+      Get.find<HomeViewModel>().setIsLoadHomeViewPage(show: false);
+      Get.back();
+      Timer(const Duration(seconds: 1), () {
+        Get.find<HomeViewModel>().setIsLoadHomeViewPage(show: true);
+      });
+    } else {
+      Get.back(); // back to The Exam
+    }
   }
 
   void backFromFilter() {

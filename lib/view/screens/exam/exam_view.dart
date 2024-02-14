@@ -33,10 +33,7 @@ class ExamView extends GetView<ManageExamViewModel> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              controller.resetController();
-              Get.back();
-            },
+            onPressed: () => controller.backFromExamViewPage(),
           ),
         ),
         body: GetBuilder<ManageExamViewModel>(

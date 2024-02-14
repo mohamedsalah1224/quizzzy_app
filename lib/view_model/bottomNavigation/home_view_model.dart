@@ -27,6 +27,11 @@ class HomeViewModel extends GetxController {
   late List<AdsData> _adsList;
 
   bool get isLoadHomeViewPage => _isLoadHomeViewPage;
+  void setIsLoadHomeViewPage({required bool show}) {
+    _isLoadHomeViewPage = show;
+    update();
+  }
+
   bool get hasMoreDataExam => _hasMoreDataExam;
   bool get hasNextPageExam => _hasNextPageExam;
   bool get hasMoreDataTopStudent => _hasMoreDataTopStudent;
@@ -106,6 +111,8 @@ class HomeViewModel extends GetxController {
 
   void removeAnExamAttemptById({required int examAttemptId}) {
     _listExamAttempts.removeWhere((element) => (element.id == examAttemptId));
+    _searchExamAttemptsList.clear();
+    _searchExamAttemptsList.addAll(_listExamAttempts);
   }
 ///////////////////////////////////////////////////////Actions///////////////////////////////////////////////////////////////////
 
