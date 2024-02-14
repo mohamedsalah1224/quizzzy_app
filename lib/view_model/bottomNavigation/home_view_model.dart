@@ -5,9 +5,14 @@ import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_rep
 import 'package:quizzy_app/model/ads_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/exam_attempts_model.dart';
+import 'package:quizzy_app/model/exam_model.dart';
+import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/top_student_dataModel.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
+import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
+import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class HomeViewModel extends GetxController {
   bool _isLoadHomeViewPage = false;
@@ -98,6 +103,10 @@ class HomeViewModel extends GetxController {
 
     update(['updateExamAttempts']);
   }
+
+  void removeAnExamAttemptById({required int examAttemptId}) {
+    _listExamAttempts.removeWhere((element) => (element.id == examAttemptId));
+  }
 ///////////////////////////////////////////////////////Actions///////////////////////////////////////////////////////////////////
 
   void updateSubject(String value) async {
@@ -127,12 +136,16 @@ class HomeViewModel extends GetxController {
 
   void onTapExamAttempt({int? index}) {
     if (_listExamAttempts.isEmpty) {
+      Get.find<ManageBottomNavigationViewModel>()
+          .gotToExamPageManuallyWithoutClickOnIt();
       print("Load the Default Page");
       // if no Element Suggest you to create a new Exam
       // go to the Exam
     } else {
       int examId = _listExamAttempts[index!].id!;
-      print(examId);
+      Get.find<ManageExamViewModel>()
+          .activeExamAttmpts(); // to know a Flag that is Exam Attempts
+      loadAttemptExam(id: examId);
       // Call the Api and Load the Exam
     }
   }
@@ -285,6 +298,23 @@ class HomeViewModel extends GetxController {
       update();
     }).catchError((e) => SnackBarHelper.instance
         .showMessage(message: e.toString(), milliseconds: 2000, erro: true));
+  }
+
+  void loadAttemptExam({required int id}) {
+    // ExamsModel
+
+    ExamRepositoryService().showExamAttempts(id: id).then((value) {
+      Get.find<ManageExamViewModel>().setExamData(
+          examsModel: ExamsModel(
+              data: ExamModel(
+                  questions: value.data!.unsolvedQuestions,
+                  id: value.data!.examAttempt!.exam!
+                      .id)), // used when make a RepetionExam
+          examAttemptModel: value.data!.examAttempt!);
+    }).catchError((e) =>
+        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
+
+    Get.toNamed(Routes.examView);
   }
 
   /////////////////////////////////////////////

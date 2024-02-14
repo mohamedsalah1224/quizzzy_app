@@ -28,6 +28,9 @@ class CustomQuestionSourceType extends StatelessWidget {
     if (questionSourceType == QuestionSourceType.none) {
       return 50.verticalSpace;
     } else if (questionSourceType == QuestionSourceType.image) {
+      debugPrint("*" * 50);
+      debugPrint("Image Source : $imageSourceLink");
+      debugPrint("*" * 50);
       return (imageSourceLink != null && imageSourceLink!.isNotEmpty)
           ? CustomSourceImage(
               imageSourceLink: imageSourceLink,

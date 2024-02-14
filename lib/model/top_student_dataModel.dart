@@ -1,16 +1,14 @@
 class TopStudentDataModel {
-  String? totalMarks;
-  String? earnedMarks;
+  String? totalEarnedMarks;
   Student? student;
-  int? isCurrentStudent;
+  bool? isCurrentStudent;
 
   TopStudentDataModel(
-      {this.totalMarks, this.earnedMarks, this.student, this.isCurrentStudent});
+      {this.totalEarnedMarks, this.student, this.isCurrentStudent});
 
   factory TopStudentDataModel.fromJson(Map<String, dynamic> json) {
     return TopStudentDataModel(
-        earnedMarks: json['earned_marks'],
-        totalMarks: json['total_marks'],
+        totalEarnedMarks: json['total_earned_marks'],
         isCurrentStudent: json['is_current_student'],
         student:
             json['student'] != null ? Student.fromJson(json['student']) : null);
@@ -19,8 +17,7 @@ class TopStudentDataModel {
   Map<String, dynamic> toJson() {
     return {
       'is_current_student': isCurrentStudent,
-      'total_marks': totalMarks,
-      'earned_marks': earnedMarks,
+      'total_earned_marks': totalEarnedMarks,
       'student': student != null ? student!.toJson() : {}
     };
   }

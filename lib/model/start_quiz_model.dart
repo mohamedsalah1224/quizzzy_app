@@ -1,6 +1,6 @@
 class StartQuizModel {
   bool? success;
-  Data? data;
+  StartQuizData? data;
   String? message;
 
   StartQuizModel({this.success, this.data, this.message});
@@ -9,7 +9,8 @@ class StartQuizModel {
     return StartQuizModel(
         message: json['message'],
         success: json['success'],
-        data: json['data'] != null ? Data.fromJson(json['data']) : null);
+        data:
+            json['data'] != null ? StartQuizData.fromJson(json['data']) : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -21,7 +22,7 @@ class StartQuizModel {
   }
 }
 
-class Data {
+class StartQuizData {
   int? examId;
   int? totalQuestions;
   int? totalMarks;
@@ -35,7 +36,7 @@ class Data {
   String? createdAt;
   int? id;
 
-  Data(
+  StartQuizData(
       {this.examId,
       this.totalQuestions,
       this.totalMarks,
@@ -49,8 +50,8 @@ class Data {
       this.createdAt,
       this.id});
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
+  factory StartQuizData.fromJson(Map<String, dynamic> json) {
+    return StartQuizData(
         examId: json['exam_id'],
         totalQuestions: json['total_questions'],
         totalMarks: json['total_marks'],

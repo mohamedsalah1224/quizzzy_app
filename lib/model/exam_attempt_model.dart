@@ -1,3 +1,4 @@
+import 'package:quizzy_app/model/exam_attempts_model.dart';
 import 'package:quizzy_app/model/exam_data_model.dart';
 
 class ExamAttemptModel {
@@ -22,8 +23,8 @@ class ExamAttemptModel {
   String? createdAt;
   String? updatedAt;
   ExamDataModel? exam;
-  String? book; // reviw
-  String? subject; //review
+  // String? book; // reviw
+  // Subject? subject; //review
   int? numberCorrectAnswer;
   int? numberWrongAnswer;
 
@@ -49,8 +50,6 @@ class ExamAttemptModel {
       this.createdAt,
       this.updatedAt,
       this.exam,
-      this.book,
-      this.subject,
       this.numberCorrectAnswer,
       this.numberWrongAnswer});
 
@@ -58,8 +57,8 @@ class ExamAttemptModel {
     return ExamAttemptModel(
         numberWrongAnswer: json['number_wrong_answer'],
         numberCorrectAnswer: json['number_correct_answer'],
-        subject: json['subject'],
-        book: json['book'],
+        // subject: json['subject'],
+        // book: json['book'],
         exam:
             json['exam'] != null ? ExamDataModel.fromJson(json['exam']) : null,
         updatedAt: json['updated_at'],
@@ -108,8 +107,8 @@ class ExamAttemptModel {
       'updated_at': updatedAt,
       'number_wrong_answer': numberWrongAnswer,
       'number_correct_answer': numberCorrectAnswer,
-      'subject': subject,
-      'book': book,
+      // 'subject': subject,
+      // 'book': book,
       'exam': exam != null ? exam!.toJson() : {}
     };
   }

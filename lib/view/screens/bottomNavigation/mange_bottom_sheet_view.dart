@@ -4,6 +4,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/constant.dart';
 
 import '../../../view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 
@@ -26,6 +27,7 @@ class ManageBottomNavigationView
         child: GetBuilder<ManageBottomNavigationViewModel>(
           builder: (controller) {
             return CurvedNavigationBar(
+              key: bottomNavgationGlobalKey,
               color: Color.fromRGBO(38, 140, 109, 1),
               backgroundColor: Colors.transparent,
               animationDuration: Duration(milliseconds: 200),

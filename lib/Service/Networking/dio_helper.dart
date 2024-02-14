@@ -20,9 +20,9 @@ class DioHelper {
   static Dio createDio() {
     var dio = Dio(BaseOptions(
       baseUrl: EndPoint.baseUrl,
-      receiveTimeout: const Duration(seconds: 15), // 15 seconds
+      receiveTimeout: const Duration(seconds: 20), // 15 seconds
       connectTimeout: const Duration(seconds: 20),
-      sendTimeout: const Duration(seconds: 15),
+      sendTimeout: const Duration(seconds: 20),
     ));
 
     dio.interceptors.addAll({

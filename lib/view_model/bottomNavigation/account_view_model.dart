@@ -2,8 +2,12 @@ import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/model/achievement_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
+import 'package:quizzy_app/model/exam_model.dart';
+import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
+import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class AccountViewModel extends GetxController {
   String? _subjectValue; // the Value of the Subject in DropDown

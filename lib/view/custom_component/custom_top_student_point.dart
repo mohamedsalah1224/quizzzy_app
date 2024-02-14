@@ -50,7 +50,7 @@ class CustomTopStudentPoints extends StatelessWidget {
               color: const Color(0xffFBECFF),
               borderRadius: BorderRadius.circular(12).r),
           child: CustomText(
-            text: "${topStudentDataModel.earnedMarks ?? "0"} pt",
+            text: "${topStudentDataModel.totalEarnedMarks ?? "0"} pt",
             fontSize: 14.sp,
             fontFamily: "Cairo",
             textAlign: TextAlign.center,

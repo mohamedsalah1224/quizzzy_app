@@ -68,8 +68,13 @@ class CustomImageHelper extends StatelessWidget {
     }
 
     return Image.network(
-      loadingBuilder: (context, child, loadingProgress) =>
-          const CustomCircularProgressIndicator(),
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null)
+          return child; // to Change a State from  Loading to the Show Image
+
+        return const Center(child: CustomCircularProgressIndicator());
+      },
+
       errorBuilder:
           (BuildContext context, Object exception, StackTrace? stackTrace) {
         return Center(

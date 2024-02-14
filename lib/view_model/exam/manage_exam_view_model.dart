@@ -10,6 +10,7 @@ import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/book_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
+import 'package:quizzy_app/model/exam_attempt_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/questions_model.dart';
@@ -50,6 +51,7 @@ class ManageExamViewModel extends GetxController {
   int _countOfQuestion = 1;
   int _totalOfQuestion = 0;
   bool _isAfterFinish = false;
+  bool _isExamAttempt = false;
   String _examTypeMessage = "الإختبار";
 
   DataSubjectModel? _subjectSelectedInformation;
@@ -60,7 +62,7 @@ class ManageExamViewModel extends GetxController {
   List<DataSubjectModel> _searchSubjectList = [];
   List<BookModel> _bookList = [];
   List<BookModel> _seachBookList = [];
-
+  void activeExamAttmpts() => _isExamAttempt = true;
   final List<Widget> _examTypeList = [
     const CompareExam(),
     const LongShortAnswerExam(),
@@ -91,6 +93,7 @@ class ManageExamViewModel extends GetxController {
   }
 
   bool get isLoadChoicePage => _isLoadChoicePage;
+  bool get isExamAttempt => _isExamAttempt;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
   String get examTypeMessage => _examTypeMessage;
   void setAfterFinish() => _isAfterFinish = true;
@@ -115,6 +118,40 @@ class ManageExamViewModel extends GetxController {
   BookModel get getBookSelected => _bookSelected!;
   StartQuizModel get startQuizModel => _startQuizModel!;
   ExamsModel get examData => _examData!;
+
+  void setExamData(
+      {required ExamsModel examsModel,
+      required ExamAttemptModel examAttemptModel}) {
+    _isLoadExamViewPage = false;
+    _isAfterFinish = false; // must be false
+    _examData = examsModel;
+    _countOfQuestion = examAttemptModel.totalAnsweredQuestions! == 0
+        ? 1
+        : examAttemptModel.totalAnsweredQuestions!;
+    _currentQuetionIndex = 0;
+    _startQuizModel = StartQuizModel(
+        data: StartQuizData(
+      totalAnsweredQuestions: examAttemptModel.totalAnsweredQuestions,
+      totalQuestions: examAttemptModel.totalQuestions,
+      bookId: examAttemptModel.bookId,
+      studentId: examAttemptModel.studentId,
+      id: examAttemptModel.id,
+      examId: examAttemptModel.examId,
+
+      // totalMarks: examAttemptModel.totalMarks,
+    ));
+    _totalOfQuestion = _startQuizModel!
+        .data!.totalQuestions!; // intialize the Value of total Question
+    _isLoadExamViewPage = true; // to updateScreen
+    if (!isNoQuestionExist) {
+      updateTheCurrentExamType();
+    }
+    update([
+      'LoadExamViewPage',
+      'updateLinearProgres'
+    ]); //update  the Question Type
+  }
+
   bool get isNoQuestionExist =>
       _examData!.data!.questions!.isEmpty ? true : false;
   List<Widget> get examTypeList => _examTypeList;
@@ -238,9 +275,8 @@ class ManageExamViewModel extends GetxController {
     _currentManageExamsPagesIndex = 0;
     _currentExamTypeIndex = 0;
     _currentQuetionIndex = 0;
+    _isLoadExamViewPage = false;
 
-    _subjectSelectedInformation = null;
-    _startQuizModel = null;
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
@@ -248,6 +284,7 @@ class ManageExamViewModel extends GetxController {
     _countOfQuestion = 1;
     _totalOfQuestion = 0;
     _isAfterFinish = false;
+    _isExamAttempt = false;
     _searchSubjectList =
         _subjectList; // to Solve problem when selecte an Page from BottomSheet
   }
@@ -610,12 +647,17 @@ class ManageExamViewModel extends GetxController {
   }
 
   Future<void> startQuizService({required int examId}) async {
-    ExamRepositoryService().startQuiz(examId: examId).then((value) {
+    ExamRepositoryService().startQuiz(examId: examId).then((value) async {
       _countOfQuestion = 1;
       _currentQuetionIndex = 0;
       _startQuizModel = value;
       _totalOfQuestion = _startQuizModel!
           .data!.totalQuestions!; // intialize the Value of total Question
+
+      if (_isExamAttempt) {
+        // when make a RepetitionExam must Load All Question if the Exam is a AttemptExam
+        await loadAllQuestionOfExamAttempts();
+      }
       _isLoadExamViewPage = true; // to updateScreen
       if (!isNoQuestionExist) {
         updateTheCurrentExamType();
@@ -648,8 +690,24 @@ class ManageExamViewModel extends GetxController {
     updateTheCurrentExamType(); //update  the Question Type
   }
 
+  Future<void> loadAllQuestionOfExamAttempts() async {
+    debugPrint("*" * 50);
+    debugPrint("It is Exam Attempt");
+    debugPrint("*" * 50);
+    await ExamRepositoryService()
+        .showExamAttempts(id: _startQuizModel!.data!.id!)
+        .then((value) {
+      _examData = ExamsModel(
+          data: ExamModel(
+              questions: value.data!.unsolvedQuestions,
+              id: _startQuizModel!.data!.examId));
+    }).catchError((e) => SnackBarHelper.instance
+            .showMessage(message: e.toString(), erro: true));
+  }
+
   void _randomExamService() {
     _isLoadExamViewPage = false;
+    _isExamAttempt = false;
     _isAfterFinish = false; // must be false
 
     // ExamRepositoryService()
@@ -1217,6 +1275,7 @@ class ManageExamViewModel extends GetxController {
   }
 
   void _aiExamService() {
+    _isExamAttempt = false;
     _isLoadExamViewPage = false;
     _isAfterFinish = false; // must be false
     ExamRepositoryService()
@@ -1250,6 +1309,7 @@ class ManageExamViewModel extends GetxController {
       List<String>? questionTypes,
       String? typeAssessment}) {
     _isLoadExamViewPage = false;
+    _isExamAttempt = false;
     ExamRepositoryService()
         .storeExam(
             storeExamModel: StoreExamModel(
@@ -1277,6 +1337,7 @@ class ManageExamViewModel extends GetxController {
   void _specialistExamService() {
     _isAfterFinish = false; // must be false
     _isLoadExamViewPage = false;
+    _isExamAttempt = false;
   }
 
   ///////////////////////////////////////////////// Search Service ////////////////////////////////////////////////
