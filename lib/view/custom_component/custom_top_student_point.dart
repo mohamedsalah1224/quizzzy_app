@@ -46,6 +46,7 @@ class CustomTopStudentPoints extends StatelessWidget {
         2.verticalSpace,
         Container(
           alignment: AlignmentDirectional.center,
+          padding: REdgeInsets.symmetric(horizontal: 4, vertical: 2),
           decoration: BoxDecoration(
               color: const Color(0xffFBECFF),
               borderRadius: BorderRadius.circular(12).r),
