@@ -40,81 +40,84 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StatefulBuilder(
-        builder:
-            (BuildContext context, void Function(void Function()) setState) {
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: SizedBox(
-              height: height,
-              child: TextFormField(
-                textDirection: textDirection,
-                controller: controller,
-                obscureText: obscureText,
-                onSaved: onSaved,
-                onTap: onTap,
-                initialValue: initialValue,
-                validator: validator,
-                textAlignVertical: textAlignVertical,
-                readOnly: readOnly,
-                decoration: InputDecoration(
-                    hintText: hintText,
-                    floatingLabelBehavior: FloatingLabelBehavior
-                        .always, // to show the label in above always
-                    hintStyle:
-                        TextStyle(fontSize: 12, color: Color(0xff727272)),
-                    suffixIcon: eyes == null
-                        ? icon == null
-                            ? null
-                            : Icon(
-                                icon,
-                                color: iconColor == null
-                                    ? Color(0xff616161)
-                                    : iconColor,
-                              )
-                        : getImage(
-                            show: obscureText,
-                            onTap: () {
-                              setState(() => obscureText = !obscureText);
-                            }),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xff077C58),
-                          width: 2,
-                        )),
-                    errorBorder: OutlineInputBorder(
-                        // wehen erro occure
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Colors.redAccent,
-                          width: 1,
-                        )),
-                    border: OutlineInputBorder(
-                        // when focus in erro
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Colors.redAccent,
-                          width: 1,
-                        )),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          // color: Color(0xff077C58),
-                          width: 1,
-                        )),
-                    labelText: labelText,
-                    labelStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500)),
-              ),
+    return StatefulBuilder(
+      builder: (BuildContext context, void Function(void Function()) setState) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: SizedBox(
+            height: height,
+            child: TextFormField(
+              textDirection: textDirection,
+              controller: controller,
+              obscureText: obscureText,
+              onSaved: onSaved,
+              onTap: onTap,
+              initialValue: initialValue,
+              validator: validator,
+              textAlignVertical: textAlignVertical,
+              readOnly: readOnly,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                  // helperText: "         ",
+                  // errorStyle: const TextStyle(
+                  //   fontSize: 0.01,
+                  // ),
+
+                  hintText: hintText,
+                  floatingLabelBehavior: FloatingLabelBehavior
+                      .always, // to show the label in above always
+                  hintStyle: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xff727272)),
+                  suffixIcon: eyes == null
+                      ? icon == null
+                          ? null
+                          : Icon(
+                              icon,
+                              color: iconColor == null
+                                  ? Color(0xff616161)
+                                  : iconColor,
+                            )
+                      : getImage(
+                          show: obscureText,
+                          onTap: () {
+                            setState(() => obscureText = !obscureText);
+                          }),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12).r,
+                      borderSide: BorderSide(
+                        color: const Color(0xff077C58),
+                        width: 2.r,
+                      )),
+                  errorBorder: OutlineInputBorder(
+                      // wehen erro occure
+                      borderRadius: BorderRadius.circular(12).r,
+                      borderSide: BorderSide(
+                        color: Colors.redAccent,
+                        width: 1.r,
+                      )),
+                  border: OutlineInputBorder(
+                      // when focus in erro
+                      borderRadius: BorderRadius.circular(12).r,
+                      borderSide: BorderSide(
+                        color: Colors.redAccent,
+                        width: 1.r,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12).r,
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                        // color: Color(0xff077C58),
+                        width: 1.r,
+                      )),
+                  labelText: labelText,
+                  labelStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500)),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

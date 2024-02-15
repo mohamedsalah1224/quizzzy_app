@@ -46,6 +46,18 @@ class Validation {
       return false;
   }
 
+  bool isContactsPalestine({required String contact}) {
+    /// The regular expression for validating Phone
+    /// Not Contain plus , must Begin with 056 or 059 , All length is 10
+    ///
+    final RegExp contactRegex = RegExp(r'^(056|059)[0-9]{7}$');
+    if (contact.isNotEmpty && contactRegex.hasMatch(contact)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   bool isName({required String name}) {
     /// The regular expression for validating names in the app.
     final RegExp nameRegex = RegExp(r'^[a-z A-Z]+$');

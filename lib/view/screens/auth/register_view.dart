@@ -62,6 +62,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               height: 45.h,
                               child: CustomTextFormField(
                                 icon: null,
+                                height: 45.h,
                                 validator: (value) =>
                                     controller.validateName(value: value),
                                 controller: controller.nameController,
@@ -84,6 +85,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                                 icon: Icons.date_range_outlined,
                                 iconColor: Color(0xff077C58),
                                 readOnly: true,
+                                height: 45.h,
                                 controller: controller.dateController,
                                 validator: (value) =>
                                     controller.validateBirthDate(value: value),
@@ -111,6 +113,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                                 icon: controller.isSocial
                                     ? Icons.phone
                                     : Icons.markunread,
+                                height: 45.h,
                                 hintText: controller.isSocial
                                     ? "من فضلك ادخل رقم هاتفك"
                                     : "من فضلك ادخل ايميلك أو رقم هاتفك",

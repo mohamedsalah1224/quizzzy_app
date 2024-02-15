@@ -121,11 +121,11 @@ class CustomExamAttempts extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: Container(
-                padding: EdgeInsets.all(5).h,
+                padding: const EdgeInsets.all(5).h,
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.white),
                 child: Container(
-                  color: Colors.amber,
+                  // color: Colors.amber,
                   child: CircularPercentIndicator(
                     radius: 35.r,
                     percent: isEmpty

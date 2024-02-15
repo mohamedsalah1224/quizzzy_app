@@ -12,10 +12,9 @@ class FormValidator {
   /// The error message for empty email input.
   final String _emptyEmailInputError = 'Please enter an email';
   final String _emptyPhoneInputError = 'Please enter an phone';
-  final String _emptyEmailOrPhoneInputError =
-      'Please enter an email or Password';
+  final String _emptyEmailOrPhoneInputError = 'Please Enter an Email or Phone';
   final String _invalidEmailOrPhoneInputError =
-      'Please enter an valid email or Password';
+      'Please enter an valid Email or Phone';
 
   /// The error message for empty password input.
   final String _emptyPasswordInputError = 'Please enter a password';
@@ -46,8 +45,7 @@ class FormValidator {
   String? contactsValidator(String? contact, {bool startPlusCode = false}) {
     if (contact == null || contact.isEmpty) {
       return _emptyPhoneInputError;
-    } else if (!Validation.instance
-        .isContacts(contact: contact, startPlusCode: startPlusCode)) {
+    } else if (!Validation.instance.isContactsPalestine(contact: contact)) {
       return _invalidPhoneError;
     }
     return null;
@@ -99,8 +97,7 @@ class FormValidator {
     if (value == null || value.isEmpty) {
       return _emptyEmailOrPhoneInputError;
     } else if (!(Validation.instance.isEmail(email: value) ||
-        Validation.instance
-            .isContacts(contact: value, startPlusCode: startPlusCode))) {
+        Validation.instance.isContactsPalestine(contact: value))) {
       return _invalidEmailOrPhoneInputError;
     }
     return null;
