@@ -89,7 +89,7 @@ class IdentifyEmailViewModel extends GetxController {
 
   Future<void> reSendCode() async {
     try {
-      ReSendVeifyEmailModel reSendVeifyEmailModel =
+      ReSendVeifyModel reSendVeifyEmailModel =
           await EmailRepositoryService().reSendVerifyEmail(email: email);
 
       if (reSendVeifyEmailModel.success!) {

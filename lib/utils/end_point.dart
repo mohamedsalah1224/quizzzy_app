@@ -22,7 +22,13 @@ class EndPoint {
   static final String resetPassword = dotenv.get("RESET_PASSWORD");
   static final String veifyEmailCode = dotenv.get("VERIFY_EMAIL_CODE");
   static final String reSendVeifyEmail = dotenv.get("RESEND_VERIFY_EMAIL");
+  static final String veifyPhoneCode = dotenv.get("VERIFY_PHONE_CODE");
+  static final String reSendVeifyPhone = dotenv.get("RESEND_VERIFY_PHONE");
 
+/*
+VERIFY_PHONE_CODE="/api/auth/verify-phone-code"
+RESEND_VERIFY_PHONE="/api/auth/sendVerifyPhone"
+*/
   // Exams
   static final String exams = dotenv.get("EXAMS");
   static final String storeExams = dotenv.get("EXAMS");

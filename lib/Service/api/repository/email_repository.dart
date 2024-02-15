@@ -5,5 +5,5 @@ abstract class EmailRepository {
   Future<GeneralResponseModel> verifyEmailCode(
       {required String email, required String code});
 
-  Future<ReSendVeifyEmailModel> reSendVerifyEmail({required String email});
+  Future<ReSendVeifyModel> reSendVerifyEmail({required String email});
 }

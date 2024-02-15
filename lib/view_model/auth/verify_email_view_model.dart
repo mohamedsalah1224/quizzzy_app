@@ -5,7 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/email_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
-import 'package:quizzy_app/Service/local/cache_user_service.dart';
+
 import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/resend_verify_email_model.dart';
 import 'package:quizzy_app/utils/routes.dart';
@@ -85,7 +85,7 @@ class VerifyEmailViewModel extends GetxController {
   Future<void> reSendCode() async {
     try {
       pinController.text = "";
-      ReSendVeifyEmailModel reSendVeifyEmailModel =
+      ReSendVeifyModel reSendVeifyEmailModel =
           await EmailRepositoryService().reSendVerifyEmail(email: email);
 
       if (reSendVeifyEmailModel.success!) {

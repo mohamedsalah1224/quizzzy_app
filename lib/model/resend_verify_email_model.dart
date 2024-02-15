@@ -1,12 +1,12 @@
-class ReSendVeifyEmailModel {
+class ReSendVeifyModel {
   bool? success;
   Data? data;
   String? message;
 
-  ReSendVeifyEmailModel({this.success, this.data, this.message});
+  ReSendVeifyModel({this.success, this.data, this.message});
 
-  factory ReSendVeifyEmailModel.fromJson(Map<String, dynamic> json) {
-    return ReSendVeifyEmailModel(
+  factory ReSendVeifyModel.fromJson(Map<String, dynamic> json) {
+    return ReSendVeifyModel(
         data: json['data'] != null ? Data.fromJson(json['data']) : null,
         message: json['message'],
         success: json['success']);
