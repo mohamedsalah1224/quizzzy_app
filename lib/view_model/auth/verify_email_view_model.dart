@@ -8,9 +8,9 @@ import 'package:quizzy_app/Service/local/auth_route_service.dart';
 
 import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/resend_verify_email_model.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
-import 'package:quizzy_app/view_model/auth/login_view_model.dart';
 
 class VerifyEmailViewModel extends GetxController {
   int length = 6;
@@ -19,7 +19,7 @@ class VerifyEmailViewModel extends GetxController {
   GlobalKey<FormState> verifyFormKey = GlobalKey<FormState>();
   final focusNode = FocusNode();
 
-  late String email;
+  late String _email;
 
   final defaultPinTheme = PinTheme(
     width: 56,
@@ -37,7 +37,8 @@ class VerifyEmailViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    email = Get.find<LoginViewModel>().emailOrPhoneController.text;
+
+    _email = Get.arguments; // to get the Phone Number
   }
 
   @override
@@ -50,7 +51,7 @@ class VerifyEmailViewModel extends GetxController {
   Future<void> confirmEmail() async {
     focusNode.unfocus();
     if (verifyFormKey.currentState!.validate()) {
-      await verifyCode(email: email, code: pinController.text);
+      await verifyCode(email: _email, code: pinController.text);
     }
   }
 
@@ -60,10 +61,14 @@ class VerifyEmailViewModel extends GetxController {
         : null;
   }
 
+  String get email => _email;
   //////////////////////////////////////// Api Service ///////////////////////////////////////////////////////////////////////////
 
   Future<void> verifyCode({required String email, required String code}) async {
     try {
+      DialogHelper.showLoading(
+          message: 'يتم تأكيد البريد الإلكتروني ......',
+          textDirection: TextDirection.rtl);
       GeneralResponseModel generalResponseModel = await EmailRepositoryService()
           .verifyEmailCode(email: email, code: code);
 
@@ -79,6 +84,8 @@ class VerifyEmailViewModel extends GetxController {
       }
     } catch (e) {
       SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    } finally {
+      DialogHelper.hideLoading();
     }
   }
 

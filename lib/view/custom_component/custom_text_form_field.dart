@@ -56,7 +56,6 @@ class CustomTextFormField extends StatelessWidget {
               validator: validator,
               textAlignVertical: textAlignVertical,
               readOnly: readOnly,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                   // helperText: "         ",
                   // errorStyle: const TextStyle(

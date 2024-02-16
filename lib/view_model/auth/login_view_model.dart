@@ -15,6 +15,7 @@ import 'package:quizzy_app/model/login_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/model/social_service_response_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
@@ -89,31 +90,51 @@ class LoginViewModel extends GetxController {
 
   void loginButton() async {
     if (loginFormKey.currentState!.validate()) {
+      DialogHelper.showLoading(
+          message: 'يتم التحميل .....',
+          textDirection: TextDirection.rtl); // if any Erro Occur Close Dilag
       // LoginService
-      bool isEmail = Validation.instance.isEmail(
-          email: emailOrPhoneController.text
-              .trim()); // to know if the input imail or phone
+      bool isEmail = Validation.instance
+          .isEmail(email: emailOrPhoneController.text.trim());
+      // to know if the input imail or phone
+      print("+972${emailOrPhoneController.text.trim().substring(1)}}");
+
       AuthModel? authModel = await _loginByEmailOrPhoneService(
           loginModel: LoginModel(
               email: isEmail ? emailOrPhoneController.text.trim() : '',
               password: passwordController.text,
-              phone: !isEmail ? emailOrPhoneController.text.trim() : '',
+              phone: !isEmail
+                  ? "+972${emailOrPhoneController.text.trim().substring(1)}"
+                  : '',
               type: isEmail ? SourceLoginType.email : SourceLoginType.phone));
       if (authModel == null) {
+        DialogHelper.hideLoading();
         return; // if any erro occur skip return from this method
       }
 
       await CacheUserService.instance
           .updateUser(user: authModel.data!.user!); // to cache the User Object
 
-      if (!authModel.data!.user!.hasVerifiedEmail!) {
-        Get.offAndToNamed(Routes.verifyEmailView);
-        // to verify Email
+      if (isEmail) {
+        if (!authModel.data!.user!.hasVerifiedEmail!) {
+          String email = emailOrPhoneController.text.trim();
+          Get.offAllNamed(Routes.verifyEmailView, arguments: email);
+          // to verify Email
+        } else {
+          await AuthRouteService.instance.logIn();
+          Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
+        }
       } else {
-        await CacheUserService.instance.updateUser(
-            user: authModel.data!.user!); // to cache the User Object
-        await AuthRouteService.instance.logIn();
-        Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
+        if (!authModel.data!.user!.phoneVerified!) {
+          String phone =
+              "+972${emailOrPhoneController.text.trim().substring(1)}";
+
+          Get.offAllNamed(Routes.verifyPhoneView, arguments: phone);
+          // to verify Email
+        } else {
+          await AuthRouteService.instance.logIn();
+          Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
+        }
       }
     }
   }
@@ -141,6 +162,7 @@ class LoginViewModel extends GetxController {
         print('*' * 50);
         return authModel;
       } else {
+        DialogHelper.hideLoading(); // if any Erro Occur Close Dilag
         SnackBarHelper.instance
             .showMessage(message: authModel.message!.toString(), erro: true);
       }
@@ -163,42 +185,54 @@ class LoginViewModel extends GetxController {
 
   Future<void> handelScoialAccountRouteProcess(
       {required String providerId, required String providerType}) async {
-    GeneralResponseModel generalResponseModel =
-        await AuthRepositoryService.instance.checkUser(
-            value: providerId); // Check if the providerId ID Exist or not
-    print(generalResponseModel.success);
-    print(providerId);
-    print(providerType);
-    print('-' * 80);
-    if (generalResponseModel.success!) {
-      AuthModel? autModel = await _loginBySocialService(
-          socialLoginModel: SocialLoginModel(
-              providerId: providerId,
-              providerType: providerType)); // call Social Service , cache Token
+    try {
+      GeneralResponseModel generalResponseModel =
+          await AuthRepositoryService.instance.checkUser(
+              value:
+                  providerId); // Check if the providerId ID Exist in the DataBase  or not
+      print(generalResponseModel.success);
+      print(providerId);
+      print(providerType);
+      print('-' * 80);
+      if (generalResponseModel.success!) {
+        AuthModel? autModel = await _loginBySocialService(
+            socialLoginModel: SocialLoginModel(
+                providerId: providerId,
+                providerType:
+                    providerType)); // call Social Service , cache Token
 
-      if (autModel == null) return; // if any erro occur in social Service
+        if (autModel == null) {
+          DialogHelper.hideLoading(); // if any Erro Occur Close Dilag
+          return;
+        } // if any erro occur in social Service
+        DialogHelper.hideLoading(); // close Daialog
+        await CacheUserService.instance
+            .updateUser(user: autModel.data!.user!); // to cache the User Object
+        // check Veify Phone or Not
+        if (!autModel.data!.user!.phoneVerified!) {
+          print(autModel.data!.user!.phone);
+          Get.offAllNamed(Routes.verifyPhoneView,
+              arguments: autModel.data!.user!.phone);
+        } else {
+          await AuthRouteService.instance.logIn();
 
-      await CacheUserService.instance
-          .updateUser(user: autModel.data!.user!); // to cache the User Object
-      // check Veify Phone or Not
-      if (!autModel.data!.user!.phoneVerified!) {
-        Get.offAndToNamed(Routes.verifyPhoneView);
+          Get.offAllNamed(Routes.bottomNavgation);
+        }
       } else {
-        await AuthRouteService.instance.logIn();
+        DialogHelper.hideLoading(); // close Dialog
+        // the Fist Login must SignUp by Collecting Some of information
+        Get.put(RegisterViewModel()); // Load  Controller
 
-        Get.offAllNamed(Routes.bottomNavgation);
+        Get.find<RegisterViewModel>().activeSocial(
+            providerIdValue: providerId,
+            providerTypeValue:
+                providerType); // to mark the Register View to Collect Social Inforamtion only  , pass ProviderId , providerType
+        Get.toNamed(Routes.registerView);
       }
-    } else {
-      // this mean the provider id must collect a some of Inforamtion
-      // go to Sign Up View
-      // and Verify Phone in the Logic  in Reigste View Model
-
-      Get.toNamed(Routes.registerView);
-      Get.put(RegisterViewModel());
-      Get.find<RegisterViewModel>().activeSocial(
-          providerIdValue: providerId,
-          providerTypeValue:
-              providerType); // to mark the Register View to Collect Social Inforamtion only  , pass ProviderId , providerType
+    } catch (e) {
+      DialogHelper.hideLoading(); // if any Erro Occur Close Dilag
+      SnackBarHelper.instance
+          .showMessage(message: "Some Erro Occur Please Try again");
     }
   }
 
@@ -206,14 +240,15 @@ class LoginViewModel extends GetxController {
       {required SocialMediaType socialMediaType}) async {
     SocialRepository socialRepository = _getObjectTypeOfSocailLoin(
         socialMediaType: socialMediaType); // to get the object
-
+    DialogHelper.showLoading(
+        message: 'يتم التحميل .....', textDirection: TextDirection.rtl);
     SocialServiceResponseModel socialServiceResponseModel =
         await SocialRepositoryMangerService()
             .login(socialRepository); // apply Polymarphism
 
     if (socialServiceResponseModel.status) {
-      SnackBarHelper.instance
-          .showMessage(message: socialServiceResponseModel.message!);
+      // SnackBarHelper.instance
+      //     .showMessage(message: socialServiceResponseModel.message!);
       // checkUser
       await handelScoialAccountRouteProcess(
           providerId: socialServiceResponseModel.providerId!,
@@ -222,6 +257,7 @@ class LoginViewModel extends GetxController {
     } else {
       SnackBarHelper.instance.showMessage(
           message: socialServiceResponseModel.message!, erro: true);
+      DialogHelper.hideLoading(); // if any Erro Occur Close Dilag
     }
 
     /*
@@ -240,10 +276,15 @@ class LoginViewModel extends GetxController {
         await _loginBySocialService(socialLoginModel: socialLoginModel);
     if (autModel == null) return; // if any erro Occur
 
+    CacheUserService.instance
+        .updateUser(user: autModel.data!.user!); // to Cache User
     // // check Veify Phone or Not
-    // !autModel.data!.user!.phoneVerified!
-    //     ? Get.toNamed(Routes.verifyPhoneView)
-    //     : Get.offAllNamed(Routes.bottomNavgation);
-    Get.offAllNamed(Routes.bottomNavgation);
+
+    if (!autModel.data!.user!.phoneVerified!) {
+      Get.offAllNamed(Routes.verifyPhoneView,
+          arguments: autModel.data!.user!.phone);
+    } else {
+      Get.offAllNamed(Routes.bottomNavgation);
+    }
   }
 }

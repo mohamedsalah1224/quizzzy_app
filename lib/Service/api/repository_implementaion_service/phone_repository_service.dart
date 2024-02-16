@@ -10,7 +10,9 @@ import 'package:quizzy_app/utils/end_point.dart';
 
 class PhoneRepositoryService implements PhoneRepository {
   @override
-  Future<ReSendVeifyModel> reSendVerifyPhone({required String phone}) async {
+  Future<ReSendVeifyModel> reSendVerifyPhone({
+    required String phone,
+  }) async {
     try {
       var response = await DioHelper()
           .post(EndPoint.reSendVeifyPhone, data: {'phone': phone});

@@ -115,6 +115,7 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                           fontSize: 14.sp,
                           color: Color(0xff077C58),
                           alignment: AlignmentDirectional.topEnd,
+                          textDirection: TextDirection.ltr,
                         ),
                         3.verticalSpace,
                         SizedBox(
@@ -127,6 +128,8 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                             controller: controller.passwordController,
                             validator: (value) =>
                                 controller.validatePaswword(value: value),
+                            textDirection: TextDirection.ltr,
+                            textAlignVertical: TextAlignVertical.center,
                           ),
                         ),
                         15.verticalSpace,
@@ -149,6 +152,8 @@ class ContinueRegisterView extends GetView<RegisterViewModel> {
                             controller: controller.passwordConfirmController,
                             validator: (value) => controller
                                 .confirmPasswordValidator(value: value),
+                            textDirection: TextDirection.ltr,
+                            textAlignVertical: TextAlignVertical.center,
                           ),
                         ),
                         50.verticalSpace,

@@ -40,7 +40,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
               ),
               CustomText(
                 maxLines: 1,
-                text: "+2044585781547",
+                text: controller.phone,
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
@@ -52,7 +52,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                 child: Pinput(
                   controller: controller.pinController,
                   focusNode: controller.focusNode,
-                  length: 4,
+                  length: controller.length,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   validator: (value) {
                     return controller.validatePinCode(value);
@@ -81,8 +81,8 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                   ),
                   5.horizontalSpace,
                   TextButton(
-                    onPressed: () {
-                      print("إعادة الارسال");
+                    onPressed: () async {
+                      await controller.reSendCode();
                     },
                     child: CustomText(
                         text: "اعادة الارسال",

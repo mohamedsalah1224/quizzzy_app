@@ -185,7 +185,6 @@ class LoginView extends GetView<LoginViewModel> {
                           onPressed: () async {
                             await controller.socialLoginButton(
                                 socialMediaType: SocialMediaType.facebook);
-                            print("Sign in with a Facebook");
                           },
                         ),
                       ]),

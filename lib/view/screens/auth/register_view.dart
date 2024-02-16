@@ -307,7 +307,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
                               onTap: () {
-                                controller.continueregisterView();
+                                controller.continueRegisterView();
                               },
                             ),
                             30.verticalSpace,

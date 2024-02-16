@@ -11,12 +11,10 @@ import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
-import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/constant/app_list_data.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
-import 'package:quizzy_app/view/screens/auth/login_view.dart';
 import 'package:quizzy_app/view_model/auth/login_view_model.dart';
 import '../../utils/form_validator.dart';
 import '../../utils/routes.dart';
@@ -233,7 +231,7 @@ class RegisterViewModel extends GetxController {
   }
 
 ////////////////////////////////////////////////////////// Goals Methods of Screen //////////////////////////////////////////////////////////////////
-  void continueregisterView() {
+  void continueRegisterView() {
     if (registerFormKey.currentState!.validate()) {
       if (validateFieldsOfDropDown())
         return; // to show the Message erro if any Fields equal null
@@ -268,6 +266,8 @@ class RegisterViewModel extends GetxController {
               academicYearList: academicYearModelList,
               value: academicYearValue!),
           locationArea: areaName,
+          phone:
+              "+972${emailOrPhoneController.text.trim().substring(1)}", // review it
         ));
       } else {
         // call Registr End Point
@@ -284,7 +284,9 @@ class RegisterViewModel extends GetxController {
       name: nameController.text,
       //dateController.text,
       email: isEmail ? emailOrPhoneController.text.trim() : "",
-      phone: !isEmail ? emailOrPhoneController.text.trim() : "",
+      phone: !isEmail
+          ? "+972${emailOrPhoneController.text.trim().substring(1)}"
+          : "",
       area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
       username: userNameController.text,
       specialization: specializationValue,
