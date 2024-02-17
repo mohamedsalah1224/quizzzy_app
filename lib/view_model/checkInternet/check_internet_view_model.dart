@@ -35,4 +35,8 @@ class CheckInternetViewModel extends GetxController {
       SnackBarHelper.instance.showMessage(message: "No Internt");
     }
   }
+
+  Future<bool> isConnectionExist() async {
+    return await InternetConnectionChecker().hasConnection;
+  }
 }

@@ -34,4 +34,6 @@ class CacheSubjectService {
         .delete(_key)
         .then((value) => debugPrint("delete the Subejct Cahce"));
   }
+
+  bool isExist() => myBox.containsKey(_key);
 }
