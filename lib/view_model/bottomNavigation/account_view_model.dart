@@ -1,13 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/model/achievement_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
-import 'package:quizzy_app/model/exam_model.dart';
-import 'package:quizzy_app/model/exams_model.dart';
+
 import 'package:quizzy_app/utils/dialog_helper.dart';
-import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
-import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 class AccountViewModel extends GetxController {
   String? _subjectValue; // the Value of the Subject in DropDown
@@ -15,8 +13,8 @@ class AccountViewModel extends GetxController {
   late List<DataSubjectModel>
       subjectListData; //  Data of SubjectModel to the DropDownValue
   late List<double> _chartListData;
-  late List<String>
-      subjectListDropDownValues; //  Data of SubjectName to the DropDownValue
+  List<String> subjectListDropDownValues =
+      []; //  Data of SubjectName to the DropDownValue
   bool _isLoadAccountView = false;
 
   bool get isLoadAccountView => _isLoadAccountView;
@@ -25,6 +23,7 @@ class AccountViewModel extends GetxController {
   AchievementModel? get achievementModel => _achievementModel;
   List<double> get chartListData => _chartListData;
 
+  String selectedSubject() => _subjectValue!;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -41,7 +40,7 @@ class AccountViewModel extends GetxController {
     _subjectValue = value;
     update(['updateSubject']);
     DialogHelper.showLoading();
-    getAchievementService(subjectId: getSubjectId!); // call the Api Again
+    getAchievementService(subjectId: getSubjectId); // call the Api Again
   }
 ////////////////////////////////////////// Some Logic Method ///////////////////////////////////////
 
@@ -57,8 +56,9 @@ class AccountViewModel extends GetxController {
   }
 
   int? get getSubjectId => subjectListData
-      .firstWhere((element) => (element.name == subjectValue))
-      .id!;
+      .firstWhere((element) => (element.name == subjectValue),
+          orElse: () => DataSubjectModel())
+      .id;
 
 /////////////////////////////////////////////////// Service //////////////////////////////////////////
 
@@ -66,27 +66,17 @@ class AccountViewModel extends GetxController {
     // getSubject , saveTheList Subject Name, id  to R,
     getSubjectFromCahce().then((value) {
       subjectListData = value; // to Save the Object of the Subject
-      subjectListDropDownValues = subjectListData
+
+      _subjectValue = "الكل"; // to make the Deualt value
+      subjectListDropDownValues.add("الكل");
+      subjectListDropDownValues.addAll(subjectListData
           .map((e) => e.name!)
-          .toList(); // To intlize the Data of Subject to the String Values DropDownValue
+          .toList()); // To intlize the Data of Subject to the String Values DropDownValue
+      print("*" * 50);
+      print(getSubjectId);
+      print("*" * 50);
 
-      if (subjectListData.isNotEmpty) {
-        _subjectValue = subjectListData[0].name!;
-        getAchievementService(
-            subjectId: subjectListData[0]
-                .id!); // to Load the Defualt Subject in the View
-      } else {
-        // make the Charts All Value Zero
-        _chartListData = [0, 0, 0, 0, 0, 0, 0];
-
-        _achievementModel = AchievementModel(
-            // to Skip the Erro of the Late
-            data: Data(
-                numberCorrectAnswer: 0,
-                totalEarnedMarks: 0,
-                totalQuestions: "0",
-                yourRanking: ""));
-      }
+      getAchievementService(subjectId: getSubjectId); // call the Api Again
     });
   }
 
@@ -100,27 +90,19 @@ class AccountViewModel extends GetxController {
     return Future.value(subjetct);
   }
 
-  void getAchievementService({required int subjectId}) {
+  void getAchievementService({int? subjectId}) {
     _isLoadAccountView = false;
-
     ExamRepositoryService().getAchievement(subjectId: subjectId).then((value) {
       _achievementModel = value;
-      _achievementModel = AchievementModel(
-          data: Data(
-              chart: Chart(
-                  data: [100, 200, 200, 300, 500, 400, 600],
-                  totalEarnedMarks: 500),
-              numberCorrectAnswer: 20,
-              totalEarnedMarks: 4454545454,
-              totalQuestions: "1000000",
-              yourRanking: "5"));
       _chartListData = _achievementModel.data!.chart!.data!
           .map((e) => e.toDouble())
           .toList();
       _isLoadAccountView = true;
-      DialogHelper.hideLoading(); // if anyDialog Close it
+
       update();
-    }).catchError((e) =>
-        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
+    }).catchError((e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }).whenComplete(() => DialogHelper.hideLoading());
   }
 }

@@ -61,8 +61,7 @@ ANSWER_QUESTION="/api/exams/answer_question"
   static String getAcademiYearById({required int id}) => "$academiYears/$id";
   static String getSubjectById({required int id}) => "$subjects/$id";
   static String getUnitById({required int id}) => "$units/$id";
-  static String getAchievementsBySubjectId({required int subjectId}) =>
-      "$exams/$subjectId$achievements";
+
   static String getSendNoteOrWrongToQuestion({required int idQuestion}) =>
       "$questions/$idQuestion";
 }

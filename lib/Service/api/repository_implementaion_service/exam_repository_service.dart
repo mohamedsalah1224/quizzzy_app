@@ -103,10 +103,12 @@ class ExamRepositoryService implements ExamRepository {
   }
 
   @override
-  Future<AchievementModel> getAchievement({required int subjectId}) async {
+  Future<AchievementModel> getAchievement({int? subjectId}) async {
     try {
-      var response = await DioHelper()
-          .get(EndPoint.getAchievementsBySubjectId(subjectId: subjectId));
+      var response =
+          await DioHelper().get(EndPoint.achievements, queryParameters: {
+        'subject_id': subjectId,
+      });
       return AchievementModel.fromJson(response);
     } on DioException catch (e, s) {
       debugPrint(s.toString());

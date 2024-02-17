@@ -214,13 +214,11 @@ class HomeViewModel extends GetxController {
     getSubjectFromCahce().then((value) {
       subjectListData = value; // to Save the Object of the Subject
 
-      if (subjectListData.isNotEmpty) {
-        _subjectValue = "الكل"; // to make the Deualt value
-        subjectListDropDownValues.add("الكل"); // Add this in the First Subject
-        subjectListDropDownValues.addAll(subjectListData
-            .map((e) => e.name!)
-            .toList()); // convert SubjectObject to String Values
-      }
+      _subjectValue = "الكل"; // to make the Deualt value
+      subjectListDropDownValues.add("الكل"); // Add this in the First Subject
+      subjectListDropDownValues.addAll(subjectListData
+          .map((e) => e.name!)
+          .toList()); // convert SubjectObject to String Values
 
       // Load GetAds , TopStudent Service
 
