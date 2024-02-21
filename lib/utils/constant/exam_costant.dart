@@ -8,12 +8,17 @@ class ExamConstatnt {
   static const String shortAnswer = "short_answer";
   static const String longAnswer = "long_answer";
   static const String compare = "compare";
+  static const String matching = "matching";
+  //matching
   static const String typeAssessmentAfterFinish = "after_finish";
   static const String typeAssessmenDirect = "direct";
   static const String choiceExam = "choice";
   static const String randomlyExam = "randomly";
   static const String aiExam = "ai";
-
+// medium ,  easy
+  static const String difficultLevel = 'difficult';
+  static const String easyLevel = 'easy';
+  static const String mediumLevel = 'medium';
   static const String answerViewFormatIamge = "image";
   static const String answerViewFormatText = "text"; // text_image
   static const String answerViewFormatTextImage = "text_image";

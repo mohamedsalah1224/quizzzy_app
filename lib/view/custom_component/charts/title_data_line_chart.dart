@@ -40,31 +40,31 @@ class CustomTitleDataLineChart {
         showTitles: true,
         getTitlesWidget: (value, meta) {
           String text = '';
-          switch (value.toInt()) {
-            case 0:
+          switch (value.toDouble()) {
+            case 0.0:
               text = 'السبت';
               break;
-            case 1:
+            case 1.0:
               text = 'الأحد';
               break;
 
-            case 2:
+            case 2.0:
               text = 'الأثنين';
               break;
 
-            case 3:
+            case 3.0:
               text = 'الثلاثاء';
               break;
 
-            case 4:
+            case 4.0:
               text = 'الأربعاء';
               break;
 
-            case 5:
+            case 5.0:
               text = 'الخميس';
               break;
 
-            case 6:
+            case 6.0:
               text = 'الجمعة';
               break;
           }

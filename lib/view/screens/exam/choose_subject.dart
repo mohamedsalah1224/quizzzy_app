@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_alert_message.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
@@ -69,27 +70,33 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
                 builder: (controller) {
                   return !controller.isLoadChoicePage
                       ? const CustomCircularProgressIndicator()
-                      : controller.searchSubjectList.isEmpty
-                          ? const CustomAlertMessage(
-                              text: "لايوجد مواد بهذا الإسم")
-                          : GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 50.h,
-                                      crossAxisSpacing: 50.w,
-                                      crossAxisCount: 2),
-                              itemCount: controller.searchSubjectList.length,
-                              itemBuilder: (context, index) {
-                                return CustomSubject(
-                                  subjectModel:
-                                      controller.searchSubjectList[index],
-                                  onTap: () {
-                                    controller.chooseSubject(
-                                        subjectSelectedInformation: controller
-                                            .searchSubjectList[index]);
-                                  },
-                                );
-                              });
+                      : controller.subjectList.isEmpty
+                          ? CustomAlertMessage(
+                              text:
+                                  "لايوجد مواد حاليا مضافة في ${CacheUserService.instance.getUser()!.academicYear!.name}")
+                          : controller.searchSubjectList.isEmpty
+                              ? const CustomAlertMessage(
+                                  text: "لايوجد مواد بهذا الإسم")
+                              : GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          mainAxisSpacing: 50.h,
+                                          crossAxisSpacing: 50.w,
+                                          crossAxisCount: 2),
+                                  itemCount:
+                                      controller.searchSubjectList.length,
+                                  itemBuilder: (context, index) {
+                                    return CustomSubject(
+                                      subjectModel:
+                                          controller.searchSubjectList[index],
+                                      onTap: () {
+                                        controller.chooseSubject(
+                                            subjectSelectedInformation:
+                                                controller
+                                                    .searchSubjectList[index]);
+                                      },
+                                    );
+                                  });
                 },
               ),
             ),

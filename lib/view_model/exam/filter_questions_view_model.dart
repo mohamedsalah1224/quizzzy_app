@@ -153,7 +153,9 @@ class FilterQuestionsViewModel extends GetxController {
   int? get getTimeSecounds =>
       timeValue != null ? int.parse(timeValue!) * 60 : null;
 
-  String? get getlevelofExam => levelofExamValue ?? levelofExamValue;
+  String? get getlevelofExam => levelofExamValue != null
+      ? getValueOfLevel(value: levelofExamValue!)
+      : null;
   String get getEvaluation => evaluationGroupValue == 1
       ? ExamConstatnt.typeAssessmentAfterFinish
       : ExamConstatnt.typeAssessmenDirect;
@@ -177,6 +179,7 @@ class FilterQuestionsViewModel extends GetxController {
     if (semesterValue == null) {
       SnackBarHelper.instance.showMessage(
           erro: true,
+          showByGetx: true,
           isEnglish: false,
           message: 'يجب عليك اختيار الصف الدراسي');
 
@@ -186,7 +189,7 @@ class FilterQuestionsViewModel extends GetxController {
       leasonId: leasonId,
       level: getlevelofExam,
       semesterId: getIdOfSemester(semesterValue!),
-      time: getTimeSecounds,
+      time: timeValue != null ? getTimeSecounds : null,
       typeAssessment: getEvaluation,
       unitId: unitId,
       questionTypes:
@@ -213,5 +216,16 @@ class FilterQuestionsViewModel extends GetxController {
     semesterValue = null;
     unitValue = null;
     leasonValue = null;
+  }
+
+// medium ,  easy و difficult
+  String getValueOfLevel({required String value}) {
+    if (value == "صعب") {
+      return ExamConstatnt.difficultLevel;
+    } else if (value == "متوسط") {
+      return ExamConstatnt.mediumLevel;
+    } else {
+      return ExamConstatnt.easyLevel;
+    }
   }
 }

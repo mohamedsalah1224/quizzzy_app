@@ -45,6 +45,8 @@ class CustomCircleSumOfPointInformation extends StatelessWidget {
                   fontFamily: 'Cairo',
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
+                  alignment: Alignment.center,
+                  textAlign: TextAlign.center,
                   color: const Color(0xff268C6D),
                 ),
                 CustomText(

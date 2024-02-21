@@ -21,9 +21,23 @@ class ExamRepositoryService implements ExamRepository {
       int? limit,
       required String type,
       required int subjectId,
-      String? typeAssessment}) {
-    // TODO: implement getExams
-    throw UnimplementedError();
+      String? typeAssessment}) async {
+    try {
+      var response = await DioHelper().get(EndPoint.exams, queryParameters: {
+        'skip': skip,
+        'limit': limit,
+        'type': type,
+        'subject_id': subjectId,
+        'typeAssessment': typeAssessment
+      });
+      return ExamsModel.fromJson(response);
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
+      throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
+    } catch (e, s) {
+      debugPrint(s.toString());
+      rethrow;
+    }
   }
 
   @override

@@ -33,11 +33,13 @@ class VerifyPhoneViewModel extends GetxController {
   );
 
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
     print("Veify Phone Page");
     _phone = Get.arguments; // to get the Phone Number
+
+    await reSendCode();
   }
 
   @override
@@ -72,10 +74,6 @@ class VerifyPhoneViewModel extends GetxController {
       GeneralResponseModel generalResponseModel = await PhoneRepositoryService()
           .verifyPhoneCode(phone: phone, code: code);
 
-      /// Temp to Login in the Device
-      /// Romeve this Line    generalResponseModel = GeneralResponseModel(success: true);
-      generalResponseModel =
-          GeneralResponseModel(success: true, message: "Sucess Active Phone");
       if (generalResponseModel.success!) {
         SnackBarHelper.instance
             .showMessage(message: generalResponseModel.message!);

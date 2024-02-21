@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
+import 'package:quizzy_app/Service/local/cache_subject_service.dart';
 import 'package:quizzy_app/model/achievement_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 
@@ -80,14 +81,12 @@ class AccountViewModel extends GetxController {
     });
   }
 
-  Future<List<DataSubjectModel>> getSubjectFromCahce() {
-    List<DataSubjectModel> subjetct = [
-      DataSubjectModel(id: 20, name: "الجبر"),
-      DataSubjectModel(id: 10, name: "الرياضيات"),
-      DataSubjectModel(id: 14, name: "الكمياء")
-    ];
+  Future<List<DataSubjectModel>> getSubjectFromCahce() async {
+    List<DataSubjectModel> subjectList = CacheSubjectService.instance.isExist()
+        ? CacheSubjectService.instance.getSubjects()!.data!
+        : [];
 
-    return Future.value(subjetct);
+    return Future.value(subjectList);
   }
 
   void getAchievementService({int? subjectId}) {

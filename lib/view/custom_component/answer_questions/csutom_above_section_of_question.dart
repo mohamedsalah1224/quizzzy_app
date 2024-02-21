@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/validation.dart';
 
 import '../../../utils/constant.dart';
 import '../custom_classification.dart';
@@ -36,7 +37,11 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
                 text: questionsModel.name!,
                 fontFamily: "Cairo",
                 fontSize: 16.sp,
-                textDirection: TextDirection.rtl,
+                textDirection: Validation.instance
+                        .isEnglishText(text: questionsModel.name!)
+                    ? TextDirection.ltr
+                    : TextDirection.rtl,
+                textAlign: TextAlign.center,
                 maxLines: 10, // the Question can Be 6 Line
               )
             : 15.verticalSpace,

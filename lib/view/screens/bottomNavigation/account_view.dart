@@ -132,8 +132,8 @@ class AccountView extends GetView<AccountViewModel> {
                                   CustomAchievement(
                                     text: "نقطة",
                                     number: controller.achievementModel!.data!
-                                        .totalEarnedMarks
-                                        .toString(),
+                                            .totalEarnedMarks ??
+                                        "0",
                                     assetImage: Assets.imagesPoints,
                                   ),
                                 ],

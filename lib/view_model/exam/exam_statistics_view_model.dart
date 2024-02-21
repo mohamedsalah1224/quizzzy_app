@@ -107,20 +107,23 @@ class ExamStatisticsViewModel extends GetxController {
 
   void goToHomePage() {
     controllerOfMangeExamViewModel.resetAllController();
+    controllerOfMangeExamViewModel.resetController();
     ManageBottomNavigationViewModel manageBottomNavigationViewModel =
         Get.find<ManageBottomNavigationViewModel>();
 
     HomeViewModel homeViewModel = Get.find<HomeViewModel>();
     if (controllerOfMangeExamViewModel.isExamAttempt) {
       // Get.offAllNamed(Routes.bottomNavgation);
-      manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
+      // manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
 
       homeViewModel.setIsLoadHomeViewPage(show: false); // to diable homeView
-      Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
 
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
+        Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
         homeViewModel.setIsLoadHomeViewPage(
             show: true); // to update the HomeView
+
+        // manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
       });
     } else {
       manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();

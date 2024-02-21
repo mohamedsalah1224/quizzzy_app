@@ -27,6 +27,7 @@ import 'package:quizzy_app/view/screens/exam/choose_subject.dart';
 
 import 'package:quizzy_app/view/screens/exam/exam_type/compare_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/long_short_answer_exam.dart';
+import 'package:quizzy_app/view/screens/exam/exam_type/matching_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/multiple_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/single_choice_exam.dart';
 import 'package:quizzy_app/view/screens/exam/exam_type/true_false_exam.dart';
@@ -71,6 +72,7 @@ class ManageExamViewModel extends GetxController {
     const MultipleChoiceExam(),
     const TrueFalseExam(),
     const SingleChoiceExam(),
+    const MatchingExam(),
   ];
   final List<Widget> _examViewList = const [
     ChooseSubjectView(),
@@ -282,6 +284,12 @@ class ManageExamViewModel extends GetxController {
       _randomExamService();
     } else {
       _examTypeMessage = "الإختبار من مختص";
+      SnackBarHelper.instance.showMessage(
+          message: "يتم ظهور هذه الميزة عند اضافة المدرس",
+          milliseconds: 2000,
+          isEnglish: false,
+          erro: true);
+      return;
       _specialistExamService();
     }
     Get.toNamed(Routes.examView);
@@ -343,6 +351,9 @@ class ManageExamViewModel extends GetxController {
       case ExamConstatnt.singleChoice:
         _currentExamTypeIndex = 4;
         break;
+      case ExamConstatnt.matching:
+        _currentExamTypeIndex = 5;
+        break;
     }
     update(['examType']);
   }
@@ -369,14 +380,17 @@ class ManageExamViewModel extends GetxController {
 
     String typeOfQuestion =
         _examData!.data!.questions![_currentQuetionIndex].type!;
-
+    print("/" * 60);
+    print("Type Exam Type : $_currentExamTypeIndex");
+    print("/" * 60);
     switch (_currentExamTypeIndex) {
       // case 0:
       //   await Get.delete<CompareChoiceExamViewModel>(force: true);
 
       //   break;
       case 1:
-        if (typeOfQuestion != ExamConstatnt.shortAnswer) return;
+        if (typeOfQuestion != ExamConstatnt.shortAnswer &&
+            typeOfQuestion != ExamConstatnt.longAnswer) return;
         Provider.of<ShortLongAnswerViewModel>(
                 ExamConstatnt.currentContextQuestion,
                 listen: false)
@@ -403,6 +417,16 @@ class ManageExamViewModel extends GetxController {
                 listen: false)
             .initObject();
         break;
+
+      //       case 5:
+      // if (typeOfQuestion != ExamConstatnt.matching) return;
+      // Provider.of<SingleChoiceExamViewModel>(
+      //         ExamConstatnt.currentContextQuestion,
+      //         listen: false)
+      //     .initObject();
+      // break;
+
+      // ناقص COMPARE
     }
   }
 /////////////////////////////////// Button Action///////////////////////
@@ -630,7 +654,7 @@ class ManageExamViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    _getSubjects();
+
     print("Load Page");
   }
 
@@ -649,18 +673,46 @@ class ManageExamViewModel extends GetxController {
     }
   }
 
-  void _getSubjects({int? limit, int? skip}) {
+  void getSubjects({required List<DataSubjectModel> list}) {
     _isLoadChoicePage = false;
-    SubjectsRepositoryService().getSubjects(limit: limit, skip: skip).then(
-        (value) {
-      _subjectList = value.data!;
-      _searchSubjectList = _subjectList; // to peformSearch
-      _isLoadChoicePage = true;
+    _subjectList = list;
+    _searchSubjectList = _subjectList; // to peformSearch
+    _isLoadChoicePage = true;
 
-      update(['updateSubject', 'loadingChoicePage']);
-    }).catchError((e) =>
-        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true));
+    update(['updateSubject', 'loadingChoicePage']);
   }
+
+  /*
+  void _getSubjectsFromCache() async {
+    _isLoadChoicePage = false;
+
+    final receivePort = ReceivePort();
+    final isolate =
+        await Isolate.spawn(runSubjectInIsolated, receivePort.sendPort);
+
+    StreamSubscription<dynamic> stream = receivePort.listen((data) {
+      print('Data received from isolate: $data');
+      receivePort.close(); // Close the receive port after receiving the data
+      isolate.kill(priority: Isolate.immediate); // Terminate the isolate
+    });
+    stream.cancel();
+    receivePort.close();
+  }
+
+  void runSubjectInIsolated(SendPort sendPort) {
+    while (true) {
+      if (Get.find<ManageSubjectCacheViewModel>().isLoadSubjectFromServer()) {
+        _searchSubjectList =
+            _subjectList; //_subjectList = CacheSubjectService.instance.getSubjects()!.data ?? []; to peformSearch
+        _isLoadChoicePage = true;
+        update(['updateSubject', 'loadingChoicePage']);
+        break;
+      }
+    }
+    sendPort.send(true);
+  }
+
+  */
 
   Future<void> startQuizService({required int examId}) async {
     ExamRepositoryService().startQuiz(examId: examId).then((value) async {
@@ -722,572 +774,571 @@ class ManageExamViewModel extends GetxController {
   }
 
   void _randomExamService() {
-    _isLoadExamViewPage = false;
     _isExamAttempt = false;
+    _isLoadExamViewPage = false;
     _isAfterFinish = false; // must be false
 
-    // ExamRepositoryService()
-    //     .storeExam(
-    //         storeExamModel: StoreExamModel(
-    //             type: ExamConstatnt.randomlyExam,
-    //             typeAssessment: ExamConstatnt.typeAssessmentAfterFinish,
-    //             subjectId: _subjectSelectedInformation!.id,
-    //             semester: _subjectSelectedInformation!.semester))
-    //     .then((value) {
-    //   _examData = value;
-    //   _isLoadExamViewPage = true;
-    //   _startQuizService(examId: _examData!.data!.id!);
-    //   updateTheCurrentExamType();
-    // }).catchError((e) => SnackBarHelper.instance.showMessage(
-    //         message: e.toString(), milliseconds: 2000, erro: true));
+    ExamRepositoryService()
+        .storeExam(
+            storeExamModel: StoreExamModel(
+      type: ExamConstatnt.randomlyExam,
+      typeAssessment: ExamConstatnt.typeAssessmenDirect,
+      subjectId: _subjectSelectedInformation!.id,
+      bookId: _bookSelected!.id!,
+    ))
+        .then((value) {
+      _examData = value;
+      startQuizService(examId: _examData!.data!.id!);
+    }).catchError((e) => SnackBarHelper.instance.showMessage(
+            message: e.toString(), milliseconds: 2000, erro: true));
 
-    _examData = ExamsModel(
-        success: true,
-        message: "Sucess",
-        data: ExamModel(
-            id: 18,
-            name: "TEst",
-            type: "choice",
-            questionTypes: null,
-            level: null,
-            typeAssessment: "after_finish",
-            description: null,
-            photo: "https://quizzy.makank.online/images/exams/avatar.png",
-            file: null,
-            semester: "1",
-            points: null,
-            time: null,
-            isActive: true,
-            questions: <QuestionsModel>[
-              QuestionsModel(
-                  id: 5,
-                  name: "معني كلمة سيارة",
-                  type:
-                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  // photo:
-                  //     "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  fileType: "video",
-                  file:
-                      "https://quizzy.makank.online/images/questions/3pPXtCAfypiTcMRg24kNNtASz2cddUpXRUvjMh5t.mp4",
-                  // file: "https://streamable.com/bj6lsx", // Stream Link
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 6,
-                        title: "Car",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "Bmw",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title:
-                            "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 9,
-                        title: null,
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo: "",
-                  fileType: "video",
-                  file:
-                      'https://quizzy.makank.online/images/questions/LwtqkyNwatPEDzH9iIBCuMubz3IhLB6KpNaad03U.mp4',
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  // reference: "ثانوية عامة , دليل  التقويم",
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 1,
-                        title:
-                            " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "القاهرة",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "دبي",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 5,
-                  name: "معني كلمة سيارة",
-                  type:
-                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  // photo:
-                  //     "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  fileType: "video",
-                  file:
-                      "https://quizzy.makank.online/images/questions/3pPXtCAfypiTcMRg24kNNtASz2cddUpXRUvjMh5t.mp4",
-                  // file: "https://streamable.com/bj6lsx", // Stream Link
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 6,
-                        title: "Car",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "Bmw",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title:
-                            "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 9,
-                        title: null,
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo: null,
-                  fileType: "audio",
-                  file:
-                      "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/pause.wav",
-                  semester: null,
-                  points: "25.00",
-                  time: "60",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 3,
-                        title: "هذه الإجابة صحيحة",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 6,
-                        title: "خطأ",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                  semester: null,
-                  lessonId: 1,
-                  file: null,
-                  fileType: null,
-                  level: "متوسط",
-                  points: "200.00",
-                  time: "20",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 13,
-                        title: "اكتب باختصار لايتجاوز السطرين",
-                        questionType: "short_answer",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: null,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 5,
-                  name: "معني كلمة سيارة",
-                  type:
-                      "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 6,
-                        title: "Car",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "Bmw",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title:
-                            "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 9,
-                        title: null,
-                        questionType: "multiple_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "25.00",
-                  time: "60",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 3,
-                        title: "صح",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 6,
-                        title: "خطأ",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo: "",
-                  // fileType: "audio",
-                  file:
-                      "https://quizzy.makank.online/images/questions/diqxxvjwu3t4hqDCWRp9kt9jOGbIBnySIpzItM1N.mp3",
-                  semester: null,
-                  points: "15.00",
-                  time: "50",
-                  isActive: true,
-                  // reference: "ثانوية عامة , دليل  التقويم",
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 1,
-                        title:
-                            " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo: "",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 3,
-                        title: "القاهرة",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 4,
-                        title: "دبي",
-                        questionType: "single_choice",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:28:53.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo: null,
-                  semester: null,
-                  lessonId: 1,
-                  file: null,
-                  fileType: null,
-                  level: "متوسط",
-                  points: "200.00",
-                  time: "20",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 13,
-                        title: "اكتب بما لايتجاوز السطرين",
-                        questionType: "short_answer",
-                        answerTwoGapMatch: "القدس",
-                        answerViewFormat: "text",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: null,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-              QuestionsModel(
-                  id: 1,
-                  name: "ماهي عاصمة فلسطين ؟",
-                  type:
-                      "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
-                  description: null,
-                  photo:
-                      "https://quizzy.makank.online/images/questions/avatar.png",
-                  semester: null,
-                  points: "25.00",
-                  time: "60",
-                  isActive: true,
-                  answers: <AnswersModel>[
-                    AnswersModel(
-                        id: 3,
-                        title: "صح",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text",
-                        answerOrder: 1,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/avatar.png",
-                        isCorrect: true,
-                        createdAt: "2023-10-31T18:26:47.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                    AnswersModel(
-                        id: 6,
-                        title: "خطأ",
-                        questionType: "true_false",
-                        answerTwoGapMatch: null,
-                        answerViewFormat: "text_image",
-                        answerOrder: null,
-                        answerSettings: null,
-                        photo:
-                            "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
-                        isCorrect: false,
-                        createdAt: "2023-10-31T18:27:33.000000Z",
-                        updatedAt: "2023-10-31T18:28:53.000000Z"),
-                  ],
-                  createdAt: "2023-10-31T18:23:49.000000Z",
-                  updatedAt: "2023-10-31T18:23:49.000000Z"),
-            ]));
-    _isLoadExamViewPage = true;
-    updateTheCurrentExamType();
-    update(['LoadExamViewPage']);
+    // _examData = ExamsModel(
+    //     success: true,
+    //     message: "Sucess",
+    //     data: ExamModel(
+    //         id: 18,
+    //         name: "TEst",
+    //         type: "choice",
+    //         questionTypes: null,
+    //         level: null,
+    //         typeAssessment: "after_finish",
+    //         description: null,
+    //         photo: "https://quizzy.makank.online/images/exams/avatar.png",
+    //         file: null,
+    //         semester: "1",
+    //         points: null,
+    //         time: null,
+    //         isActive: true,
+    //         questions: <QuestionsModel>[
+    //           QuestionsModel(
+    //               id: 5,
+    //               name: "معني كلمة سيارة",
+    //               type:
+    //                   "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               // photo:
+    //               //     "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //               semester: null,
+    //               points: "15.00",
+    //               time: "50",
+    //               isActive: true,
+    //               fileType: "video",
+    //               file:
+    //                   "https://quizzy.makank.online/images/questions/3pPXtCAfypiTcMRg24kNNtASz2cddUpXRUvjMh5t.mp4",
+    //               // file: "https://streamable.com/bj6lsx", // Stream Link
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "Car",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "Bmw",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 4,
+    //                     title:
+    //                         "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 9,
+    //                     title: null,
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo: "",
+    //               fileType: "video",
+    //               file:
+    //                   'https://quizzy.makank.online/images/questions/LwtqkyNwatPEDzH9iIBCuMubz3IhLB6KpNaad03U.mp4',
+    //               semester: null,
+    //               points: "15.00",
+    //               time: "50",
+    //               isActive: true,
+    //               // reference: "ثانوية عامة , دليل  التقويم",
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 1,
+    //                     title:
+    //                         " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "القاهرة",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 4,
+    //                     title: "دبي",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 5,
+    //               name: "معني كلمة سيارة",
+    //               type:
+    //                   "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               // photo:
+    //               //     "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //               semester: null,
+    //               points: "15.00",
+    //               time: "50",
+    //               isActive: true,
+    //               fileType: "video",
+    //               file:
+    //                   "https://quizzy.makank.online/images/questions/3pPXtCAfypiTcMRg24kNNtASz2cddUpXRUvjMh5t.mp4",
+    //               // file: "https://streamable.com/bj6lsx", // Stream Link
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "Car",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "Bmw",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 4,
+    //                     title:
+    //                         "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 9,
+    //                     title: null,
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo: null,
+    //               fileType: "audio",
+    //               file:
+    //                   "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/pause.wav",
+    //               semester: null,
+    //               points: "25.00",
+    //               time: "60",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "هذه الإجابة صحيحة",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "خطأ",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo:
+    //                   "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //               semester: null,
+    //               lessonId: 1,
+    //               file: null,
+    //               fileType: null,
+    //               level: "متوسط",
+    //               points: "200.00",
+    //               time: "20",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 13,
+    //                     title: "اكتب باختصار لايتجاوز السطرين",
+    //                     questionType: "short_answer",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: null,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 5,
+    //               name: "معني كلمة سيارة",
+    //               type:
+    //                   "multiple_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo:
+    //                   "https://quizzy.makank.online/images/questions/avatar.png",
+    //               semester: null,
+    //               points: "15.00",
+    //               time: "50",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "Car",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "Bmw",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 4,
+    //                     title:
+    //                         "Marcidis Marcidis Marcidis  Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis Marcidis ",
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 9,
+    //                     title: null,
+    //                     questionType: "multiple_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo:
+    //                   "https://quizzy.makank.online/images/questions/avatar.png",
+    //               semester: null,
+    //               points: "25.00",
+    //               time: "60",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "صح",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "خطأ",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "single_choice", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo: "",
+    //               // fileType: "audio",
+    //               file:
+    //                   "https://quizzy.makank.online/images/questions/diqxxvjwu3t4hqDCWRp9kt9jOGbIBnySIpzItM1N.mp3",
+    //               semester: null,
+    //               points: "15.00",
+    //               time: "50",
+    //               isActive: true,
+    //               // reference: "ثانوية عامة , دليل  التقويم",
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 1,
+    //                     title:
+    //                         " اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  اجابة اجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابةاجابة  سؤال اجابة سؤال",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo: "",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "القاهرة",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 4,
+    //                     title: "دبي",
+    //                     questionType: "single_choice",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:28:53.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "short_answer", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo: null,
+    //               semester: null,
+    //               lessonId: 1,
+    //               file: null,
+    //               fileType: null,
+    //               level: "متوسط",
+    //               points: "200.00",
+    //               time: "20",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 13,
+    //                     title: "اكتب بما لايتجاوز السطرين",
+    //                     questionType: "short_answer",
+    //                     answerTwoGapMatch: "القدس",
+    //                     answerViewFormat: "text",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: null,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //           QuestionsModel(
+    //               id: 1,
+    //               name: "ماهي عاصمة فلسطين ؟",
+    //               type:
+    //                   "true_false", //single_choice,multiple_choice,true_false,short_answer,long_answer,compare
+    //               description: null,
+    //               photo:
+    //                   "https://quizzy.makank.online/images/questions/avatar.png",
+    //               semester: null,
+    //               points: "25.00",
+    //               time: "60",
+    //               isActive: true,
+    //               answers: <AnswersModel>[
+    //                 AnswersModel(
+    //                     id: 3,
+    //                     title: "صح",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text",
+    //                     answerOrder: 1,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/avatar.png",
+    //                     isCorrect: true,
+    //                     createdAt: "2023-10-31T18:26:47.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //                 AnswersModel(
+    //                     id: 6,
+    //                     title: "خطأ",
+    //                     questionType: "true_false",
+    //                     answerTwoGapMatch: null,
+    //                     answerViewFormat: "text_image",
+    //                     answerOrder: null,
+    //                     answerSettings: null,
+    //                     photo:
+    //                         "https://quizzy.makank.online/images/answers/V3qeTQmmZKgkxtLYXsuvU1HfCcuGw4YX93meyAKn.jpg",
+    //                     isCorrect: false,
+    //                     createdAt: "2023-10-31T18:27:33.000000Z",
+    //                     updatedAt: "2023-10-31T18:28:53.000000Z"),
+    //               ],
+    //               createdAt: "2023-10-31T18:23:49.000000Z",
+    //               updatedAt: "2023-10-31T18:23:49.000000Z"),
+    //         ]));
+    // _isLoadExamViewPage = true;
+    // updateTheCurrentExamType();
+    // update(['LoadExamViewPage']);
   }
 
   void _aiExamService() {
@@ -1338,7 +1389,7 @@ class ManageExamViewModel extends GetxController {
                 questionTypes: questionTypes,
                 level: level,
                 unitId: unitId,
-                time: time.toString()))
+                time: time))
         .then((value) {
       _examData = value;
 
@@ -1351,9 +1402,28 @@ class ManageExamViewModel extends GetxController {
   }
 
   void _specialistExamService() {
-    _isAfterFinish = false; // must be false
-    _isLoadExamViewPage = false;
     _isExamAttempt = false;
+    _isLoadExamViewPage = false;
+    _isAfterFinish = false; // must be false
+
+    ExamRepositoryService()
+        .getExams(
+      type: ExamConstatnt.specialistExam,
+      typeAssessment: ExamConstatnt.typeAssessmenDirect,
+      subjectId: _subjectSelectedInformation!.id!,
+    )
+        .then((value) {
+      _examData = value;
+      startQuizService(examId: _examData!.data!.id!);
+
+      print("*" * 50);
+      print(_examData!.data!.id!);
+      print("*" * 50);
+    }).catchError((e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance
+          .showMessage(message: e.toString(), milliseconds: 2000, erro: true);
+    });
   }
 
   ///////////////////////////////////////////////// Search Service ////////////////////////////////////////////////

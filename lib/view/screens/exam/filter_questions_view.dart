@@ -163,32 +163,29 @@ class FilterQuestionsView extends StatelessWidget {
                         builder: (controller) {
                           return Wrap(
                             direction: Axis.horizontal,
+                            spacing: 10.r,
+                            runSpacing: 5.r,
                             children: controller.selectedItem
                                 .map(
-                                  (e) => Padding(
-                                    padding: REdgeInsets.only(left: 10),
-                                    child: Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: Chip(
-                                          backgroundColor:
-                                              const Color(0xffE2E2E2)
-                                                  .withOpacity(0.6),
-                                          onDeleted: () {
-                                            controller.removeElementFromWrap(e);
-                                          },
-                                          deleteIconColor: erroColor,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20).r),
-                                          side: const BorderSide(
-                                              color: Colors.green, width: 1),
-                                          label: CustomText(
-                                            text:
-                                                e.replaceAll('سؤال', "").trim(),
-                                            color: primayColor,
-                                            fontSize: 13.sp,
-                                          )),
-                                    ),
+                                  (e) => Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: Chip(
+                                        backgroundColor: const Color(0xffE2E2E2)
+                                            .withOpacity(0.6),
+                                        onDeleted: () {
+                                          controller.removeElementFromWrap(e);
+                                        },
+                                        deleteIconColor: erroColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20).r),
+                                        side: const BorderSide(
+                                            color: Colors.green, width: 1),
+                                        label: CustomText(
+                                          text: e.replaceAll('سؤال', "").trim(),
+                                          color: primayColor,
+                                          fontSize: 13.sp,
+                                        )),
                                   ),
                                 )
                                 .toList(),

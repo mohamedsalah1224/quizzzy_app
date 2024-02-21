@@ -11,7 +11,7 @@ class StoreExamModel {
   final int? unitId;
   final int? lessonId;
   final int? subjectId;
-  final String? time;
+  final int? time;
   final int? bookId;
 
   StoreExamModel(

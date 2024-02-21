@@ -23,10 +23,10 @@ class AchievementModel {
 }
 
 class Data {
-  int? totalEarnedMarks;
+  String? totalEarnedMarks;
   String? totalQuestions;
   String? yourRanking;
-  int? numberCorrectAnswer;
+  String? numberCorrectAnswer;
   Chart? chart;
 
   Data(

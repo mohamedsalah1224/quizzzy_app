@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/ads_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
+import 'package:quizzy_app/Service/local/cache_subject_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/model/ads_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
 import 'package:quizzy_app/model/exam_attempts_model.dart';
 import 'package:quizzy_app/model/exam_model.dart';
 import 'package:quizzy_app/model/exams_model.dart';
 import 'package:quizzy_app/model/top_student_dataModel.dart';
+import 'package:quizzy_app/utils/check_connection_helper.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
@@ -30,6 +34,7 @@ class HomeViewModel extends GetxController {
   void setIsLoadHomeViewPage({required bool show}) {
     _isLoadHomeViewPage = show;
     update();
+    update(['updateExamAttempts']);
   }
 
   bool get hasMoreDataExam => _hasMoreDataExam;
@@ -196,22 +201,47 @@ class HomeViewModel extends GetxController {
   ///
   ///
   ///
-  Future<List<DataSubjectModel>> getSubjectFromCahce() {
-    List<DataSubjectModel> subjetct = [
-      DataSubjectModel(id: 16, name: "عربي"),
-      DataSubjectModel(id: 11, name: "اللغة الإنجليزية"),
-      DataSubjectModel(id: 15, name: "كمبيوتر"),
-      DataSubjectModel(id: 44444, name: "الكمياء"),
-      // DataSubjectModel(id: 85, name: "الدرسات"),
-      // DataSubjectModel(id: 14, name: "العلوم"),
-    ];
+  Future<List<DataSubjectModel>> getSubject() async {
+    List<DataSubjectModel>? subjectList;
 
-    return Future.value(subjetct);
+    bool checkConnection = await CheckConnectionHelper.checkConnection();
+
+    if (checkConnection) {
+      try {
+        var value = await SubjectsRepositoryService().getSubjects(
+            academicYearId:
+                CacheUserService.instance.getUser()!.academicYearId);
+
+        subjectList = value.data!;
+        Get.find<ManageExamViewModel>().getSubjects(list: subjectList);
+        await CacheSubjectService.instance.updateSubjects(subjectsModel: value);
+      } catch (e) {
+        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+        subjectList = CacheSubjectService.instance.isExist()
+            ? CacheSubjectService.instance.getSubjects()!.data!
+            : [];
+        Get.find<ManageExamViewModel>().getSubjects(list: subjectList);
+      }
+    } else {
+      subjectList = CacheSubjectService.instance.isExist()
+          ? CacheSubjectService.instance.getSubjects()!.data!
+          : [];
+      Get.find<ManageExamViewModel>().getSubjects(list: subjectList);
+    }
+
+    print("*" * 50);
+    print(subjectList);
+    print("*" * 50);
+    return Future.value(subjectList);
   }
 
-  void handelTheLogic() {
+  // await Get.find<ManageSubjectCacheViewModel>().isLoadSubjectFromServer();
+
+  // return Future.value(CacheSubjectService.instance.getSubjects()!.data ?? []);
+
+  void handelTheLogic() async {
     // get Subject From the Cache
-    getSubjectFromCahce().then((value) {
+    getSubject().then((value) async {
       subjectListData = value; // to Save the Object of the Subject
 
       _subjectValue = "الكل"; // to make the Deualt value
@@ -220,27 +250,27 @@ class HomeViewModel extends GetxController {
           .map((e) => e.name!)
           .toList()); // convert SubjectObject to String Values
 
-      // Load GetAds , TopStudent Service
-
-      getAds();
-
-      getExamAttempts(page: _examPage, limit: _examLimit);
-
-      getTopStudentService(
-          page: _topStudentPage,
-          limit: _topStudentLimit,
-          selectedSubjectId: getSubjectId);
+// Applly The Concurrent Api to Perforem Performance
+      Future.wait([
+        getAds(),
+        getExamAttempts(page: _examPage, limit: _examLimit),
+        getTopStudentService(
+            page: _topStudentPage,
+            limit: _topStudentLimit,
+            selectedSubjectId: getSubjectId)
+      ]).then((value) {
+        _isLoadHomeViewPage = true;
+        update();
+      });
     });
   }
 
-  void getAds() {
-    _isLoadHomeViewPage = false;
-
-    AdsRepositoryService().getAds().then((value) {
+  Future<void> getAds() async {
+    await AdsRepositoryService().getAds().then((value) {
       _adsModel = value;
 
       _adsList = _adsModel.data ?? [];
-      _isLoadHomeViewPage = true;
+
       update(['updateAds']);
 
       // update();
@@ -248,10 +278,9 @@ class HomeViewModel extends GetxController {
         .showMessage(message: e.toString(), milliseconds: 2000, erro: true));
   }
 
-  void getTopStudentService({int? page, int? limit, int? selectedSubjectId}) {
-    // _isLoadHomeViewPage = false;
-
-    ExamRepositoryService()
+  Future<void> getTopStudentService(
+      {int? page, int? limit, int? selectedSubjectId}) async {
+    await ExamRepositoryService()
         .getTopStudentPoints(
             limit: limit, page: page, selectedSubjectId: selectedSubjectId)
         .then((value) {
@@ -263,24 +292,21 @@ class HomeViewModel extends GetxController {
       } else {
         _listTopStudent.addAll(result); // add The Item in the List
       }
-      _isLoadHomeViewPage = true;
+      update(['updateTopStudent']);
       debugPrint("/" * 50);
 
       debugPrint(_listTopStudent.length.toString());
       debugPrint(
           "Current Page: ${value.data!.meta!.currentPage} , LastPage:${value.data!.meta!.lastPage}");
       debugPrint("/" * 50);
-      update(['updateTopStudent']);
-      update();
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
   }
 
-  void getExamAttempts({int? page, int? limit}) {
-    // _isLoadHomeViewPage = false;
-
-    ExamRepositoryService().getExamAttempts(limit: limit, page: page).then(
-        (value) {
+  Future<void> getExamAttempts({int? page, int? limit}) async {
+    await ExamRepositoryService()
+        .getExamAttempts(limit: limit, page: page)
+        .then((value) {
       _hasMoreDataExam = false;
 
       List<ExamAttemptsDataModel> result = value.data!.data ?? [];
@@ -291,7 +317,6 @@ class HomeViewModel extends GetxController {
         _searchExamAttemptsList.addAll(result);
       }
 
-      _isLoadHomeViewPage = true;
       debugPrint("/" * 50);
 
       debugPrint(_listExamAttempts.length.toString());
@@ -300,9 +325,8 @@ class HomeViewModel extends GetxController {
       debugPrint("/" * 50);
 
       update(['updateExamAttempts']);
-      update();
-    }).catchError((e) => SnackBarHelper.instance
-        .showMessage(message: e.toString(), milliseconds: 2000, erro: true));
+    }).catchError((e) => SnackBarHelper.instance.showMessage(
+            message: e.toString(), milliseconds: 2000, erro: true));
   }
 
   void loadAttemptExam({required int id}) {

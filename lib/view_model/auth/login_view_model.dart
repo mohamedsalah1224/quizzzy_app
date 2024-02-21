@@ -6,6 +6,7 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/phone_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
