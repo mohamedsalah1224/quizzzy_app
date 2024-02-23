@@ -73,7 +73,7 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                       validator: (value) {
                         return controller.validatePinCode(value);
                       },
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       errorPinTheme: controller.defaultPinTheme.copyWith(
                           decoration: controller.defaultPinTheme.decoration!
                               .copyWith(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
 import 'package:quizzy_app/model/forget_password_model.dart';
 import 'package:quizzy_app/model/genral_response_mode.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 
 import 'package:quizzy_app/utils/form_validator.dart';
 
@@ -16,7 +17,7 @@ import '../../utils/validation.dart';
 class ForgetPasswordViewModel extends GetxController {
   String initForgetPassword = "";
   String emailOrPhoneValue = "";
-
+  String currentVerifyCode = "";
   GlobalKey<FormState> forgetPasswordformKey = GlobalKey<FormState>();
 
   GlobalKey<FormState> changePasswordFormKey = GlobalKey<FormState>();
@@ -25,15 +26,22 @@ class ForgetPasswordViewModel extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
 
+  void setVerifyCode({required String code}) {
+    currentVerifyCode = code;
+  }
+
   void send() async {
     print(emailOrPhoneController.text);
 
     if (forgetPasswordformKey.currentState!.validate()) {
-      emailOrPhoneValue = emailOrPhoneController.text;
-      if (Validation.instance.isEmail(email: emailOrPhoneController.text)) {
+      DialogHelper.showLoading(
+          message: "يتم الإرسال .....", textDirection: TextDirection.rtl);
+
+      emailOrPhoneValue = emailOrPhoneController.text.trim();
+      if (Validation.instance.isEmail(email: emailOrPhoneValue)) {
         await _forgetPasswordByEmail();
       } else {
-        _forgetPasswordByPhone();
+        await _forgetPasswordByPhone();
       }
     }
   }
@@ -45,24 +53,44 @@ class ForgetPasswordViewModel extends GetxController {
               .forgetPassword(email: emailOrPhoneValue);
 
       if (forgetPasswordModel.success!) {
-        SnackBarHelper.instance
-            .showMessage(message: forgetPasswordModel.message!);
-        Get.toNamed(Routes.identifyEmailview);
+        DialogHelper.hideLoading();
+        Get.toNamed(Routes.identifyEmailview,
+            arguments: emailOrPhoneController.text.trim());
       } else {
         SnackBarHelper.instance
             .showMessage(message: forgetPasswordModel.message!, erro: true);
       }
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint(s.toString());
       SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    } finally {
+      DialogHelper.hideLoading();
     }
   }
 
-  void _forgetPasswordByPhone() {
-    Get.toNamed(Routes.identifyPhoneview);
+  Future<void> _forgetPasswordByPhone() async {
+    try {
+      String phone = "+972${emailOrPhoneController.text.trim().substring(1)}";
+      ForgetPasswordModel forgetPasswordModel =
+          await ForgetPasswordRepositoryService().forgetPassword(email: phone);
+
+      if (forgetPasswordModel.success!) {
+        DialogHelper.hideLoading();
+        Get.toNamed(Routes.identifyPhoneview, arguments: phone);
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: forgetPasswordModel.message!, erro: true);
+      }
+    } catch (e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    } finally {
+      DialogHelper.hideLoading();
+    }
   }
 
   Future<void> resetPasswordService({
-    required String email,
+    required String emailOrPhone,
     required String code,
     required String password,
     required String passwordConfirmation,
@@ -71,7 +99,7 @@ class ForgetPasswordViewModel extends GetxController {
     try {
       GeneralResponseModel forgetPasswordModel =
           await ForgetPasswordRepositoryService().resetpassword(
-              email: email,
+              email: emailOrPhone,
               code: code,
               password: password,
               passwordConfirmation: passwordConfirmation);
@@ -96,7 +124,7 @@ class ForgetPasswordViewModel extends GetxController {
   }
 
   String? validatePhoneOrEmail({String? value}) {
-    return FormValidator.instance.validatePhoneOrEmail(value);
+    return FormValidator.instance.validatePhoneOrEmail(value!.trim());
   }
 
   String? validatePaswword({String? value}) {
@@ -110,12 +138,16 @@ class ForgetPasswordViewModel extends GetxController {
   }
 
   Future<void> changePassword() async {
+    String value = emailOrPhoneValue.trim();
     if (changePasswordFormKey.currentState!.validate()) {
       await resetPasswordService(
           routes: Routes.sucessPasswordChanged,
           password: passwordController.text,
-          email: emailOrPhoneValue,
-          code: Get.find<IdentifyEmailViewModel>().pinController.text,
+          emailOrPhone:
+              Validation.instance.isContacts(contact: emailOrPhoneValue.trim())
+                  ? "+972${value.substring(1)}"
+                  : emailOrPhoneValue.trim(),
+          code: currentVerifyCode,
           passwordConfirmation: passwordConfirmController.text);
     }
   }

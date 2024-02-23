@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/email_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
 import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/resend_verify_email_model.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
@@ -36,7 +37,7 @@ class IdentifyEmailViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    email = Get.find<ForgetPasswordViewModel>().emailOrPhoneValue;
+    email = Get.arguments;
     print("Veify Email Page");
   }
 
@@ -51,11 +52,17 @@ class IdentifyEmailViewModel extends GetxController {
   Future<void> confirmEmail() async {
     focusNode.unfocus();
     if (identifyformKey.currentState!.validate()) {
-      print('-' * 50);
-      print(pinController.text);
-      print(email);
-
-      await verifyCode(email: email, code: pinController.text);
+      DialogHelper.showLoading(
+          message: "يتم التأكد من البريد الإلكتروني .....",
+          textDirection: TextDirection.rtl);
+      try {
+        await verifyCode(email: email, code: pinController.text);
+      } catch (e, s) {
+        debugPrint(s.toString());
+        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+      } finally {
+        DialogHelper.hideLoading();
+      }
     }
   }
 
@@ -74,21 +81,22 @@ class IdentifyEmailViewModel extends GetxController {
               .verifyCode(email: email, code: code);
 
       if (generalResponseModel.success!) {
-        SnackBarHelper.instance
-            .showMessage(message: generalResponseModel.message!);
+        Get.find<ForgetPasswordViewModel>().setVerifyCode(code: code);
+        DialogHelper.hideLoading();
         Get.toNamed(Routes.changePasswordView);
       } else {
         SnackBarHelper.instance
             .showMessage(message: generalResponseModel.message!, erro: true);
       }
-    } catch (e) {
-      print(e);
+    } catch (e, s) {
+      debugPrint(s.toString());
       SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
     }
   }
 
   Future<void> reSendCode() async {
     try {
+      pinController.clear();
       ReSendVeifyModel reSendVeifyEmailModel =
           await EmailRepositoryService().reSendVerifyEmail(email: email);
 
@@ -99,7 +107,8 @@ class IdentifyEmailViewModel extends GetxController {
         SnackBarHelper.instance
             .showMessage(message: reSendVeifyEmailModel.message!, erro: true);
       }
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint(s.toString());
       SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
     }
   }

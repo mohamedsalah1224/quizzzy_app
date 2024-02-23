@@ -54,7 +54,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                   focusNode: controller.focusNode,
                   length: controller.length,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     return controller.validatePinCode(value);
                   },

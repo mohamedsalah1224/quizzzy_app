@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:quizzy_app/Service/Networking/dio_helper.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/forget_password_repository_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/phone_repository_service.dart';
+import 'package:quizzy_app/model/genral_response_mode.dart';
+import 'package:quizzy_app/model/resend_verify_email_model.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
 
 class IdentifyPhoneViewModel extends GetxController {
-  String initVerifyEmailViewModel = "";
-  String pinCode = "4444";
+  late String phone;
+  int length = 6;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController pinController = TextEditingController();
   GlobalKey<FormState> identifyformKey = GlobalKey<FormState>();
@@ -28,8 +36,8 @@ class IdentifyPhoneViewModel extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    phone = Get.arguments;
     print("Veify Email Page");
   }
 
@@ -41,16 +49,67 @@ class IdentifyPhoneViewModel extends GetxController {
     focusNode.dispose();
   }
 
-  void confirmPhone() {
+  void confirmPhone() async {
     focusNode.unfocus();
     if (identifyformKey.currentState!.validate()) {
-      print(pinController.text);
-
-      Get.toNamed(Routes.changePasswordView);
+      DialogHelper.showLoading(
+          message: "يتم التأكد من الهاتف المحمول ....",
+          textDirection: TextDirection.rtl);
+      try {
+        await verifyCode(email: phone, code: pinController.text);
+      } catch (e, s) {
+        debugPrint(s.toString());
+        SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+      } finally {
+        DialogHelper.hideLoading();
+      }
     }
   }
 
   String? validatePinCode(String? value) {
-    return value == pinCode ? null : "هذا الكود خطأ";
+    return value == null || value.isEmpty || value.length < length
+        ? "هذا الكود خطأ"
+        : null;
+  }
+
+  /////////////////////////////////////////////// Api Service ////////////////////////////////////////////////////////
+
+  Future<void> verifyCode({required String email, required String code}) async {
+    try {
+      GeneralResponseModel generalResponseModel =
+          await ForgetPasswordRepositoryService()
+              .verifyCode(email: email, code: code);
+
+      if (generalResponseModel.success!) {
+        Get.find<ForgetPasswordViewModel>().setVerifyCode(code: code);
+        DialogHelper.hideLoading();
+        Get.toNamed(Routes.changePasswordView);
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: generalResponseModel.message!, erro: true);
+      }
+    } catch (e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
+  }
+
+  Future<void> reSendCode() async {
+    try {
+      pinController.clear();
+      ReSendVeifyModel reSendVeifyEmailModel =
+          await PhoneRepositoryService().reSendVerifyPhone(phone: phone);
+
+      if (reSendVeifyEmailModel.success!) {
+        SnackBarHelper.instance
+            .showMessage(message: reSendVeifyEmailModel.message!);
+      } else {
+        SnackBarHelper.instance
+            .showMessage(message: reSendVeifyEmailModel.message!, erro: true);
+      }
+    } catch (e, s) {
+      debugPrint(s.toString());
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
+    }
   }
 }

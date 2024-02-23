@@ -39,7 +39,7 @@ class IdentifyPhoneView extends GetView<IdentifyPhoneViewModel> {
                   Expanded(
                     child: CustomText(
                       maxLines: 1,
-                      text: "+2484515514",
+                      text: controller.phone,
                       fontFamily: "Segoe",
                       alignment: AlignmentDirectional.topEnd,
                       fontWeight: FontWeight.w400,
@@ -64,7 +64,8 @@ class IdentifyPhoneView extends GetView<IdentifyPhoneViewModel> {
                 child: Pinput(
                   controller: controller.pinController,
                   focusNode: controller.focusNode,
-                  length: 4,
+                  keyboardType: TextInputType.number,
+                  length: controller.length,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   validator: (value) {
                     return controller.validatePinCode(value);
@@ -94,8 +95,8 @@ class IdentifyPhoneView extends GetView<IdentifyPhoneViewModel> {
                   ),
                   5.horizontalSpace,
                   TextButton(
-                    onPressed: () {
-                      print("إعادة الارسال");
+                    onPressed: () async {
+                      await controller.reSendCode();
                     },
                     child: CustomText(
                         text: "اعادة الارسال",

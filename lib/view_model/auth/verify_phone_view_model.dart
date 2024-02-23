@@ -94,15 +94,15 @@ class VerifyPhoneViewModel extends GetxController {
   Future<void> reSendCode() async {
     try {
       pinController.text = "";
-      ReSendVeifyModel reSendVeifyEmailModel =
+      ReSendVeifyModel reSendVerifyPhone =
           await PhoneRepositoryService().reSendVerifyPhone(phone: phone);
 
-      if (reSendVeifyEmailModel.success!) {
+      if (reSendVerifyPhone.success!) {
         SnackBarHelper.instance
-            .showMessage(message: reSendVeifyEmailModel.message!);
+            .showMessage(message: reSendVerifyPhone.message!);
       } else {
         SnackBarHelper.instance
-            .showMessage(message: reSendVeifyEmailModel.message!, erro: true);
+            .showMessage(message: reSendVerifyPhone.message!, erro: true);
       }
     } catch (e) {
       SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);

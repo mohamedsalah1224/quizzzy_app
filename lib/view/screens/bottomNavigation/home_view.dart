@@ -53,11 +53,11 @@ class HomeView extends GetView<HomeViewModel> {
               print(CacheUserService.instance.getUser()!.email);
               print(CacheUserService.instance.getUser()!.phone);
               print(CacheUserService.instance.getUser()!.id);
-              await CacheUserService.instance.deleteUser();
-              await CacheSubjectService.instance.deleteSubjects();
+              // await CacheUserService.instance.deleteUser();
+              // await CacheSubjectService.instance.deleteSubjects();
 
-              await SocialRepositoryMangerService()
-                  .logout(GoogleRepositoryService()); // apply Polymarphism
+              // await SocialRepositoryMangerService()
+              //     .logout(GoogleRepositoryService()); // apply Polymarphism
             },
           ),
         ],

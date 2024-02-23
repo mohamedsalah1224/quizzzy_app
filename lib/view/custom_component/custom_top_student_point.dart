@@ -33,12 +33,14 @@ class CustomTopStudentPoints extends StatelessWidget {
           ),
         ),
         CustomText(
-          text: topStudentDataModel.student!.name!.length > 11
-              ? "${topStudentDataModel.student!.name!.substring(0, 11)}..."
-              : topStudentDataModel.student!.name.toString(),
+          text: topStudentDataModel.student!.username == null
+              ? ""
+              : topStudentDataModel.student!.username!.length > 11
+                  ? "${topStudentDataModel.student!.username!.substring(0, 11)}..."
+                  : topStudentDataModel.student!.username.toString(),
           fontFamily: "Cairo",
-          textDirection: Validation.instance
-                  .isEnglishText(text: topStudentDataModel.student!.name!)
+          textDirection: Validation.instance.isEnglishText(
+                  text: topStudentDataModel.student!.username ?? "")
               ? TextDirection.ltr
               : TextDirection.rtl,
           fontSize: 14.sp,

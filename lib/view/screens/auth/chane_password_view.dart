@@ -52,6 +52,7 @@ class ChangePasswordView extends GetView<ForgetPasswordViewModel> {
                     eyes: true,
                     obscureText: true,
                     controller: controller.passwordController,
+                    textDirection: TextDirection.ltr,
                     validator: (value) =>
                         controller.validatePaswword(value: value),
                   ),
@@ -74,6 +75,7 @@ class ChangePasswordView extends GetView<ForgetPasswordViewModel> {
                     eyes: true,
                     obscureText: true,
                     controller: controller.passwordConfirmController,
+                    textDirection: TextDirection.ltr,
                     validator: (value) =>
                         controller.confirmPasswordValidator(value: value),
                   ),

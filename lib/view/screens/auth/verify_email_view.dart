@@ -53,7 +53,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                   controller: controller.pinController,
                   focusNode: controller.focusNode,
                   length: controller.length,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.number,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   validator: (value) {
                     return controller.validatePinCode(value);
