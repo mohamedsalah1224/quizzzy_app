@@ -3,6 +3,8 @@ import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'dart:math' as math;
 
+import 'package:quizzy_app/utils/constant/exam_costant.dart';
+
 class GeneralUtils {
   static GeneralUtils? _instance;
   static GeneralUtils get instance => _instance ??= GeneralUtils._();
@@ -47,6 +49,16 @@ class GeneralUtils {
       return "google";
     } else {
       return "facebook";
+    }
+  }
+
+  String convertLevelToArabic({required String value}) {
+    if (value == ExamConstatnt.difficultLevel) {
+      return "صعب";
+    } else if (value == ExamConstatnt.mediumLevel) {
+      return "متوسط";
+    } else {
+      return "سهل";
     }
   }
 }

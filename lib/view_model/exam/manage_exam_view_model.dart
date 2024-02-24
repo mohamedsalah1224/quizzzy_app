@@ -453,7 +453,7 @@ class ManageExamViewModel extends GetxController {
         "updateAboveSection",
         "updateBlewSection"
       ]); // update the Above Section
-
+      // update the Timer for the back Question
       updateTheCurrentExamType(); // update  the Question Type
     } else {
       debugPrint("-" * 50);
@@ -571,6 +571,8 @@ class ManageExamViewModel extends GetxController {
       ]); // update the Above Section
 
       updateTheCurrentExamType(); // update  the Question Type
+
+      // update the Timer for the Next Question
     } else {
       debugPrint("-" * 50);
       debugPrint("Exam Finished");
@@ -584,6 +586,8 @@ class ManageExamViewModel extends GetxController {
           0; // we will use it When Repetion , reviseons Answer The Exam
       _countOfQuestion =
           1; // set we will use it When Repetion , reviseons Answer The Exam
+
+      // Timer Reset Here and Close it
       Get.toNamed(Routes.examStatisticsView);
     }
 

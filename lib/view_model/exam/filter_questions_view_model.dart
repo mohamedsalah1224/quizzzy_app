@@ -51,12 +51,14 @@ class FilterQuestionsViewModel extends GetxController {
     String? idSemester = getIdOfSemester(value!);
     unitValue = null;
     leasonValue = null;
-
-    unitValueList = idSemester != null
-        ? unitsModel
-            .where(((element) => element.semester == idSemester))
-            .toList()
-        : unitsModel;
+    listLeaseon.clear();
+    unitValueList.clear();
+    if (idSemester != null) {
+      // if select All disbale unit , Leson
+      unitValueList = unitsModel
+          .where(((element) => element.semester == idSemester))
+          .toList();
+    }
 
     print("-" * 50);
 

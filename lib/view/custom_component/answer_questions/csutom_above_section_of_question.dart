@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/validation.dart';
 
 import '../../../utils/constant.dart';
@@ -73,7 +74,10 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CustomClassification(
-              text: questionsModel.level ?? "صعب", // لسه تتعدل من Api
+              text: questionsModel.level != null
+                  ? GeneralUtils.instance
+                      .convertLevelToArabic(value: questionsModel.level!)
+                  : "لايوجد", // لسه تتعدل من Api
             ),
             CustomClassification(
               text: '${questionsModel.points} نقطة',
