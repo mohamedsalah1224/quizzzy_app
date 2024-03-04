@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:quizzy_app/model/timer_model.dart';
+import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/answer_questions/csutom_above_section_of_question.dart';
 import 'package:quizzy_app/view/custom_component/custom_alert_message.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
@@ -35,6 +37,27 @@ class ExamView extends GetView<ManageExamViewModel> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () => controller.backFromExamViewPage(),
           ),
+          actions: [
+            GetBuilder<ManageExamViewModel>(
+              id: "updateTimer",
+              builder: (controller) {
+                TimerModel timerModel = controller.getCurrentTimer();
+                return Container(
+                  margin: REdgeInsets.only(right: 12),
+                  padding: REdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12.r)),
+                  child: CustomText(
+                    text: "${timerModel.minute}:${timerModel.secound}",
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: GetBuilder<ManageExamViewModel>(
           id: "LoadExamViewPage",

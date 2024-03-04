@@ -43,7 +43,7 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
                     ? TextDirection.ltr
                     : TextDirection.rtl,
                 textAlign: TextAlign.center,
-                maxLines: 10, // the Question can Be 6 Line
+                maxLines: 10000, // the Question can Be 6 Line
               )
             : 15.verticalSpace,
         questionsModel.reference != null ? 4.verticalSpace : const SizedBox(),
@@ -54,8 +54,12 @@ class CustomAboveSectionOfQuestion extends StatelessWidget {
                 padding: REdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   questionsModel.reference!,
-                  textDirection: TextDirection.rtl,
-                  maxLines: 3,
+                  textDirection: Validation.instance
+                          .isEnglishText(text: questionsModel.reference!)
+                      ? TextDirection.ltr
+                      : TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                  maxLines: 5,
                   style: TextStyle(
                       fontFamily: "Cairo",
                       fontSize: 10.sp,

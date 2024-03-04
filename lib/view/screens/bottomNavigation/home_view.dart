@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/Service/local/cache_subject_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/model/ads_model.dart';
@@ -50,10 +51,13 @@ class HomeView extends GetView<HomeViewModel> {
               print("Ok");
               // Remove tHE rOUTE PROCESS
               await AuthRouteService.instance.logout();
+              // remove Acees Toeken
               print(CacheUserService.instance.getUser()!.email);
               print(CacheUserService.instance.getUser()!.phone);
+              print(CacheUserService.instance.getUser()!.username);
               print(CacheUserService.instance.getUser()!.id);
-              // await CacheUserService.instance.deleteUser();
+              await CacheUserService.instance.deleteUser();
+              await AuthTokenService.instance.delete();
               // await CacheSubjectService.instance.deleteSubjects();
 
               // await SocialRepositoryMangerService()

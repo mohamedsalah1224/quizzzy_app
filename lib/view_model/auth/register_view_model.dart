@@ -175,8 +175,8 @@ class RegisterViewModel extends GetxController {
             lastDate: DateTime(2023))
         .then((value) {
       if (value != null) {
-        // 'yyy-MM-dd'
-        String date = DateFormat('dd-MM-yyy').format(value);
+        // 'yyy-MM-dd' 2022
+        String date = DateFormat('yyyy-MM-dd').format(value);
         dateController.text = date;
       }
     });
@@ -256,9 +256,9 @@ class RegisterViewModel extends GetxController {
           providerId: providerId,
           providerType: providerType,
           name: nameController.text,
-          //  dateOfBirth: dateController.text,
+          dateOfBirth: dateController.text,
           area: GeneralUtils.instance.getGroupValueName(groupValue: groupValue),
-          username: userNameController.text,
+          username: userNameController.text, // YYYY-M-D
           specialization: specializationValue,
           governorate: governorateValue,
           residenceArea: stateOfAreaValue,
@@ -291,7 +291,7 @@ class RegisterViewModel extends GetxController {
       username: userNameController.text,
       specialization: specializationValue,
       password: passwordController.text,
-
+      dateOfBirth: dateController.text,
       governorate: governorateValue,
       residenceArea: stateOfAreaValue,
       academicYearId: GeneralUtils.instance.getAcademicYearById(

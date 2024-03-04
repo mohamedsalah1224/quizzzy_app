@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/attempt_answers_repository_service.dart';
 import 'package:quizzy_app/model/exam_attempt_model.dart';
 import 'package:quizzy_app/model/exam_statistics_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
+import 'package:quizzy_app/utils/pdf_helper/pdf_converter_to_image.dart';
+import 'package:quizzy_app/utils/pdf_helper/pdf_generator.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view.dart';
@@ -28,6 +31,7 @@ class ExamStatisticsViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    PdfGenerator.init();
     int examAttemptId = controllerOfMangeExamViewModel.startQuizModel.data!.id!;
 
     _removeExamAttempt(
@@ -83,11 +87,11 @@ class ExamStatisticsViewModel extends GetxController {
         () {
           // Navigate to your favorite place
           DialogHelper.hideLoading();
-          update([
-            'updateAboveSection',
-            'updateBlewSection'
-          ]); // to update when The Dialog Disposed
+          update(['updateAboveSection', 'updateBlewSection']);
+          // to update when The Dialog Disposed
+
           Get.until((route) => Get.currentRoute == Routes.examView);
+          controllerOfMangeExamViewModel.resetDurationTimer();
         },
       );
     }); // to call the StartQuiz Again
@@ -129,5 +133,25 @@ class ExamStatisticsViewModel extends GetxController {
       manageBottomNavigationViewModel.gotToHomePageManuallyWithoutClickOnIt();
       Get.until((route) => Get.currentRoute == Routes.bottomNavgation);
     }
+  }
+
+  void convertToPdf() async {
+    // var permissionStatus = await Permission.storage.status;
+
+    // switch (permissionStatus) {
+    //   case PermissionStatus.denied:
+    //   case PermissionStatus.permanentlyDenied:
+    //     //    await Permission.manageExternalStorage.request();
+    //     break;
+    //   default:
+    // }
+    // PdfGenerator.createPdf();
+
+    PdfGenerator.createPdf();
+    print("Create to Pdf");
+  }
+
+  void shareFile() {
+    print("Shar the File");
   }
 }

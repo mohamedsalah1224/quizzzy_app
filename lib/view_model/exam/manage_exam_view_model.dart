@@ -17,6 +17,7 @@ import 'package:quizzy_app/model/questions_model.dart';
 import 'package:quizzy_app/model/send_note_or_wrong_to_question_mode.dart';
 import 'package:quizzy_app/model/start_quiz_model.dart';
 import 'package:quizzy_app/model/store_exam_model.dart';
+import 'package:quizzy_app/model/timer_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
@@ -44,6 +45,8 @@ import 'package:quizzy_app/view_model/media/video_view_model.dart';
 import '../../utils/constant.dart';
 
 class ManageExamViewModel extends GetxController {
+  Timer? timer;
+  Duration duration = const Duration(seconds: 0);
   TextEditingController noteController = TextEditingController();
   bool _isClickSendNote = false;
   bool _isClickWrongAnswer = false;
@@ -56,6 +59,8 @@ class ManageExamViewModel extends GetxController {
   bool _isAfterFinish = false;
   bool _isExamAttempt = false;
   String _examTypeMessage = "الإختبار";
+  Map<String, int> _timeCounterMap = {};
+  String _counterTimerValue = "0";
 
   DataSubjectModel? _subjectSelectedInformation;
   BookModel? _bookSelected;
@@ -66,6 +71,12 @@ class ManageExamViewModel extends GetxController {
   List<BookModel> _bookList = [];
   List<BookModel> _seachBookList = [];
   void activeExamAttmpts() => _isExamAttempt = true;
+
+  void resetDurationTimer() {
+    duration = const Duration(seconds: 1);
+    update(['updateTimer']);
+  }
+
   final List<Widget> _examTypeList = [
     const CompareExam(),
     const LongShortAnswerExam(),
@@ -100,14 +111,21 @@ class ManageExamViewModel extends GetxController {
   bool get isExamAttempt => _isExamAttempt;
   bool get isLoadExamViewPage => _isLoadExamViewPage;
   String get examTypeMessage => _examTypeMessage;
+  String get counterTimerValue => _counterTimerValue;
+
   void setAfterFinish() => _isAfterFinish = true;
   bool get isAfterFinish => _isAfterFinish;
   Map<String, dynamic> get answerSelectedByUser => _mapAnswersOfExam;
+  Map<String, int> get timeCounterMap => _timeCounterMap;
+
   void resetValueOfLoadExamViewPage() => _isLoadExamViewPage = false;
   void resetMapAnswer() => _mapAnswersOfExam = {};
   void resetValueOfRepitionExam() {
     _isLoadExamViewPage = false;
     _mapAnswersOfExam.clear();
+    _timeCounterMap.clear();
+    // _counterTimerValue = "0";
+    duration = const Duration(seconds: 0);
     resetVideoController(); // to Reset Video Controller
     resetAllController(); // this Solve the Problem of Nested Controller
   }
@@ -126,6 +144,14 @@ class ManageExamViewModel extends GetxController {
   void setExamData(
       {required ExamsModel examsModel,
       required ExamAttemptModel examAttemptModel}) {
+    if (timer != null) {
+      if (timer!.isActive) timer!.cancel();
+    }
+    _timeCounterMap.clear();
+    _mapAnswersOfExam.clear();
+
+    duration = const Duration(seconds: 0);
+
     _isLoadExamViewPage = false;
     _isAfterFinish = false; // must be false
     _examData = examsModel;
@@ -150,6 +176,8 @@ class ManageExamViewModel extends GetxController {
     if (!isNoQuestionExist) {
       updateTheCurrentExamType();
     }
+
+    startTimer();
     update([
       'LoadExamViewPage',
       'updateLinearProgres'
@@ -300,7 +328,8 @@ class ManageExamViewModel extends GetxController {
     _currentExamTypeIndex = 0;
     _currentQuetionIndex = 0;
     _isLoadExamViewPage = false;
-
+    duration = const Duration(seconds: 0);
+    _timeCounterMap.clear();
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
@@ -311,6 +340,10 @@ class ManageExamViewModel extends GetxController {
     _isExamAttempt = false;
     _searchSubjectList =
         _subjectList; // to Solve problem when selecte an Page from BottomSheet
+
+    if (timer != null) {
+      if (timer!.isActive) timer!.cancel();
+    }
   }
 
 ///////////////////////// Helper Methods //////////////////////////////
@@ -433,15 +466,25 @@ class ManageExamViewModel extends GetxController {
   ///
 
   void backFromExam() {
+    timer!.cancel();
+
+    timeCounterMap.clear();
     Get.back();
     resetAllController();
   }
 
+  void canselTime() {
+    timer!.cancel();
+  }
+
   void backQuestion() {
+    QuestionsModel currentQuestionModel =
+        getCurrentQuestionModel(index: _currentQuetionIndex);
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
-
+    _timeCounterMap['${currentQuestionModel.id}'] = duration
+        .inSeconds; // save the Current Value of the CounterTimerValue before decrement the new Question
     resetVideoController(); // to Reset Video Controller
 
     if (_currentQuetionIndex > 0) {
@@ -453,8 +496,14 @@ class ManageExamViewModel extends GetxController {
         "updateAboveSection",
         "updateBlewSection"
       ]); // update the Above Section
-      // update the Timer for the back Question
+
       updateTheCurrentExamType(); // update  the Question Type
+
+      // update the Timer for the back Question
+      duration = Duration(
+          seconds: _timeCounterMap[
+              "${getCurrentQuestionModel(index: _currentQuetionIndex).id}"]!);
+      update(['updateTimer']);
     } else {
       debugPrint("-" * 50);
       debugPrint("This is the First Question");
@@ -465,6 +514,7 @@ class ManageExamViewModel extends GetxController {
   void nextQuestion() async {
     QuestionsModel currentQuestionModel =
         getCurrentQuestionModel(index: _currentQuetionIndex);
+
     debugPrint("-" * 50);
     debugPrint("Question Id ${currentQuestionModel.id}");
     debugPrint("-" * 50);
@@ -496,9 +546,13 @@ class ManageExamViewModel extends GetxController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////// Send Answers Section ////////////////////////////////////////////////////////
+
+    _timeCounterMap['${currentQuestionModel.id}'] = duration
+        .inSeconds; // save the Current Value of the CounterTimerValue before (Send the Answer , Next Question)  the new Question
 // printAll Questions Answer Map
     debugPrint("/ " * 50);
     debugPrint(" All Current Questions Answer $_mapAnswersOfExam");
+    debugPrint(" All Time Of Questions  $_timeCounterMap");
     debugPrint(
         " The Answer of Current Question($_currentQuetionIndex), Questin Id(${currentQuestionModel.id})  Answer ${_mapAnswersOfExam['${currentQuestionModel.id}']}");
     debugPrint("/ " * 50);
@@ -516,6 +570,7 @@ class ManageExamViewModel extends GetxController {
 
       await answerQuestionService(
               questionId: currentQuestionModel.id!,
+              timeSpent: _timeCounterMap['${currentQuestionModel.id}']!,
               givenAnswer: resultOfTheCurrentQuestion)
           .then((value) {
         DialogHelper.hideLoading(); // Hide Diallog
@@ -546,6 +601,7 @@ class ManageExamViewModel extends GetxController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////Reset Value Section ////////////////////////////////////////////////////////////
+
     noteController.clear(); // to clear the note Controller
     _isClickSendNote = false; // to Clear it
     _isClickWrongAnswer = false; // to Clear it
@@ -572,7 +628,28 @@ class ManageExamViewModel extends GetxController {
 
       updateTheCurrentExamType(); // update  the Question Type
 
-      // update the Timer for the Next Question
+      /////////////////////////////update the Timer for the Next Question////////////////////////////
+      ///
+      QuestionsModel currentNewQuestionModel =
+          getCurrentQuestionModel(index: _currentQuetionIndex);
+      if (_timeCounterMap["${currentNewQuestionModel.id}"] == null) {
+        debugPrint("*" * 100);
+        debugPrint("YES");
+        debugPrint("*" * 100);
+        // _counterTimerValue = "0";
+        duration = const Duration(seconds: 0); //  reset the Counter Value
+        _timeCounterMap["${currentNewQuestionModel.id}"] = duration.inSeconds;
+      } else {
+// this mean this is exist when use the After Finish Evaluation
+        duration = Duration(
+            seconds: _timeCounterMap["${currentNewQuestionModel.id}"]!);
+        // _counterTimerValue = _timeCounterMap["${currentQuestionModel.id}"]!;
+        debugPrint("*" * 100);
+        debugPrint("no");
+        debugPrint("*" * 100);
+      }
+      update(['updateTimer']);
+////////////////////////////////////////////////////////////////////////////////////////
     } else {
       debugPrint("-" * 50);
       debugPrint("Exam Finished");
@@ -587,6 +664,11 @@ class ManageExamViewModel extends GetxController {
       _countOfQuestion =
           1; // set we will use it When Repetion , reviseons Answer The Exam
 
+      _timeCounterMap.clear(); // reset the Map
+      duration = const Duration(seconds: 0);
+      timer!.cancel();
+      // _counterTimerValue = "0";
+      duration = const Duration(seconds: 0); //  reset the Counter Value
       // Timer Reset Here and Close it
       Get.toNamed(Routes.examStatisticsView);
     }
@@ -611,6 +693,7 @@ class ManageExamViewModel extends GetxController {
           ExamConstatnt.multipleChoice == currentQuestionModel.type ? [] : null;
       await answerQuestionService(
               questionId: currentQuestionModel.id!,
+              timeSpent: _timeCounterMap['${currentQuestionModel.id}']!,
               givenAnswer: resultOfTheCurrentQuestion)
           .then((value) {
         if (!value!.success!) {
@@ -717,9 +800,36 @@ class ManageExamViewModel extends GetxController {
   }
 
   */
+  void addTime() {
+    int secound = 1;
+    int totalSecounds = secound + duration.inSeconds;
+    duration = Duration(seconds: totalSecounds);
+    update(['updateTimer']);
+  }
+
+  TimerModel getCurrentTimer() {
+    // pad  Left to show the Two Digit if num less tahn 10 make 09 other wise 12
+    // remainder to prevent number to become 65 restrate recyle again
+    String secound =
+        duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minute = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    return TimerModel(minute: minute, secound: secound);
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) => addTime());
+    update(['updateTimer']);
+  }
 
   Future<void> startQuizService({required int examId}) async {
     ExamRepositoryService().startQuiz(examId: examId).then((value) async {
+      if (timer != null) {
+        if (timer!.isActive) timer!.cancel();
+      }
+      _timeCounterMap.clear();
+      // _counterTimerValue = "0";
+      duration = const Duration(seconds: 0);
+      _mapAnswersOfExam.clear(); // review it
       _countOfQuestion = 1;
       _currentQuetionIndex = 0;
       _startQuizModel = value;
@@ -734,6 +844,9 @@ class ManageExamViewModel extends GetxController {
       if (!isNoQuestionExist) {
         updateTheCurrentExamType();
       }
+
+      startTimer();
+
       update([
         'LoadExamViewPage',
         'updateLinearProgres'
@@ -743,11 +856,14 @@ class ManageExamViewModel extends GetxController {
   }
 
   Future<AnswerQuestionModel?> answerQuestionService(
-      {required int questionId, required var givenAnswer}) async {
+      {required int questionId,
+      required var givenAnswer,
+      required int timeSpent}) async {
     AnswerQuestionModel? answerQuestionModel;
     try {
       answerQuestionModel = await ExamRepositoryService().answerQuestion(
           questionId: questionId,
+          timeSpent: timeSpent,
           examAttemptId: _startQuizModel!.data!.id!, // from Start Exam Service
           givenAnswer: givenAnswer);
     } catch (e) {

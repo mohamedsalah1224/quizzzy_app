@@ -83,12 +83,14 @@ class ExamRepositoryService implements ExamRepository {
   Future<AnswerQuestionModel> answerQuestion(
       {required int questionId,
       required int examAttemptId,
+      required int timeSpent,
       required var givenAnswer}) async {
     try {
       var reponse = await DioHelper().post(EndPoint.answerQuestion, data: {
         'exam_attempt_id': examAttemptId,
         'question_id': questionId,
-        'given_answer': givenAnswer
+        'given_answer': givenAnswer,
+        'time_spent': timeSpent
       });
 
       return AnswerQuestionModel.fromJson(reponse);

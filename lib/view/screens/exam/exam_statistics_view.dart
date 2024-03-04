@@ -72,11 +72,14 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                                                   controller.repetitionExam(),
                                             ),
                                             30.verticalSpace,
-                                            const CustomStatisticsIcon(
+                                            CustomStatisticsIcon(
                                               text: 'تحويلها pdf',
                                               color: Color(0xff37AFA1),
                                               cacheHeight: 18,
                                               cacheWidth: 24,
+                                              onTap: () {
+                                                controller.convertToPdf();
+                                              },
                                               iconAssetPath:
                                                   Assets.convertPdfStatistics,
                                             ),
@@ -85,14 +88,16 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                                         Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const CustomStatisticsIcon(
-                                              text: 'مشاركة',
-                                              color: Color(0xff6680DB),
-                                              cacheHeight: 22,
-                                              cacheWidth: 21,
-                                              iconAssetPath:
-                                                  Assets.shareStatistics,
-                                            ),
+                                            CustomStatisticsIcon(
+                                                text: 'مشاركة',
+                                                color: Color(0xff6680DB),
+                                                cacheHeight: 22,
+                                                cacheWidth: 21,
+                                                iconAssetPath:
+                                                    Assets.shareStatistics,
+                                                onTap: () {
+                                                  controller.shareFile();
+                                                }),
                                             30.verticalSpace,
                                             const CustomStatisticsIcon(
                                               text: 'مراجعة الاجابات',

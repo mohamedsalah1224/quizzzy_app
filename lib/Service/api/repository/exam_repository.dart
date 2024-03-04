@@ -20,6 +20,7 @@ abstract class ExamRepository {
   Future<StartQuizModel> startQuiz({required int examId});
   Future<AnswerQuestionModel> answerQuestion(
       {required int questionId,
+      required int timeSpent,
       required int examAttemptId,
       required var givenAnswer});
 

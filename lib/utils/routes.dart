@@ -25,6 +25,7 @@ import 'package:quizzy_app/view/screens/auth/sucess_password_changed_view.dart';
 import 'package:quizzy_app/view/screens/auth/verify_email_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_statistics_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_view.dart';
+import 'package:quizzy_app/view/screens/settings/settings_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
 import 'binding/bottom_navigation_binding.dart';
 import 'binding/sucess_password_changed_binding.dart';
@@ -52,6 +53,8 @@ class Routes {
   static const String examStatisticsView = "/examStatisticsView";
 // identify_email_view
 // VerifyPhoneView
+
+  static const String settingsView = "/settingsView";
 
   static List<GetPage<dynamic>>? getPages() => [
         GetPage(
@@ -113,5 +116,9 @@ class Routes {
             page: () => const ExamStatisticsView(),
             binding: ExamStatisticsBinding()),
         //ExamStatisticsBinding
+        GetPage(
+            name: settingsView,
+            page: () => const SettingsView(),
+            binding: BottomNavigationBinding()),
       ];
 }
