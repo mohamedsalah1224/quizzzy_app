@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/chat_view_model.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 
 import '../../custom_component/custom_message.dart';
 import '../../custom_component/custom_search_field.dart';
@@ -32,7 +33,7 @@ class ChatView extends GetView<ChatViewModel> {
               color: Colors.black,
             ),
             onPressed: () {
-              print("Ok");
+              Get.find<SettingsViewModel>().settingViewPageRoute();
             },
           ),
           actions: [
@@ -42,6 +43,7 @@ class ChatView extends GetView<ChatViewModel> {
                 color: Colors.black,
               ),
               onPressed: () {
+                Get.find<SettingsViewModel>().notificationViewPageRoute();
                 print("Ok");
               },
             ),

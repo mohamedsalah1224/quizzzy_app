@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:quizzy_app/model/Image_dimensions_model.dart';
 
 import 'academic_year_model.dart';
 part 'user_model.g.dart';
@@ -49,6 +50,10 @@ class User {
   bool? phoneVerified;
   @HiveField(21)
   String? locationArea;
+  @HiveField(22)
+  String? balance;
+  @HiveField(23)
+  ImageDimensionsModel? imageDimensionsModel;
 
   User(
       {this.id,
@@ -62,6 +67,8 @@ class User {
       this.dateOfBirth,
       this.governorate,
       this.area,
+      this.balance,
+      this.imageDimensionsModel,
       this.residenceArea,
       this.specialization,
       this.academicYearId,
@@ -82,6 +89,7 @@ class User {
         email: json['email'],
         phone: json['phone'],
         photo: json['photo'],
+        balance: json['balance'],
         dateOfBirth: json['date_of_birth'],
         governorate: json['governorate'],
         area: json['area'],
@@ -93,6 +101,9 @@ class User {
         deviceToken: json['device_token'],
         academicYear: json['academic_year'] != null
             ? AcademicYearModel.fromJson(json['academic_year'])
+            : null,
+        imageDimensionsModel: json['image_dimensions'] != null
+            ? ImageDimensionsModel.fromJson(json['image_dimensions'])
             : null,
         isActive: json['is_active'],
         hasVerifiedEmail: json['hasVerifiedEmail'],
@@ -110,6 +121,7 @@ class User {
       'email': email,
       'phone': phone,
       'photo': photo,
+      'balance': balance,
       'date_of_birth': dateOfBirth,
       'governorate': governorate,
       'area': area,
@@ -124,6 +136,8 @@ class User {
       'updated_at': updatedAt,
       'hasVerifiedEmail': hasVerifiedEmail,
       'academic_year': academicYear != null ? academicYear!.toJson() : {},
+      'image_dimensions':
+          imageDimensionsModel != null ? imageDimensionsModel!.toJson() : {},
       'location_area': locationArea,
       'phone_verified': phoneVerified,
     };

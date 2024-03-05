@@ -7,6 +7,7 @@ import 'package:quizzy_app/view/custom_component/custom_circular_progress_indica
 import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/account_view_model.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 
 import '../../custom_component/custom_achievement.dart';
 
@@ -25,7 +26,7 @@ class AccountView extends GetView<AccountViewModel> {
               color: Colors.black,
             ),
             onPressed: () {
-              print("Ok");
+              Get.find<SettingsViewModel>().settingViewPageRoute();
             },
           ),
           actions: [
@@ -35,7 +36,7 @@ class AccountView extends GetView<AccountViewModel> {
                 color: Colors.black,
               ),
               onPressed: () {
-                print("Ok");
+                Get.find<SettingsViewModel>().notificationViewPageRoute();
               },
             ),
           ],

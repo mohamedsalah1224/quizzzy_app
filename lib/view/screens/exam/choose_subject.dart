@@ -6,6 +6,7 @@ import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_alert_message.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_subject.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 import '../../../view_model/exam/manage_exam_view_model.dart';
 import '../../custom_component/custom_search_field.dart';
 import '../../custom_component/custom_text.dart';
@@ -33,7 +34,7 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
             color: Colors.black,
           ),
           onPressed: () {
-            print("Ok");
+            Get.find<SettingsViewModel>().settingViewPageRoute();
           },
         ),
         actions: [
@@ -43,7 +44,7 @@ class ChooseSubjectView extends GetView<ManageExamViewModel> {
               color: Colors.black,
             ),
             onPressed: () {
-              print("Ok");
+              Get.find<SettingsViewModel>().notificationViewPageRoute();
             },
           ),
         ],

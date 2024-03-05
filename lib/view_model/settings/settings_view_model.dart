@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:quizzy_app/utils/routes.dart';
 
 class SettingsViewModel extends GetxController {
   @override
@@ -9,7 +10,24 @@ class SettingsViewModel extends GetxController {
     print("Init Seetings View Model");
   }
 
-  void settingViewPageRoute() {}
+////////////////////////////////////////// Route Method /////////////////////////////////////////////////////
+  void settingViewPageRoute() {
+    Get.toNamed(Routes.settingsView);
+  }
 
-  void notificationViewPageRoute() {}
+  void balanceViewRoute() {
+    Get.toNamed(Routes.settingsView);
+  }
+
+  void updateAccountViewRoute() {
+    Get.toNamed(Routes.updateAccountView);
+  }
+
+  void updateChangePasswordViewRoute() {
+    Get.toNamed(Routes.updateChangePasswordView);
+  }
+
+  void notificationViewPageRoute() {
+    Get.toNamed(Routes.notificationView);
+  }
 }

@@ -65,4 +65,10 @@ class Assets {
       "assets/images/revisionAnswer_statistics.png";
   static const String shareStatistics = "assets/images/share_statistics.png";
   ////////////////////////////////////////////////////////////////////////////////////////
+  ///
+
+  static const String placeholderProfile =
+      "assets/images/placeholder_profile.png";
+//logout
+  static const String logout = "assets/images/logout.png";
 }

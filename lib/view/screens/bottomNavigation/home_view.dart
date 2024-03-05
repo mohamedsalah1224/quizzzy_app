@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
@@ -19,6 +20,7 @@ import 'package:quizzy_app/view/custom_component/custom_exam_attempt.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view/custom_component/custom_top_student_point.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 
 import '../../custom_component/custom_search_field.dart';
 
@@ -37,7 +39,7 @@ class HomeView extends GetView<HomeViewModel> {
             color: Colors.black,
           ),
           onPressed: () {
-            print("Ok");
+            Get.find<SettingsViewModel>().settingViewPageRoute();
           },
         ),
         actions: [
@@ -47,6 +49,7 @@ class HomeView extends GetView<HomeViewModel> {
               color: Colors.black,
             ),
             onPressed: () async {
+              Get.find<SettingsViewModel>().notificationViewPageRoute();
               print("Ok");
               print("Ok");
               // Remove tHE rOUTE PROCESS

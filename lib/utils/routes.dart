@@ -25,7 +25,11 @@ import 'package:quizzy_app/view/screens/auth/sucess_password_changed_view.dart';
 import 'package:quizzy_app/view/screens/auth/verify_email_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_statistics_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_view.dart';
+import 'package:quizzy_app/view/screens/settings/balance_view.dart';
+import 'package:quizzy_app/view/screens/settings/notification_view.dart';
 import 'package:quizzy_app/view/screens/settings/settings_view.dart';
+import 'package:quizzy_app/view/screens/settings/update_account_view.dart';
+import 'package:quizzy_app/view/screens/settings/update_change_password_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
 import 'binding/bottom_navigation_binding.dart';
 import 'binding/sucess_password_changed_binding.dart';
@@ -55,6 +59,11 @@ class Routes {
 // VerifyPhoneView
 
   static const String settingsView = "/settingsView";
+  static const String balanceView = "/balanceView";
+  static const String updateChangePasswordView = "/updateChangePasswordView";
+  static const String updateAccountView = "/updateAccountView";
+  static const String notificationView = "/notificationView";
+  // NotificationView
 
   static List<GetPage<dynamic>>? getPages() => [
         GetPage(
@@ -120,5 +129,21 @@ class Routes {
             name: settingsView,
             page: () => const SettingsView(),
             binding: BottomNavigationBinding()),
+        GetPage(
+          name: balanceView,
+          page: () => const BalanceView(),
+        ),
+        GetPage(
+          name: updateChangePasswordView,
+          page: () => const UpdateChangePasswordView(),
+        ),
+        GetPage(
+          name: updateAccountView,
+          page: () => const UpdateAccountView(),
+        ),
+        GetPage(
+          name: notificationView,
+          page: () => const NotificationView(),
+        ),
       ];
 }
