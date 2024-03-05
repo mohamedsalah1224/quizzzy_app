@@ -41,6 +41,21 @@ RESEND_VERIFY_PHONE="/api/auth/sendVerifyPhone"
   static final String ads = dotenv.get('ADS');
   static final String topStudent = dotenv.get('TOP_STUDENTS');
   static final String examAttempts = dotenv.get('EXAM_ATTEMPTS');
+
+// Profile
+/*
+UPDATE_PROFILE="/api/auth/update-profile"
+PROFILE="/api/auth/profile"
+RECHARGE_ACCOUNT="/api/auth/recharge-account"
+DELETE_ACCOUNT="/api/auth/delete-account"
+rechargeAccount
+
+*/
+  static final String profile = dotenv.get('PROFILE');
+  static final String updateProfile = dotenv.get('UPDATE_PROFILE');
+  static final String rechargeAccount = dotenv.get('RECHARGE_ACCOUNT');
+  static final String deleteAccount = dotenv.get('DELETE_ACCOUNT');
+
 /*
 TOP_STUDENTS="/api/exams/students/top"
 EXAM_ATTEMPTS="/api/exams/exam_attempts/attempts"
