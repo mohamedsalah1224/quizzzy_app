@@ -6,9 +6,13 @@ import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_phone_binding.dart';
 import 'package:quizzy_app/utils/binding/login_binding.dart';
+import 'package:quizzy_app/utils/binding/notification_binding.dart';
 import 'package:quizzy_app/utils/binding/questions_type_binding.dart';
 import 'package:quizzy_app/utils/binding/register_binding.dart';
+import 'package:quizzy_app/utils/binding/balance_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/utils/binding/update_account_binding.dart';
+import 'package:quizzy_app/utils/binding/update_change_password_binding.dart';
 import 'package:quizzy_app/utils/binding/verify_email_binding.dart';
 import 'package:quizzy_app/utils/binding/verify_phone_binding.dart';
 import 'package:quizzy_app/view/screens/auth/continue_register_view.dart';
@@ -132,18 +136,21 @@ class Routes {
         GetPage(
           name: balanceView,
           page: () => const BalanceView(),
+          binding: BalanceBinding(),
         ),
         GetPage(
           name: updateChangePasswordView,
           page: () => const UpdateChangePasswordView(),
+          binding: UpdateChangePasswordBinding(),
         ),
         GetPage(
           name: updateAccountView,
           page: () => const UpdateAccountView(),
+          binding: UpdateAccountBinding(),
         ),
         GetPage(
-          name: notificationView,
-          page: () => const NotificationView(),
-        ),
+            name: notificationView,
+            page: () => const NotificationView(),
+            binding: NotificationBinding()),
       ];
 }

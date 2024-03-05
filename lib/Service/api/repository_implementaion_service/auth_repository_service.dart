@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/auth_repository.dart';
@@ -45,9 +46,11 @@ class AuthRepositoryService implements AuthRepository {
         },
       );
       return AuthModel.fromJson(response);
-    } on DioException catch (e) {
+    } on DioException catch (e, s) {
+      debugPrint(s.toString());
       throw DioExceptionHelper.instance.getExceptionMessage(dioException: e);
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint(s.toString());
       rethrow;
     }
   }

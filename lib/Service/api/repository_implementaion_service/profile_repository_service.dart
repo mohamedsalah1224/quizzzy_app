@@ -42,7 +42,8 @@ class PofileRepositoryService implements ProfileRepository {
 
   @override
   Future<ProfileModel> updateProfile(
-      {required RegisterModel registerModel}) async {
+      {required RegisterModel registerModel,
+      required bool phoneVerified}) async {
     // Check how to Send a File to Server photo
     try {
       var reponse = await DioHelper().post(EndPoint.updateProfile, data: {
@@ -62,7 +63,7 @@ class PofileRepositoryService implements ProfileRepository {
         'residence_area': registerModel.residenceArea,
         'specialization': registerModel.specialization,
         'location_area': registerModel.locationArea,
-        'phone_verified': null
+        'phone_verified': phoneVerified ? 1 : 0
       });
 
       return ProfileModel.fromJson(reponse);

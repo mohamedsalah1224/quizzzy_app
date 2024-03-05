@@ -1,14 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view/custom_component/settings/custom_list_tile.dart';
 import 'package:quizzy_app/view/custom_component/settings/custom_top_section_of_settings_view.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends GetView<SettingsViewModel> {
   const SettingsView({super.key});
 
   @override
@@ -18,9 +20,10 @@ class SettingsView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const CustomTopSectionOfSettingsView(
-              emailOrPhoneValue: "065247854689",
-              name: "الاء سعيد",
+            CustomTopSectionOfSettingsView(
+              emailOrPhoneValue: controller.emailOrPhone,
+              name: controller.name,
+              imageUrl: controller.photo,
             ),
             25.verticalSpace,
             RPadding(
@@ -55,7 +58,7 @@ class SettingsView extends StatelessWidget {
                   ),
                   CustomListTile(
                     onTap: () {
-                      print("Welcome");
+                      controller.balanceViewRoute();
                     },
                     text: 'رصيدي',
                   ),
@@ -112,8 +115,9 @@ class SettingsView extends StatelessWidget {
                     text: 'الشروط',
                   ),
                   CustomListTile(
-                      onTap: () {
-                        print("Welcome");
+                      onTap: () async {
+                        print("OK");
+                        await controller.logout();
                       },
                       text: 'تسجيل الخروج',
                       imageWidget: RPadding(

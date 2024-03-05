@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizzy_app/Service/api/repository/profile_repository.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/profile_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
 class SplashViewModel extends GetxController {
@@ -18,7 +21,7 @@ class SplashViewModel extends GetxController {
       debugPrint("Route Exit : $result");
       debugPrint("-" * 50);
       if (result) {
-        Get.offAllNamed(Routes.bottomNavgation);
+        _getProfileService();
       } else {
         Get.offAllNamed(Routes.loginView);
       }
@@ -33,5 +36,17 @@ class SplashViewModel extends GetxController {
   @override
   void onClose() async {
     super.onClose();
+  }
+
+  void _getProfileService() {
+    PofileRepositoryService().getProfile().then((value) async {
+      if (value.data!.isActive!) {
+        await CacheUserService.instance
+            .updateUser(user: value.data!); // to cache the User Object
+        Get.offAllNamed(Routes.bottomNavgation);
+      } else {
+        Get.offAllNamed(Routes.loginView);
+      }
+    });
   }
 }

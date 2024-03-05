@@ -98,7 +98,7 @@ class LoginViewModel extends GetxController {
       bool isEmail = Validation.instance
           .isEmail(email: emailOrPhoneController.text.trim());
       // to know if the input imail or phone
-      print("+972${emailOrPhoneController.text.trim().substring(1)}}");
+      print("+972${emailOrPhoneController.text.trim().substring(1)}");
 
       AuthModel? authModel = await _loginByEmailOrPhoneService(
           loginModel: LoginModel(

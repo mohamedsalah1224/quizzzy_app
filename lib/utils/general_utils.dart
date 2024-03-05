@@ -45,10 +45,20 @@ class GeneralUtils {
   String convertSocialMediaEnumToString(SocialMediaType socialMediaType) {
     if (SocialMediaType.apple == socialMediaType) {
       return "apple";
-    } else if (SocialMediaType.apple == socialMediaType) {
+    } else if (SocialMediaType.google == socialMediaType) {
       return "google";
     } else {
       return "facebook";
+    }
+  }
+
+  SocialMediaType convertSocialMediaStringToEnum(String socialMediaType) {
+    if ("apple" == socialMediaType) {
+      return SocialMediaType.apple;
+    } else if ("google" == socialMediaType) {
+      return SocialMediaType.google;
+    } else {
+      return SocialMediaType.facebook;
     }
   }
 

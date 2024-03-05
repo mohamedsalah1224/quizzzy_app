@@ -51,7 +51,7 @@ class User {
   @HiveField(21)
   String? locationArea;
   @HiveField(22)
-  String? balance;
+  int? balance;
   @HiveField(23)
   ImageDimensionsModel? imageDimensionsModel;
 

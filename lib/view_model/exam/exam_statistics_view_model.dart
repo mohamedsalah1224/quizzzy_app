@@ -145,7 +145,7 @@ class ExamStatisticsViewModel extends GetxController {
     //     break;
     //   default:
     // }
-    // PdfGenerator.createPdf();
+    // // PdfGenerator.createPdf();
 
     PdfGenerator.createPdf();
     print("Create to Pdf");

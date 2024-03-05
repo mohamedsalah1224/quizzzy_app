@@ -16,8 +16,8 @@ class CacheUserService {
     myBox = Hive.box<User>(_boxName);
   }
 
-  User? getUser() {
-    User? result = myBox.get(_key);
+  User getUser() {
+    User result = myBox.get(_key, defaultValue: User())!;
 
     return result;
   }

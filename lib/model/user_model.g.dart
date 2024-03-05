@@ -28,7 +28,7 @@ class UserAdapter extends TypeAdapter<User> {
       dateOfBirth: fields[6] as String?,
       governorate: fields[7] as String?,
       area: fields[8] as String?,
-      balance: fields[22] as String?,
+      balance: fields[22] as int?,
       imageDimensionsModel: fields[23] as ImageDimensionsModel?,
       residenceArea: fields[9] as String?,
       specialization: fields[10] as String?,

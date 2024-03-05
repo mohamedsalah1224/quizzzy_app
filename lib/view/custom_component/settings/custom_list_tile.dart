@@ -26,7 +26,7 @@ class CustomListTile extends StatelessWidget {
             Icons.keyboard_arrow_left,
             size: size ?? 28.r,
           ),
-      onTap: () => onTap,
+      onTap: onTap,
       title: CustomText(
         text: text,
         fontWeight: FontWeight.w400,

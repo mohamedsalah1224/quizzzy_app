@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
+import 'package:quizzy_app/view/custom_component/exam_statistics/custom_card_exam_result.dart';
 
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_circle_sum_of_points_inofrmation.dart';
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_icon.dart';
-import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_text.dart';
 import 'package:quizzy_app/view_model/exam/exam_statistics_view_model.dart';
 
 class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
@@ -143,69 +143,17 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: 305.w,
-                      height: 250.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          boxShadow: const <BoxShadow>[
-                            BoxShadow(
-                                offset: Offset(0, 4),
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                color: Color.fromRGBO(0, 0, 0, 0.50)),
-                          ],
-                          borderRadius: BorderRadius.circular(30).r,
-                          color: Colors.white),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              CustomStatisticsText(
-                                text: 'مجموع الاسئلة',
-                                numbertext: controller
-                                    .examAttemptStatisticsInofrmation
-                                    .totalQuestions
-                                    .toString(),
-                                color: const Color(0xff4996BF),
-                              ),
-                              30.verticalSpace,
-                              CustomStatisticsText(
-                                text: 'اجابة خاطئة',
-                                numbertext: controller
-                                    .examAttemptStatisticsInofrmation
-                                    .numberWrongAnswer
-                                    .toString(),
-                                color: const Color(0xffFA3939),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const CustomStatisticsText(
-                                text: 'اكتمل الاختبار',
-                                numbertext: "100%",
-                                color: Color(0xff4996BF),
-                              ),
-                              30.verticalSpace,
-                              CustomStatisticsText(
-                                text: 'اجابة صحيحة',
-                                numbertext: controller
-                                    .examAttemptStatisticsInofrmation
-                                    .numberCorrectAnswer
-                                    .toString(),
-                                color: const Color(0xff2FD21C),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
+                    CustomCardExamResult(
+                      numberCorrectAnswer: controller
+                          .examAttemptStatisticsInofrmation.numberCorrectAnswer
+                          .toString(),
+                      numberWrongAnswer: controller
+                          .examAttemptStatisticsInofrmation.numberWrongAnswer
+                          .toString(),
+                      totalQuestions: controller
+                          .examAttemptStatisticsInofrmation.totalQuestions
+                          .toString(),
+                    ),
                   ],
                 );
         },

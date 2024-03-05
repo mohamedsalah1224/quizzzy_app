@@ -39,6 +39,8 @@ class VerifyEmailViewModel extends GetxController {
     super.onInit();
 
     _email = Get.arguments; // to get the Phone Number
+
+    reSendCode();
   }
 
   @override
