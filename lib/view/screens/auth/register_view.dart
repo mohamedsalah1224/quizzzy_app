@@ -261,29 +261,29 @@ class RegisterView extends GetView<RegisterViewModel> {
                               },
                             ),
                             15.verticalSpace,
-                            CustomText(
-                              text: "التخصص",
-                              fontFamily: "Segoe",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.sp,
-                              color: Color(0xff077C58),
-                              alignment: AlignmentDirectional.topEnd,
-                            ),
-                            3.verticalSpace,
-                            GetBuilder<RegisterViewModel>(
-                              id: "specialization",
-                              builder: (controller) {
-                                return CustomDropDownFilter(
-                                    onChanged: (value) {
-                                      controller.updateSpecialization(
-                                          value: value!);
-                                    },
-                                    value: controller.specializationValue,
-                                    defaultValue: "التخصص",
-                                    borderColor: const Color(0xff268C6D),
-                                    items: controller.specializationList);
-                              },
-                            ),
+                            // CustomText(
+                            //   text: "التخصص",
+                            //   fontFamily: "Segoe",
+                            //   fontWeight: FontWeight.w600,
+                            //   fontSize: 14.sp,
+                            //   color: Color(0xff077C58),
+                            //   alignment: AlignmentDirectional.topEnd,
+                            // ),
+                            // 3.verticalSpace,
+                            // GetBuilder<RegisterViewModel>(
+                            //   id: "specialization",
+                            //   builder: (controller) {
+                            //     return CustomDropDownFilter(
+                            //         onChanged: (value) {
+                            //           controller.updateSpecialization(
+                            //               value: value!);
+                            //         },
+                            //         value: controller.specializationValue,
+                            //         defaultValue: "التخصص",
+                            //         borderColor: const Color(0xff268C6D),
+                            //         items: controller.specializationList);
+                            //   },
+                            // ),
                             15.verticalSpace,
                             GetBuilder<RegisterViewModel>(
                               id: "visibility",

@@ -4,7 +4,7 @@ import 'package:quizzy_app/model/register_model.dart';
 abstract class ProfileRepository {
   Future<ProfileModel> getProfile();
   Future<ProfileModel> updateProfile(
-      {required RegisterModel registerModel, required bool phoneVerified});
+      {String? name, String? userName, String? password, String? photo});
   Future<ProfileModel> rechargeAccount({required String code});
   deleteProfile();
   forgetPassword();

@@ -38,25 +38,25 @@ class ExamView extends GetView<ManageExamViewModel> {
             onPressed: () => controller.backFromExamViewPage(),
           ),
           actions: [
-            GetBuilder<ManageExamViewModel>(
-              id: "updateTimer",
-              builder: (controller) {
-                TimerModel timerModel = controller.getCurrentTimer();
-                return Container(
-                  margin: REdgeInsets.only(right: 12),
-                  padding: REdgeInsets.symmetric(vertical: 4, horizontal: 6),
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12.r)),
-                  child: CustomText(
-                    text: "${timerModel.minute}:${timerModel.secound}",
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.sp,
-                  ),
-                );
-              },
-            ),
+            // GetBuilder<ManageExamViewModel>(
+            //   id: "updateTimer",
+            //   builder: (controller) {
+            //     TimerModel timerModel = controller.getCurrentTimer();
+            //     return Container(
+            //       margin: REdgeInsets.only(right: 12),
+            //       padding: REdgeInsets.symmetric(vertical: 4, horizontal: 6),
+            //       decoration: BoxDecoration(
+            //           color: Colors.red,
+            //           borderRadius: BorderRadius.circular(12.r)),
+            //       child: CustomText(
+            //         text: "${timerModel.minute}:${timerModel.secound}",
+            //         color: Colors.white,
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 14.sp,
+            //       ),
+            //     );
+            //   },
+            // ),
           ],
         ),
         body: GetBuilder<ManageExamViewModel>(

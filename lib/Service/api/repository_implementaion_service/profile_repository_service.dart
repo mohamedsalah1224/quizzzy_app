@@ -4,7 +4,7 @@ import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/profile_repository.dart';
 import 'package:quizzy_app/model/profile_model.dart';
-import 'package:quizzy_app/model/register_model.dart';
+
 import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
 
@@ -42,28 +42,15 @@ class PofileRepositoryService implements ProfileRepository {
 
   @override
   Future<ProfileModel> updateProfile(
-      {required RegisterModel registerModel,
-      required bool phoneVerified}) async {
+      {String? name, String? userName, String? password, String? photo}) async {
     // Check how to Send a File to Server photo
     try {
       var reponse = await DioHelper().post(EndPoint.updateProfile, data: {
-        'name': registerModel.name,
-        'phone': registerModel.phone,
-        'email': registerModel.email,
-        'password': registerModel.password,
-        // 'photo': registerModel.photo, // check Photo File
-        'academic_year_id': registerModel.academicYearId,
-        'provider_id': registerModel.providerId,
-        'provider_type': registerModel.providerType,
-        'date_of_birth': registerModel.dateOfBirth,
-        'device_token': registerModel.deviceToken,
-        'username': registerModel.username,
-        'governorate': registerModel.governorate,
-        'area': registerModel.area,
-        'residence_area': registerModel.residenceArea,
-        'specialization': registerModel.specialization,
-        'location_area': registerModel.locationArea,
-        'phone_verified': phoneVerified ? 1 : 0
+        if (name != null) 'name': name,
+        if (userName != null) 'username': userName,
+
+        if (password != null) 'password': password,
+        if (photo != null) 'photo': photo, // check Photo File
       });
 
       return ProfileModel.fromJson(reponse);

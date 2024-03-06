@@ -71,4 +71,6 @@ class Assets {
       "assets/images/placeholder_profile.png";
 //logout
   static const String logout = "assets/images/logout.png";
+  static const String camera = "assets/images/camera.png";
+  // camera
 }

@@ -295,7 +295,6 @@ class ManageExamViewModel extends GetxController {
         typeAssessment: typeAssessment,
         questionTypes: questionTypes,
         unitId: unitId);
-    Get.toNamed(Routes.examView);
   }
 
   void createOtherExam(QuizType quizType) {
@@ -320,7 +319,7 @@ class ManageExamViewModel extends GetxController {
       return;
       _specialistExamService();
     }
-    Get.toNamed(Routes.examView);
+    // Get.toNamed(Routes.examView);
   }
 
   void resetController() {
@@ -908,7 +907,19 @@ class ManageExamViewModel extends GetxController {
     ))
         .then((value) {
       _examData = value;
-      startQuizService(examId: _examData!.data!.id!);
+
+      if (_examData!.success!) {
+        Get.toNamed(Routes.examView);
+        startQuizService(examId: _examData!.data!.id!);
+      } else {
+        SnackBarHelper.instance.showMessage(
+            // this mean your balance is equal zero
+            message: _examData!.message!.toString(),
+            milliseconds: 2000,
+            isEnglish: false,
+            showByGetx: true,
+            erro: true);
+      }
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
 
@@ -1478,10 +1489,19 @@ class ManageExamViewModel extends GetxController {
       // SnackBarHelper.instance
       //     .showMessage(message: _examData!.message!.toString());
 
-      print("*" * 50);
-      print(_examData!.data!.id!);
-      print("*" * 50);
-      startQuizService(examId: _examData!.data!.id!);
+      if (_examData!.success!) {
+        Get.toNamed(Routes.examView);
+        startQuizService(examId: _examData!.data!.id!);
+      } else {
+        SnackBarHelper.instance.showMessage(
+            // this mean your balance is equal zero
+            message: _examData!.message!.toString(),
+            milliseconds: 2000,
+            isEnglish: false,
+            showByGetx: true,
+            erro: true);
+      }
+
       // updateTheCurrentExamType(); //update  the Question Type
     }).catchError((e) => SnackBarHelper.instance.showMessage(
             message: e.toString(), milliseconds: 2000, erro: true));
@@ -1513,7 +1533,18 @@ class ManageExamViewModel extends GetxController {
         .then((value) {
       _examData = value;
 
-      startQuizService(examId: _examData!.data!.id!);
+      if (_examData!.success!) {
+        Get.toNamed(Routes.examView);
+        startQuizService(examId: _examData!.data!.id!);
+      } else {
+        SnackBarHelper.instance.showMessage(
+            // this mean your balance is equal zero
+            message: _examData!.message!.toString(),
+            milliseconds: 2000,
+            isEnglish: false,
+            showByGetx: true,
+            erro: true);
+      }
     }).catchError((e, s) {
       debugPrint(s.toString());
       SnackBarHelper.instance
@@ -1534,6 +1565,7 @@ class ManageExamViewModel extends GetxController {
     )
         .then((value) {
       _examData = value;
+      Get.toNamed(Routes.examView);
       startQuizService(examId: _examData!.data!.id!);
 
       print("*" * 50);

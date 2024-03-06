@@ -218,7 +218,6 @@ class RegisterViewModel extends GetxController {
     if (governorateValue == null ||
         stateOfAreaValue == null ||
         areaName == null ||
-        specializationValue == null ||
         academicYearValue == null) {
       isVisibilityErroMessage = true;
       update(['visibility']);

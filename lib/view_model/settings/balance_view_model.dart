@@ -15,15 +15,16 @@ class BalanceViewModel extends GetxController {
   GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController get textEditingController => _textEditingController;
   GlobalKey<FormState> get formKey => _formKey;
+  bool _isLoadBalanceView = false;
 
   int get balance => _user.balance ?? 0;
-
+  bool get isLoadBalanceView => _isLoadBalanceView;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
 
-    _user = Get.arguments;
+    _getProfileService();
   }
 
   ///////////////////////////////// Service ////////////////////////////////////////
@@ -41,9 +42,18 @@ class BalanceViewModel extends GetxController {
         SnackBarHelper.instance.showMessage(
           erro: true,
           isEnglish: false,
-          message: "الكوبون خطأ",
+          message: value.message!,
         );
       }
+    });
+  }
+
+  void _getProfileService() {
+    PofileRepositoryService().getProfile().then((value) async {
+      _user = value.data!;
+      _isLoadBalanceView = true;
+      updateCache(_user);
+      update(['updateLoadBalanceView']);
     });
   }
 

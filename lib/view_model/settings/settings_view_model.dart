@@ -5,6 +5,7 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/facebook_repository_service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/google_repository_Service.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository_implementaion_service/social_repository_manger_service.dart';
+import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/Service/local/cache_subject_service.dart';
@@ -55,12 +56,20 @@ class SettingsViewModel extends GetxController {
   }
 
   Future<void> logout() async {
+    DialogHelper.showLoading(
+      message: "جاري تسجيل الخروج",
+      textDirection: TextDirection.rtl,
+    );
+    await AuthRepositoryService.instance.logout();
+
     Future.wait([
       CacheUserService.instance.deleteUser(),
-      AuthRouteService.instance.logout(),
       AuthTokenService.instance.delete(),
-      CacheSubjectService.instance.deleteSubjects()
-    ]).then((value) => debugPrint("Delete the All Cache"));
+      CacheSubjectService.instance.deleteSubjects(),
+      AuthRouteService.instance.logout(),
+    ])
+        .then((value) => debugPrint("Delete the All Cache"))
+        .catchError((e, s) => debugPrint(s.toString()));
 
     if (_user.providerType != null) {
       SocialRepository socialRepository = _getObjectTypeOfSocaiLogin(
@@ -74,7 +83,7 @@ class SettingsViewModel extends GetxController {
       debugPrint("Log Out form ${_user.providerType!}");
       debugPrint("-" * 50);
     }
-
+    DialogHelper.hideLoading();
     Get.offAllNamed(Routes.loginView);
   }
 
@@ -84,11 +93,12 @@ class SettingsViewModel extends GetxController {
   }
 
   void notificationViewPageRoute() {
+    print(CacheUserService.instance.getUser().academicYearId);
     Get.toNamed(Routes.notificationView);
   }
 
   void balanceViewRoute() {
-    Get.toNamed(Routes.balanceView, arguments: _user);
+    Get.toNamed(Routes.balanceView);
   }
 
   void updateAccountViewRoute() {

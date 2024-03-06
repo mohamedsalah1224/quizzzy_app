@@ -53,14 +53,13 @@ class HomeView extends GetView<HomeViewModel> {
               print("Ok");
               print("Ok");
               // Remove tHE rOUTE PROCESS
-              await AuthRouteService.instance.logout();
+
               // remove Acees Toeken
               print(CacheUserService.instance.getUser()!.email);
               print(CacheUserService.instance.getUser()!.phone);
               print(CacheUserService.instance.getUser()!.username);
               print(CacheUserService.instance.getUser()!.id);
-              await CacheUserService.instance.deleteUser();
-              await AuthTokenService.instance.delete();
+
               // await CacheSubjectService.instance.deleteSubjects();
 
               // await SocialRepositoryMangerService()

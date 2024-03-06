@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/attempt_answers_repository_service.dart';
@@ -11,6 +12,7 @@ import 'package:quizzy_app/utils/pdf_helper/pdf_converter_to_image.dart';
 import 'package:quizzy_app/utils/pdf_helper/pdf_generator.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_text.dart';
 import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
@@ -147,7 +149,8 @@ class ExamStatisticsViewModel extends GetxController {
     // }
     // // PdfGenerator.createPdf();
 
-    PdfGenerator.createPdf();
+    PdfGenerator.createPdf(
+        examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
     print("Create to Pdf");
   }
 

@@ -81,8 +81,14 @@ class CustomSubject extends StatelessWidget {
                       fadeInDuration: const Duration(seconds: 1),
                       placeholder: (context, url) =>
                           const CustomCircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                      errorWidget: (context, url, error) => const Column(
+                        children: [
+                          Icon(Icons.error),
+                          CustomText(
+                            text: 'No Image',
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

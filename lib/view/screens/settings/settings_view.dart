@@ -46,7 +46,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                   20.verticalSpace,
                   CustomListTile(
                     onTap: () {
-                      print("Welcome");
+                      controller.updateAccountViewRoute();
                     },
                     text: 'تعديل الحساب',
                   ),
@@ -114,6 +114,12 @@ class SettingsView extends GetView<SettingsViewModel> {
                     },
                     text: 'الشروط',
                   ),
+                  // CustomListTile(
+                  //   onTap: () {
+                  //     print("Welcome");
+                  //   },
+                  //   text: 'سياسة الخصوصية',
+                  // ),
                   CustomListTile(
                       onTap: () async {
                         print("OK");
