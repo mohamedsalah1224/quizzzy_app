@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/view/custom_component/custom_button.dart';
+import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
+import 'package:quizzy_app/view/custom_component/settings/custom_update_profile_picture.dart';
 import 'package:quizzy_app/view_model/settings/update_account_view_model.dart';
 
 class UpdateAccountView extends GetView<UpdateAccountViewModel> {
@@ -26,34 +31,78 @@ class UpdateAccountView extends GetView<UpdateAccountViewModel> {
       ),
       body: SingleChildScrollView(
         padding: REdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Container(
-              width: 40.w,
-              height: 40.w,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: const BoxDecoration(
-                color: Colors.amber,
-                shape: BoxShape.circle,
-                // border: Border.all(
-                //     width: 2.r, color: Color(0xff4490BA)),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            children: [
+              30.verticalSpace,
+              // cutom
+
+              CustomUpdateProfilePicture(
+                imageUrl: controller.imageUrl,
               ),
-              child: imageUrl == null
-                  ? Image.asset(
-                      Assets.placeholderProfile,
-                      fit: BoxFit.cover,
-                    )
-                  : CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: imageUrl!,
-                      fadeInDuration: const Duration(seconds: 1),
-                      placeholder: (context, url) =>
-                          const CustomCircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-            ),
-          ],
+              50.verticalSpace,
+              CustomText(
+                text: "الاسم رباعي",
+                fontFamily: "Cairo",
+                fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: const Color(0xff4996BF),
+                alignment: AlignmentDirectional.topEnd,
+              ),
+              15.verticalSpace,
+              SizedBox(
+                width: double.infinity.w,
+                height: 45.h,
+                child: CustomTextFormField(
+                  icon: null,
+                  height: 45.h,
+                  textAlignVertical: TextAlignVertical.top,
+                  colorInitally: const Color(0xff4996BF),
+                  colorFocus: const Color(0xff4996BF),
+                  validator: (value) => controller.validateName(value: value),
+                  controller: controller.nameController,
+                ),
+              ),
+              30.verticalSpace,
+              CustomText(
+                text: "اسم المستخدم (الاسم المستعار)",
+                fontFamily: "Cairo",
+                fontWeight: FontWeight.w500,
+                fontSize: 14.sp,
+                color: const Color(0xff4996BF),
+                alignment: AlignmentDirectional.topEnd,
+              ),
+              15.verticalSpace,
+              SizedBox(
+                width: double.infinity.w,
+                height: 45.h,
+                child: CustomTextFormField(
+                  icon: null,
+                  height: 45.h,
+                  textDirection: TextDirection.ltr,
+                  textAlignVertical: TextAlignVertical.top,
+                  colorInitally: const Color(0xff4996BF),
+                  colorFocus: const Color(0xff4996BF),
+                  validator: (value) =>
+                      controller.validateUserName(value: value),
+                  controller: controller.userNameController,
+                ),
+              ),
+              80.verticalSpace,
+              SizedBox(
+                width: ScreenUtil().screenWidth * 0.70,
+                child: CustomButton(
+                    text: 'حفظ التغيير',
+                    fontFamily: 'inter',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500,
+                    onTap: () {
+                      controller.changeAccountInformation();
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );

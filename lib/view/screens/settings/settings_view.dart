@@ -52,7 +52,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                   ),
                   CustomListTile(
                     onTap: () {
-                      print("Welcome");
+                      controller.updateChangePasswordViewRoute();
                     },
                     text: 'تغيير كلمة السر',
                   ),

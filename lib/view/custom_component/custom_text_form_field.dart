@@ -15,6 +15,8 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? initialValue;
   final Color? iconColor;
+  final Color colorFocus;
+  final Color? colorInitally;
   final bool readOnly;
   final void Function()? onTap;
   final double? height;
@@ -25,6 +27,8 @@ class CustomTextFormField extends StatelessWidget {
       required this.icon,
       this.eyes,
       this.onTap,
+      this.colorFocus = const Color(0xff077C58),
+      this.colorInitally = Colors.grey,
       this.initialValue,
       this.validator,
       this.height,
@@ -84,7 +88,7 @@ class CustomTextFormField extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12).r,
                       borderSide: BorderSide(
-                        color: const Color(0xff077C58),
+                        color: colorFocus,
                         width: 2.r,
                       )),
                   errorBorder: OutlineInputBorder(
@@ -104,7 +108,7 @@ class CustomTextFormField extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12).r,
                       borderSide: BorderSide(
-                        color: Colors.grey,
+                        color: colorInitally!,
                         // color: Color(0xff077C58),
                         width: 1.r,
                       )),
@@ -126,7 +130,7 @@ class CustomTextFormField extends StatelessWidget {
         splashFactory: NoSplash.splashFactory,
         child: Icon(
           !show ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-          color: Color(0xff077C58),
+          color: colorFocus,
         ),
         onTap: onTap,
       );
