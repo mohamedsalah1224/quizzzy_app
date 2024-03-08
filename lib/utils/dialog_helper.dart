@@ -8,7 +8,8 @@ class DialogHelper {
   DialogHelper._();
   static void showLoading(
       {String? message = 'Loading...',
-      TextDirection? textDirection = TextDirection.ltr}) {
+      TextDirection? textDirection = TextDirection.ltr,
+      Widget? widget}) {
     Get.dialog(
         Dialog(
           child: Padding(
@@ -16,7 +17,7 @@ class DialogHelper {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CustomCircularProgressIndicator(),
+                widget ?? const CustomCircularProgressIndicator(),
                 8.verticalSpace,
                 CustomText(
                   text: message!,

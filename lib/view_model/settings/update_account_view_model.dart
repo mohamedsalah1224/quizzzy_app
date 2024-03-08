@@ -1,21 +1,33 @@
 // update_account_view
 // UpdateAccountViewModel
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/profile_repository_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
+import 'package:quizzy_app/Service/package/image_picker_service.dart';
 import 'package:quizzy_app/model/user_model.dart';
+import 'package:quizzy_app/utils/app_images.dart';
+import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/form_validator.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view/custom_component/settings/custom_source_photo_in_bottom_sheet.dart';
+import 'package:quizzy_app/view_model/settings/settings_view_model.dart';
 
 class UpdateAccountViewModel extends GetxController {
   late User _user;
+
+  String? _filePath;
 
   late TextEditingController _nameController;
   late TextEditingController _userNameController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? get imageUrl => _user.photo;
+  String? get filePath => _filePath;
   TextEditingController get nameController => _nameController;
   TextEditingController get userNameController => _userNameController;
   GlobalKey<FormState> get formKey => _formKey;
@@ -39,8 +51,59 @@ class UpdateAccountViewModel extends GetxController {
 
   void changeAccountInformation() {
     if (formKey.currentState!.validate()) {
-      print("Call Service");
+      _updateProfileService();
     }
+  }
+
+  void _onTapSelectImage({required bool isCamera}) async {
+    debugPrint('pick Image');
+    XFile? pickFile;
+
+    pickFile = await _pickImageService(isCamera: isCamera);
+
+    if (pickFile != null) {
+      // s mean it select file
+      _filePath = pickFile.path;
+      update(['updateProfileImage']);
+      Get.back(); // to pop from Bottom Sheet
+    } else {
+      // 'You have not yet picked an image.'
+    }
+  }
+
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            height: 200.h,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomSourcePhotoInBottomSheet(
+                        assetIamge: Assets.cameraSource,
+                        onTap: () {
+                          _onTapSelectImage(isCamera: true);
+                        },
+                        text: "الكاميرا",
+                        color: const Color.fromRGBO(159, 216, 0, 0.52)),
+                    CustomSourcePhotoInBottomSheet(
+                        onTap: () {
+                          _onTapSelectImage(isCamera: false);
+                        },
+                        assetIamge: Assets.gallerySource,
+                        text: "المعرض",
+                        color: const Color.fromRGBO(221, 144, 240, 0.7))
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
   ///////////////////////////////////////////////// Service /////////////////////////////////////////////////
 
@@ -50,31 +113,55 @@ class UpdateAccountViewModel extends GetxController {
 
   Future<void> updateUserCache({required User userValue}) async {
     _user = userValue;
-    await CacheUserService.instance
-        .updateUser(user: userValue); // to cache the User Object
+    await Get.find<SettingsViewModel>().updateUserCache(userValue: userValue);
   }
 
-  void updateProfileService() {
+  void _updateProfileService() {
+    DialogHelper.showLoading(
+        message: 'جاري حفظ التغييرات', textDirection: TextDirection.rtl);
     PofileRepositoryService()
         .updateProfile(
-      name: nameController.text,
-      userName: userNameController.text,
-    )
+            name: nameController.text.trim(),
+            userName: userNameController.text.trim(),
+            onSendProgress: (count, total) {
+              debugPrint("$count  , $total");
+            },
+            pathPhoto: _filePath)
         .then((value) {
+      DialogHelper.hideLoading();
       if (value.success!) {
-        SnackBarHelper.instance
-            .showMessage(message: 'تم تغيير كلمة السر بنجاح ');
+        updateUserCache(userValue: value.data!); // to update the Cache
+        SnackBarHelper.instance.showMessage(
+          message: ' تم حفظ التغييرات بنجاح ',
+          isEnglish: false,
+        );
+
         Get.back();
       } else {
         SnackBarHelper.instance.showMessage(
-          message: 'فشل في تغيير كلمة السر ',
+          message: ' فشل في  حفظ التغييرات ',
           isEnglish: false,
         );
       }
-    }).catchError((e) => SnackBarHelper.instance.showMessage(
-            message: e.toString(),
-            erro: true,
-            showByGetx: true,
-            isEnglish: false));
+    }).catchError((e) {
+      DialogHelper.hideLoading();
+      SnackBarHelper.instance.showMessage(
+        message: e.toString(),
+        erro: true,
+        showByGetx: true,
+      );
+    });
+  }
+
+  Future<XFile?> _pickImageService({required bool isCamera}) async {
+    try {
+      if (isCamera) {
+        return await ImagePickerService().pickFromCamera();
+      } else {
+        return await ImagePickerService().pickFromgGallery();
+      }
+    } catch (e) {
+      debugPrint("User Close Premisson ${e.toString()}");
+    }
   }
 }

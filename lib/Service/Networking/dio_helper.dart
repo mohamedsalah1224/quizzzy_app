@@ -31,12 +31,13 @@ class DioHelper {
 
     if (!kReleaseMode) {
       dio.interceptors.add(LogInterceptor(
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-          error: true,
-          responseBody: true,
-          request: true));
+        //  requestHeader: true,
+        //   requestBody: true,
+        // responseHeader: true,
+        error: true,
+        //  responseBody: true,
+        //  request: true
+      ));
     }
     return dio;
   }

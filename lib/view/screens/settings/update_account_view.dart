@@ -38,8 +38,17 @@ class UpdateAccountView extends GetView<UpdateAccountViewModel> {
               30.verticalSpace,
               // cutom
 
-              CustomUpdateProfilePicture(
-                imageUrl: controller.imageUrl,
+              GetBuilder<UpdateAccountViewModel>(
+                id: 'updateProfileImage',
+                builder: (controller) {
+                  return CustomUpdateProfilePicture(
+                    imageUrl: controller.imageUrl,
+                    filePath: controller.filePath,
+                    onTap: () {
+                      controller.showBottomSheet(context);
+                    },
+                  );
+                },
               ),
               50.verticalSpace,
               CustomText(

@@ -1,11 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerService {
   Future<XFile?> pickFromCamera() async {
-    return await ImagePicker().pickImage(source: ImageSource.gallery);
+    try {
+      return await ImagePicker().pickImage(source: ImageSource.camera);
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   Future<XFile?> pickFromgGallery() async {
-    return await ImagePicker().pickImage(source: ImageSource.gallery);
+    try {
+      return await ImagePicker().pickImage(source: ImageSource.gallery);
+    } catch (e, s) {
+      debugPrint(s.toString());
+      throw s.toString();
+    }
   }
 }

@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:quizzy_app/Service/Networking/dio_exception.dart';
 import 'package:quizzy_app/Service/Networking/dio_helper.dart';
 import 'package:quizzy_app/Service/api/repository/profile_repository.dart';
 import 'package:quizzy_app/model/profile_model.dart';
+import 'dart:convert';
 
 import 'package:quizzy_app/model/validation_erro_model.dart';
 import 'package:quizzy_app/utils/end_point.dart';
@@ -42,16 +44,29 @@ class PofileRepositoryService implements ProfileRepository {
 
   @override
   Future<ProfileModel> updateProfile(
-      {String? name, String? userName, String? password, String? photo}) async {
+      {String? name,
+      String? userName,
+      String? password,
+      void Function(int, int)? onSendProgress,
+      String? pathPhoto}) async {
     // Check how to Send a File to Server photo
-    try {
-      var reponse = await DioHelper().post(EndPoint.updateProfile, data: {
-        if (name != null) 'name': name,
-        if (userName != null) 'username': userName,
 
-        if (password != null) 'password': password,
-        if (photo != null) 'photo': photo, // check Photo File
-      });
+    FormData formData = FormData.fromMap({
+      if (name != null) 'name': name,
+      if (userName != null) 'username': userName,
+      if (password != null) 'password': password,
+      if (pathPhoto != null)
+        'photo': (await MultipartFile.fromFile(
+          // install http parser ti use MediaType MediaType(imageName , extension) , ('mohame' ,'png')
+          pathPhoto,
+          filename: pathPhoto.split('/').last,
+          contentType: MediaType(pathPhoto.split('/').last.split('.')[0],
+              pathPhoto.split('.').last),
+        )),
+    });
+    try {
+      var reponse = await DioHelper().post(EndPoint.updateProfile,
+          data: formData, onSendProgress: onSendProgress);
 
       return ProfileModel.fromJson(reponse);
     } on DioException catch (e, s) {

@@ -72,5 +72,7 @@ class Assets {
 //logout
   static const String logout = "assets/images/logout.png";
   static const String camera = "assets/images/camera.png";
+  static const String cameraSource = "assets/images/image_camera.png";
+  static const String gallerySource = "assets/images/image_gallery.png";
   // camera
 }

@@ -53,6 +53,7 @@ class SettingsViewModel extends GetxController {
     _user = userValue;
     await CacheUserService.instance
         .updateUser(user: userValue); // to cache the User Object
+    update(['updateTopSectionOfSettingView']); // to update new Information
   }
 
   Future<void> logout() async {

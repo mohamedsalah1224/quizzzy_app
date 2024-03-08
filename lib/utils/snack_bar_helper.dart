@@ -33,6 +33,7 @@ class SnackBarHelper {
           .showSnackBar(SnackBar(
         elevation: 0.0,
         backgroundColor: erro ? Colors.deepOrange : Colors.deepPurple,
+
         //behavior: SnackBarBehavior.floating,
 
         content: Text(

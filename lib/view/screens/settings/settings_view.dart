@@ -20,10 +20,15 @@ class SettingsView extends GetView<SettingsViewModel> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomTopSectionOfSettingsView(
-              emailOrPhoneValue: controller.emailOrPhone,
-              name: controller.name,
-              imageUrl: controller.photo,
+            GetBuilder<SettingsViewModel>(
+              id: "updateTopSectionOfSettingView",
+              builder: (controller) {
+                return CustomTopSectionOfSettingsView(
+                  emailOrPhoneValue: controller.emailOrPhone,
+                  name: controller.name,
+                  imageUrl: controller.photo,
+                );
+              },
             ),
             25.verticalSpace,
             RPadding(
