@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/profile_repository_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/Service/package/image_picker_service.dart';
+import 'package:quizzy_app/Service/premession/permission_service.dart';
 import 'package:quizzy_app/model/user_model.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/constant.dart';
@@ -48,6 +49,22 @@ class UpdateAccountViewModel extends GetxController {
   String? validateUserName({String? value}) {
     return FormValidator.instance.anyTextFormValidator(value, "User Name");
   }
+///////////////////////////////////////////////Helper///////////////////////////////////////////////////
+  ///
+
+  Future<bool> _checkPremissionForPhotoAndCamera() async {
+    PermissionService permissionService = PermissionService();
+    bool result = false;
+    await Future.wait(
+            [permissionService.checkCamera(), permissionService.checkGallary()])
+        .then((value) {
+      if (value[0] && value[1]) {
+        result = true;
+      }
+    });
+
+    return result;
+  }
 
   void changeAccountInformation() {
     if (formKey.currentState!.validate()) {
@@ -58,7 +75,7 @@ class UpdateAccountViewModel extends GetxController {
   void _onTapSelectImage({required bool isCamera}) async {
     debugPrint('pick Image');
     XFile? pickFile;
-
+    await _checkPremissionForPhotoAndCamera();
     pickFile = await _pickImageService(isCamera: isCamera);
 
     if (pickFile != null) {
