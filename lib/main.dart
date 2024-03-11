@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
+import 'package:quizzy_app/Service/local/cache_notification_service.dart';
 import 'package:quizzy_app/Service/local/cache_subject_service.dart';
+import 'package:quizzy_app/Service/local/cache_theme_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
@@ -60,7 +62,8 @@ void main() async {
   await AuthRouteService.instance.init();
   await CacheUserService.instance.init();
   await CacheSubjectService.instance.init();
-
+  await CacheNotificationService.instance.init();
+  await CacheThemeService.instance.init();
   runApp(const MyApp());
 }
 

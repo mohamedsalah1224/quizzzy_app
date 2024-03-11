@@ -76,7 +76,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                         },
                         text: 'الاشعارات',
                         imageWidget: Switch(
-                          value: controller.isActiveNotification,
+                          value: controller.isNotificationEnabled,
                           onChanged: (value) {
                             controller.updateNotification();
                           },

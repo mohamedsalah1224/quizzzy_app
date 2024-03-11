@@ -10,7 +10,9 @@ import 'package:quizzy_app/Service/Firebase/social_service/repository_implementa
 import 'package:quizzy_app/Service/api/repository_implementaion_service/auth_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
+import 'package:quizzy_app/Service/local/cache_notification_service.dart';
 import 'package:quizzy_app/Service/local/cache_subject_service.dart';
+import 'package:quizzy_app/Service/local/cache_theme_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
 import 'package:quizzy_app/model/user_model.dart';
@@ -21,13 +23,15 @@ import 'package:quizzy_app/utils/routes.dart';
 
 class SettingsViewModel extends GetxController {
   late User _user;
-  bool _isDarkMode = false;
-  bool _isActiveNotification = true;
+  late bool _isDarkMode;
+  bool _isNotificationEnabled = true;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getUserFromCahce();
+    getCurrentNotificationFromCache();
+    getCurrentTheme();
     print("Init Seetings View Model");
   }
 
@@ -36,25 +40,27 @@ class SettingsViewModel extends GetxController {
   String get emailOrPhone => _user.phone?.trim() ?? _user.email?.trim() ?? "";
   String? get photo => _user.photo;
   bool get isDarkMode => _isDarkMode;
-  bool get isActiveNotification => _isActiveNotification;
+  bool get isNotificationEnabled => _isNotificationEnabled;
 
 ////////////////////////////////////////////// update Widget /////////////////////////////////////////
 
   void updateNotification() async {
-    _isActiveNotification = !_isActiveNotification;
+    _isNotificationEnabled = !_isNotificationEnabled;
     PushNotificationService notificationService = PushNotificationService();
     update(['updateNotification']);
-    if (!_isActiveNotification) {
+    if (!_isNotificationEnabled) {
       notificationService.disableNotification();
     } else {
       notificationService.activeNotification();
     }
+
+    await updateNotificationCache(_isNotificationEnabled);
   }
 
-  void updatDarkMode() {
+  void updatDarkMode() async {
     _isDarkMode = !_isDarkMode;
     update(['updatDarkMode']);
-    print(_isDarkMode);
+    await updateCurrentThemeCache(_isDarkMode);
   }
 
 /////////////////////////////////////////////// Helper Method //////////////////////////////////////////
@@ -75,6 +81,24 @@ class SettingsViewModel extends GetxController {
     // to cache the User Object
   }
 
+  void getCurrentNotificationFromCache() {
+    _isNotificationEnabled =
+        CacheNotificationService.instance.isNotificationEnabled();
+  }
+
+  Future<void> updateNotificationCache(bool value) async {
+    await CacheNotificationService.instance
+        .updateValueOfNotification(value: value);
+  }
+
+  void getCurrentTheme() {
+    _isDarkMode = CacheThemeService.instance.isDarkTheme();
+  }
+
+  Future<void> updateCurrentThemeCache(bool value) async {
+    await CacheThemeService.instance.updateTheme(value: value);
+  }
+
   Future<void> updateUserCache({required User userValue}) async {
     _user = userValue;
     await CacheUserService.instance
@@ -91,6 +115,8 @@ class SettingsViewModel extends GetxController {
 
     Future.wait([
       CacheUserService.instance.deleteUser(),
+      CacheNotificationService.instance.delete(),
+      CacheThemeService.instance.deleteTheme(),
       AuthTokenService.instance.delete(),
       CacheSubjectService.instance.deleteSubjects(),
       AuthRouteService.instance.logout(),

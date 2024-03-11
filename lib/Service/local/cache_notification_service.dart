@@ -15,7 +15,7 @@ class CacheNotificationService {
     myBox = Hive.box<bool>(_boxName);
   }
 
-  bool readDefaultValueOfNotification() {
+  bool isNotificationEnabled() {
     bool result = myBox.get(_key, defaultValue: true)!;
 
     return result;

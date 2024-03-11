@@ -123,7 +123,7 @@ class LoginViewModel extends GetxController {
           // to verify Email
         } else {
           await AuthRouteService.instance.logIn();
-          await PushNotificationService().updateDeviceToken();
+          PushNotificationService().activeNotification();
           Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
         }
       } else {
@@ -135,8 +135,7 @@ class LoginViewModel extends GetxController {
           // to verify Email
         } else {
           await AuthRouteService.instance.logIn();
-          await PushNotificationService()
-              .updateDeviceToken(); // update Device Token
+          PushNotificationService().activeNotification(); // update Device Token
           Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
         }
       }
@@ -219,8 +218,7 @@ class LoginViewModel extends GetxController {
               arguments: autModel.data!.user!.phone);
         } else {
           await AuthRouteService.instance.logIn();
-          await PushNotificationService()
-              .updateDeviceToken(); // update Device Token
+          PushNotificationService().activeNotification(); // update Device Token
           Get.offAllNamed(Routes.bottomNavgation);
         }
       } else {
