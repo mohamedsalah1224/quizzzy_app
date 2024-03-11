@@ -6,6 +6,7 @@ import 'package:quizzy_app/Service/api/repository/profile_repository.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/profile_repository_service.dart';
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
+import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
 import 'package:quizzy_app/utils/routes.dart';
 
 class SplashViewModel extends GetxController {
@@ -25,6 +26,7 @@ class SplashViewModel extends GetxController {
       } else {
         Get.offAllNamed(Routes.loginView);
       }
+      await PushNotificationService().initPushNotification();
     });
   }
 

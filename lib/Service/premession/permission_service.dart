@@ -5,6 +5,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 
 class PermissionService {
+  static PermissionService? _instance;
+
+  PermissionService._();
+  static PermissionService get instance => _instance ??= PermissionService._();
+
   Future<bool> requestPermissions(Permission permission) async {
     PermissionStatus permissionStatus = await permission.status;
 
@@ -22,6 +27,7 @@ class PermissionService {
         _showMessage(
             message:
                 "يجب عليك إعطاء الصلاحية بالموافقة لكي يعمل التطبيق بدون اخطاء");
+
         await openAppSettings();
         permissionStatus = await permission.status;
         if (permissionStatus.isGranted) {

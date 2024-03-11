@@ -52,7 +52,8 @@ class UpdateChangePasswordViewModel extends GetxController {
     DialogHelper.showLoading(
         message: 'جاري تغيير كلمة السر ', textDirection: TextDirection.rtl);
     PofileRepositoryService()
-        .updateProfile(password: _passwordController.text, name: _user.name)
+        .updateProfile(
+            password: _passwordController.text, name: _user.name ?? "")
         .then((value) {
       DialogHelper.hideLoading();
       if (value.success!) {

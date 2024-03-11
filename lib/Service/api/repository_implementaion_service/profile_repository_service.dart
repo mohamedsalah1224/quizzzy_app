@@ -44,15 +44,17 @@ class PofileRepositoryService implements ProfileRepository {
 
   @override
   Future<ProfileModel> updateProfile(
-      {String? name,
+      {required String name,
       String? userName,
       String? password,
+      String? deviceToken,
       void Function(int, int)? onSendProgress,
       String? pathPhoto}) async {
     // Check how to Send a File to Server photo
 
     FormData formData = FormData.fromMap({
-      if (name != null) 'name': name,
+      'name': name,
+      if (deviceToken != null) 'device_token': deviceToken,
       if (userName != null) 'username': userName,
       if (password != null) 'password': password,
       if (pathPhoto != null)

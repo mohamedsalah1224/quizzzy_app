@@ -10,6 +10,7 @@ import 'package:quizzy_app/Service/api/repository_implementaion_service/phone_re
 import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
+import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
 import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/genral_response_mode.dart';
 import 'package:quizzy_app/model/login_model.dart';
@@ -123,6 +124,7 @@ class LoginViewModel extends GetxController {
           // to verify Email
         } else {
           await AuthRouteService.instance.logIn();
+          await PushNotificationService().updateDeviceToken();
           Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
         }
       } else {
@@ -134,6 +136,8 @@ class LoginViewModel extends GetxController {
           // to verify Email
         } else {
           await AuthRouteService.instance.logIn();
+          await PushNotificationService()
+              .updateDeviceToken(); // update Device Token
           Get.offAllNamed(Routes.bottomNavgation); // go to the home Page
         }
       }
@@ -216,7 +220,8 @@ class LoginViewModel extends GetxController {
               arguments: autModel.data!.user!.phone);
         } else {
           await AuthRouteService.instance.logIn();
-
+          await PushNotificationService()
+              .updateDeviceToken(); // update Device Token
           Get.offAllNamed(Routes.bottomNavgation);
         }
       } else {

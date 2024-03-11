@@ -67,29 +67,39 @@ class SettingsView extends GetView<SettingsViewModel> {
                     },
                     text: 'رصيدي',
                   ),
-                  CustomListTile(
-                    onTap: () {
-                      print("Welcome");
+                  GetBuilder<SettingsViewModel>(
+                    id: "updateNotification",
+                    builder: (controller) {
+                      return CustomListTile(
+                        onTap: () {
+                          controller.updateNotification();
+                        },
+                        text: 'الاشعارات',
+                        imageWidget: Switch(
+                          value: controller.isActiveNotification,
+                          onChanged: (value) {
+                            controller.updateNotification();
+                          },
+                        ),
+                      );
                     },
-                    text: 'الاشعارات',
-                    imageWidget: Switch(
-                      value: true,
-                      onChanged: (value) {
-                        print(value);
-                      },
-                    ),
                   ),
-                  CustomListTile(
-                    onTap: () {
-                      print("Welcome");
+                  GetBuilder<SettingsViewModel>(
+                    id: "updatDarkMode",
+                    builder: (controller) {
+                      return CustomListTile(
+                        onTap: () {
+                          controller.updatDarkMode();
+                        },
+                        text: 'الوضع الليلي',
+                        imageWidget: Switch(
+                          value: controller.isDarkMode,
+                          onChanged: (value) {
+                            controller.updatDarkMode();
+                          },
+                        ),
+                      );
                     },
-                    text: 'الوضع الليلي',
-                    imageWidget: Switch(
-                      value: true,
-                      onChanged: (value) {
-                        print(value);
-                      },
-                    ),
                   ),
                 ], // تغيير كلمة السر
               ),

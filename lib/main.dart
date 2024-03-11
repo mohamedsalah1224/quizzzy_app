@@ -47,8 +47,6 @@ void main() async {
               projectId: "quizzyapp-58b44"))
       : await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await PushNotificationService().initPushNotification();
-  await PushNotificationService().subscribeToTopic(topicName: "general");
 
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();

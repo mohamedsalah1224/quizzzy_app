@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/Service/Firebase/social_service/repository/social_repository.dart';
@@ -10,6 +12,7 @@ import 'package:quizzy_app/Service/local/auth_route_service.dart';
 import 'package:quizzy_app/Service/local/auth_token_service.dart';
 import 'package:quizzy_app/Service/local/cache_subject_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
+import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
 import 'package:quizzy_app/model/user_model.dart';
 import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
@@ -18,6 +21,8 @@ import 'package:quizzy_app/utils/routes.dart';
 
 class SettingsViewModel extends GetxController {
   late User _user;
+  bool _isDarkMode = false;
+  bool _isActiveNotification = true;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -30,6 +35,27 @@ class SettingsViewModel extends GetxController {
   String get name => _user.name?.trim() ?? "";
   String get emailOrPhone => _user.phone?.trim() ?? _user.email?.trim() ?? "";
   String? get photo => _user.photo;
+  bool get isDarkMode => _isDarkMode;
+  bool get isActiveNotification => _isActiveNotification;
+
+////////////////////////////////////////////// update Widget /////////////////////////////////////////
+
+  void updateNotification() async {
+    _isActiveNotification = !_isActiveNotification;
+    PushNotificationService notificationService = PushNotificationService();
+    update(['updateNotification']);
+    if (!_isActiveNotification) {
+      notificationService.disableNotification();
+    } else {
+      notificationService.activeNotification();
+    }
+  }
+
+  void updatDarkMode() {
+    _isDarkMode = !_isDarkMode;
+    update(['updatDarkMode']);
+    print(_isDarkMode);
+  }
 
 /////////////////////////////////////////////// Helper Method //////////////////////////////////////////
   SocialRepository _getObjectTypeOfSocaiLogin(
