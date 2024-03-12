@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/model/top_student_dataModel.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomTopStudentPoints extends StatelessWidget {
   final TopStudentDataModel topStudentDataModel;
@@ -56,7 +58,17 @@ class CustomTopStudentPoints extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           padding: REdgeInsets.symmetric(horizontal: 4, vertical: 2),
           decoration: BoxDecoration(
-              color: const Color(0xffFBECFF),
+              // color: const Color(0xffFBECFF),
+              color: Get.find<ThemeViewMode>().isDarkMode()
+                  ? Colors.black26
+                  : const Color(0xffFBECFF),
+              /*
+ Get.find<ThemeViewMode>().isDarkMode
+                                            ? GeneralUtils.instance
+                                                .convertColorToDark(
+                                                    const Color(0xff9ADFEF))
+                                            : const Color(0xff9ADFEF),
+              */
               borderRadius: BorderRadius.circular(12).r),
           child: CustomText(
             text: "${topStudentDataModel.totalEarnedMarks ?? "0"} pt",

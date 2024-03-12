@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
 import 'package:quizzy_app/view_model/auth/login_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../../custom_component/custom_button.dart';
 import '../../custom_component/custom_text.dart';
@@ -106,7 +108,9 @@ class LoginView extends GetView<LoginViewModel> {
                     fontFamily: "Segoe",
                     fontWeight: FontWeight.w700,
                     fontSize: 12.sp,
-                    color: Color(0xff414141),
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? Colors.white38
+                        : const Color(0xff414141),
                     alignment: AlignmentDirectional.topEnd,
                   ),
                 ),
@@ -212,7 +216,9 @@ class LoginView extends GetView<LoginViewModel> {
                       fontFamily: "Segoe",
                       fontWeight: FontWeight.w600,
                       fontSize: 10.sp,
-                      color: Color(0xff000000),
+                      color: Get.find<ThemeViewMode>().isDarkMode()
+                          ? Colors.white38
+                          : const Color(0xff000000),
                       alignment: AlignmentDirectional.topEnd,
                     ),
                   ],

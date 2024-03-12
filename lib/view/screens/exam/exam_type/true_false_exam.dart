@@ -24,7 +24,6 @@ class TrueFalseExam extends StatelessWidget {
                   controller.listAnswersModel.length,
                   (index) => CustomTrueFalseChoice(
                     index: index,
-                    color: const Color(0xff9FD800),
                     answerModel: controller.listAnswersModel[index],
                   ),
                 ));

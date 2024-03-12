@@ -22,7 +22,6 @@ class MultipleChoiceExam extends StatelessWidget {
             children: List.generate(
                 controller.listAnswersModel.length,
                 (index) => CustomMultipleChoiceContainer(
-                      color: const Color(0xff9FD800),
                       answerModel: controller.listAnswersModel[index],
                       isActive: controller.isActive(index),
 

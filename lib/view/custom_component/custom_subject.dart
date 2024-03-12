@@ -75,7 +75,7 @@ class CustomSubject extends StatelessWidget {
                   ),
                   Expanded(
                     child: CachedNetworkImage(
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fill,
                       width: double.infinity,
                       imageUrl: subjectModel.photo!,
                       fadeInDuration: const Duration(seconds: 1),

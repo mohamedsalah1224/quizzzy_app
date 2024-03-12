@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:quizzy_app/model/exam_attempts_model.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomExamAttempts extends StatelessWidget {
   final ExamAttemptsDataModel? examAttemptsDataModel;
@@ -31,7 +34,10 @@ class CustomExamAttempts extends StatelessWidget {
           padding: REdgeInsets.symmetric(horizontal: 8).r,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12).r,
-              color: const Color(0xff268C6D)),
+              color: Get.find<ThemeViewMode>().isDarkMode()
+                  ? GeneralUtils.instance
+                      .convertColorToDark(const Color(0xff268C6D))
+                  : const Color(0xff268C6D)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +55,9 @@ class CustomExamAttempts extends StatelessWidget {
                     fontFamily: "Cairo",
                     fontWeight: FontWeight.w700,
                     fontSize: 18.sp,
-                    color: Colors.white,
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? GeneralUtils.instance.convertColorToDark(Colors.white)
+                        : Colors.white,
                   ),
                   5.verticalSpace,
                   Row(
@@ -61,9 +69,11 @@ class CustomExamAttempts extends StatelessWidget {
                               width: 30.w,
                               height: 30.h,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6).r,
-                                color: Colors.white,
-                              ),
+                                  borderRadius: BorderRadius.circular(6).r,
+                                  color: Get.find<ThemeViewMode>().isDarkMode()
+                                      ? GeneralUtils.instance
+                                          .convertColorToDark(Colors.white)
+                                      : Colors.white),
                               child: IconButton(
                                 icon: Icon(
                                   Icons.arrow_back,
@@ -86,7 +96,10 @@ class CustomExamAttempts extends StatelessWidget {
                         fontFamily: "Cairo",
                         fontWeight: FontWeight.w700,
                         fontSize: 18.sp,
-                        color: Colors.white,
+                        color: Get.find<ThemeViewMode>().isDarkMode()
+                            ? GeneralUtils.instance
+                                .convertColorToDark(Colors.white)
+                            : Colors.white,
                       ),
                     ],
                   ),
@@ -122,8 +135,11 @@ class CustomExamAttempts extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Container(
                 padding: const EdgeInsets.all(5).h,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.white),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.white),
                 child: Container(
                   // color: Colors.amber,
                   child: CircularPercentIndicator(
@@ -132,8 +148,13 @@ class CustomExamAttempts extends StatelessWidget {
                         ? 0
                         : examAttemptsDataModel!.totalAnsweredQuestions! /
                             examAttemptsDataModel!.totalQuestions!,
-                    backgroundColor: Colors.white,
-                    progressColor: Colors.blueAccent,
+                    backgroundColor: Get.find<ThemeViewMode>().isDarkMode()
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.white,
+                    progressColor: Get.find<ThemeViewMode>().isDarkMode()
+                        ? GeneralUtils.instance
+                            .convertColorToDark(Colors.blueAccent)
+                        : Colors.blueAccent,
                     center: isEmpty
                         ? Icon(
                             Icons.wb_sunny,
@@ -141,7 +162,10 @@ class CustomExamAttempts extends StatelessWidget {
                             color: primayColor,
                           )
                         : CustomText(
-                            color: Colors.blue,
+                            color: Get.find<ThemeViewMode>().isDarkMode()
+                                ? GeneralUtils.instance
+                                    .convertColorToDark(Colors.blue)
+                                : Colors.blue,
                             text: examAttemptsDataModel!.totalAnsweredQuestions!
                                 .toString(),
                             fontWeight: FontWeight.bold,

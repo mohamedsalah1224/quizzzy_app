@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
+
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_card_exam_result.dart';
 
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_circle_sum_of_points_inofrmation.dart';
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_icon.dart';
 import 'package:quizzy_app/view_model/exam/exam_statistics_view_model.dart';
+
+import '../../../view_model/utils/theme/theme_view_model.dart';
 
 class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
   const ExamStatisticsView({super.key});
@@ -32,7 +35,11 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.vertical(
                                     bottom: Radius.circular(30).r),
-                                color: const Color(0xff268C6D),
+                                color: Get.find<ThemeViewMode>().isDarkMode()
+                                    ? Theme.of(context)
+                                        .scaffoldBackgroundColor
+                                        .withRed(30)
+                                    : const Color(0xff268C6D),
                               ),
                               child: CustomCircleSumOfPointInformation(
                                 sumOfPoint: controller
@@ -44,16 +51,14 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                         Expanded(
                           flex: 4,
                           child: Container(
-                            decoration:
-                                const BoxDecoration(color: Colors.white),
+                            decoration: BoxDecoration(),
                             child: Column(
                               children: [
                                 const Expanded(child: SizedBox()),
                                 Expanded(
                                   flex: 2,
                                   child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
+                                    decoration: const BoxDecoration(),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,

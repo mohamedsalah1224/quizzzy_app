@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomDropDownFilter extends StatelessWidget {
   final String? value;
@@ -28,7 +31,7 @@ class CustomDropDownFilter extends StatelessWidget {
       // width: double.infinity.w,
       height: height!.h,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: Get.find<ThemeViewMode>().isDarkMode() ? null : Colors.white,
           borderRadius: isSubject!
               ? BorderRadius.circular(14).r
               : BorderRadius.circular(8).r,

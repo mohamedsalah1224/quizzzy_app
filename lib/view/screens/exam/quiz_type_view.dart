@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../../../utils/app_images.dart';
 import '../../../view_model/exam/manage_exam_view_model.dart';
@@ -23,7 +24,9 @@ class QuizTypeView extends GetView<ManageExamViewModel> {
           fontFamily: "Cairo",
           fontWeight: FontWeight.w500,
           fontSize: 12.sp,
-          color: Colors.black,
+          color: Get.find<ThemeViewMode>().isDarkMode()
+              ? Colors.white
+              : Colors.black,
         ),
         centerTitle: true,
         leading: IconButton(

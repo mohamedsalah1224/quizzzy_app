@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+
 import 'package:quizzy_app/utils/image_helper/custom_image_helper.dart';
 import 'package:quizzy_app/utils/image_helper/custom_image_viewer.dart';
 import 'package:quizzy_app/utils/validation.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomShortLongChoiceContainer extends StatelessWidget {
   final Color color;
@@ -55,13 +58,16 @@ class CustomShortLongChoiceContainer extends StatelessWidget {
                           answersModel.photo!,
                         ))
                     : null,
-                color: color,
-                boxShadow: const <BoxShadow>[
+                color: Get.find<ThemeViewMode>().isDarkMode() ? null : color,
+                boxShadow: <BoxShadow>[
                   BoxShadow(
-                      offset: Offset(0, 5),
-                      spreadRadius: 0,
-                      blurRadius: 5,
-                      color: Color.fromRGBO(0, 0, 0, 0.25)),
+                    offset: Offset(0, 5),
+                    spreadRadius: 0,
+                    blurRadius: 5,
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? Colors.black
+                        : const Color.fromRGBO(0, 0, 0, 0.25),
+                  ),
                 ],
                 borderRadius: BorderRadius.circular(17).r),
             child: SingleChildScrollView(

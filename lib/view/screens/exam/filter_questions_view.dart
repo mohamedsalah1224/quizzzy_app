@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view_model/exam/filter_questions_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 import 'package:quizzy_app/view_model/utils/multiselectDropdown/multiselect_dropdown_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../../../utils/app_images.dart';
 import '../../custom_component/custom_button.dart';
@@ -26,7 +28,6 @@ class FilterQuestionsView extends StatelessWidget {
           fontFamily: "Cairo",
           fontWeight: FontWeight.w500,
           fontSize: 12.sp,
-          color: Colors.black,
         ),
         centerTitle: true,
         leading: IconButton(
@@ -119,7 +120,9 @@ class FilterQuestionsView extends StatelessWidget {
                               color: Color(0xffFC9A9A),
                               width: 2.r,
                             ),
-                            color: Colors.white,
+                            color: Get.find<ThemeViewMode>().isDarkMode()
+                                ? Colors.black
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(8.r)),
                         padding: const EdgeInsets.symmetric(horizontal: 12).w,
                         child: GetBuilder<MultiSelectDropDownViewModel>(
@@ -271,7 +274,12 @@ class FilterQuestionsView extends StatelessWidget {
                                           value: 2,
                                           groupValue:
                                               controller.evaluationGroupValue,
-                                          activeColor: const Color(0xff268C6D),
+                                          activeColor: Get.find<ThemeViewMode>()
+                                                  .isDarkMode()
+                                              ? GeneralUtils.instance
+                                                  .convertColorToDark(
+                                                      const Color(0xff268C6D))
+                                              : const Color(0xff268C6D),
                                           onChanged: (value) => controller
                                               .updateEvaluation(value!),
                                         )

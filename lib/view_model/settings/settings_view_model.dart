@@ -20,6 +20,8 @@ import 'package:quizzy_app/utils/constant.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/routes.dart';
+import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class SettingsViewModel extends GetxController {
   late User _user;
@@ -30,7 +32,7 @@ class SettingsViewModel extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getUserFromCahce();
-    getCurrentNotificationFromCache();
+    // getCurrentNotificationFromCache();
     getCurrentTheme();
     print("Init Seetings View Model");
   }
@@ -57,10 +59,12 @@ class SettingsViewModel extends GetxController {
     await updateNotificationCache(_isNotificationEnabled);
   }
 
-  void updatDarkMode() async {
+  Future<void> updatDarkMode() async {
     _isDarkMode = !_isDarkMode;
-    update(['updatDarkMode']);
     await updateCurrentThemeCache(_isDarkMode);
+    update(['updatDarkMode']);
+    // update(['updatAllTheme']); updatDarkMode
+    Get.find<ThemeViewMode>().updateTheme();
   }
 
 /////////////////////////////////////////////// Helper Method //////////////////////////////////////////
@@ -113,10 +117,10 @@ class SettingsViewModel extends GetxController {
     );
     await AuthRepositoryService.instance.logout();
 
-    Future.wait([
+    await Future.wait([
       CacheUserService.instance.deleteUser(),
       CacheNotificationService.instance.delete(),
-      CacheThemeService.instance.deleteTheme(),
+      // CacheThemeService.instance.deleteTheme(),
       AuthTokenService.instance.delete(),
       CacheSubjectService.instance.deleteSubjects(),
       AuthRouteService.instance.logout(),

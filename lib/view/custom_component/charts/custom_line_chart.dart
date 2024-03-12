@@ -1,7 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/charts/title_data_line_chart.dart';
+
+import '../../../view_model/utils/theme/theme_view_model.dart';
 
 class CustomLineChart extends StatelessWidget {
   final double? maxY;
@@ -26,15 +30,23 @@ class CustomLineChart extends StatelessWidget {
             titlesData: CustomTitleDataLineChart.getTitles(),
             lineBarsData: [
               LineChartBarData(
-                  color: const Color.fromRGBO(164, 236, 244, 0.49),
+                  //     color: const Color.fromRGBO(164, 236, 244, 0.49),
+                  color: Get.find<ThemeViewMode>().isDarkMode()
+                      ? GeneralUtils.instance.convertColorToDark(
+                          Color.fromRGBO(164, 236, 244, 0.49))
+                      : Color.fromRGBO(164, 236, 244, 0.49),
                   barWidth: 1,
                   dotData: const FlDotData(
                       show:
                           false), // to disable the digit of the point show in the Figure
                   isCurved: true, //to make the graph
                   belowBarData: BarAreaData(
-                      show: true,
-                      color: const Color.fromRGBO(164, 236, 244, 0.49)),
+                    show: true,
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? GeneralUtils.instance.convertColorToDark(
+                            const Color.fromRGBO(164, 236, 244, 0.49))
+                        : Color.fromRGBO(164, 236, 244, 0.49),
+                  ),
                   spots: List.generate(listData.length,
                       (index) => FlSpot(index.toDouble(), listData[index])))
             ],

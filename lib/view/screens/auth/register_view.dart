@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/view/custom_component/custom_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
 import 'package:quizzy_app/view/custom_component/custom_dropdown_filter.dart';
 import 'package:quizzy_app/view/custom_component/custom_radio_button.dart';
 import 'package:quizzy_app/view/custom_component/custom_text_form_field.dart';
 import 'package:quizzy_app/view_model/auth/register_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../../../utils/app_images.dart';
 import '../../custom_component/custom_text.dart';
@@ -45,7 +47,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                             ),
                             15.verticalSpace,
                             CustomText(
@@ -53,7 +55,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,
@@ -77,13 +79,14 @@ class RegisterView extends GetView<RegisterViewModel> {
                               color: Color(0xff077C58),
                               alignment: AlignmentDirectional.topEnd,
                             ),
+
                             3.verticalSpace,
                             SizedBox(
                               width: double.infinity.w,
                               height: 45.h,
                               child: CustomTextFormField(
                                 icon: Icons.date_range_outlined,
-                                iconColor: Color(0xff077C58),
+                                iconColor: const Color(0xff077C58),
                                 readOnly: true,
                                 height: 45.h,
                                 controller: controller.dateController,
@@ -102,7 +105,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,
@@ -119,7 +122,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                                     : "من فضلك ادخل ايميلك أو رقم هاتفك",
                                 textAlignVertical: TextAlignVertical.bottom,
                                 textDirection: TextDirection.ltr,
-                                iconColor: Color(0xff268C6D),
+                                iconColor: const Color(0xff268C6D),
                                 validator: (value) => controller
                                     .validatePhoneOrEmail(value: value),
                                 controller: controller.emailOrPhoneController,
@@ -131,7 +134,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: const Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,
@@ -170,7 +173,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,
@@ -183,7 +186,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                                   },
                                   value: controller.governorateValue,
                                   defaultValue: "اسم المحافظة",
-                                  borderColor: Color(0xff268C6D),
+                                  borderColor: const Color(0xff268C6D),
                                   items: controller.governorateListValue,
                                 );
                               },
@@ -194,7 +197,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: const Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,
@@ -241,7 +244,7 @@ class RegisterView extends GetView<RegisterViewModel> {
                               fontFamily: "Segoe",
                               fontWeight: FontWeight.w600,
                               fontSize: 14.sp,
-                              color: Color(0xff077C58),
+                              color: const Color(0xff268C6D),
                               alignment: AlignmentDirectional.topEnd,
                             ),
                             3.verticalSpace,

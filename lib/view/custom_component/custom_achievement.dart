@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import 'custom_text.dart';
 
@@ -22,7 +25,11 @@ class CustomAchievement extends StatelessWidget {
       height: 89.h,
       padding: EdgeInsets.only(top: 15.h, right: 15.w),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r), color: Colors.amber),
+        color: Get.find<ThemeViewMode>().isDarkMode()
+            ? Colors.black
+            : Colors.amber,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +53,7 @@ class CustomAchievement extends StatelessWidget {
                   fontFamily: "Cairo",
                   fontWeight: FontWeight.w600,
                   fontSize: 15.sp,
-                ),
+                )
               ],
             ),
           ),

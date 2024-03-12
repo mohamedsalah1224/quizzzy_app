@@ -94,8 +94,8 @@ class SettingsView extends GetView<SettingsViewModel> {
                         text: 'الوضع الليلي',
                         imageWidget: Switch(
                           value: controller.isDarkMode,
-                          onChanged: (value) {
-                            controller.updatDarkMode();
+                          onChanged: (value) async {
+                            await controller.updatDarkMode();
                           },
                         ),
                       );

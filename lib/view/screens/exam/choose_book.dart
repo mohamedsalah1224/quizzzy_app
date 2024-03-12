@@ -7,6 +7,7 @@ import 'package:quizzy_app/view/custom_component/custom_search_field.dart';
 
 import 'package:quizzy_app/view/custom_component/custom_text.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class ChooseBookView extends GetView<ManageExamViewModel> {
   const ChooseBookView({super.key});
@@ -22,7 +23,9 @@ class ChooseBookView extends GetView<ManageExamViewModel> {
           fontFamily: "Cairo",
           fontWeight: FontWeight.w500,
           fontSize: 12.sp,
-          color: Colors.black,
+          color: Get.find<ThemeViewMode>().isDarkMode()
+              ? Colors.white
+              : Colors.black,
         ),
         centerTitle: true,
         leading: IconButton(

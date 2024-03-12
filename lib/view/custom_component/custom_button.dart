@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import 'custom_text.dart';
 
@@ -30,7 +33,9 @@ class CustomButton extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         padding: EdgeInsets.symmetric(horizontal: 4.h, vertical: 4.h),
         decoration: BoxDecoration(
-          color: colorOfContainer,
+          color: Get.find<ThemeViewMode>().isDarkMode()
+              ? GeneralUtils.instance.convertColorToDark(colorOfContainer!)
+              : colorOfContainer,
           borderRadius: BorderRadius.circular(12).r,
         ),
         child: CustomText(

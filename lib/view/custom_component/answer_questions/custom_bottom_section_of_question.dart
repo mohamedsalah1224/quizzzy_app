@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
 
 import '../custom_button.dart';
@@ -30,7 +31,6 @@ class CustomBottomViewOfQuestion extends GetView<ManageExamViewModel> {
           alignment: AlignmentDirectional.center,
           decoration: BoxDecoration(
               border: Border.all(color: Color(0xff268C6D)),
-              color: const Color(0xffF0F0F0),
               borderRadius: BorderRadius.circular(8.r)),
           padding: const EdgeInsets.symmetric(horizontal: 12).w,
           child: TextFormField(

@@ -26,7 +26,7 @@ class SplashViewModel extends GetxController {
       } else {
         Get.offAllNamed(Routes.loginView);
       }
-      await PushNotificationService().initPushNotification();
+      // await PushNotificationService().initPushNotification();
     });
   }
 

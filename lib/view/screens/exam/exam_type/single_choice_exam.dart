@@ -25,7 +25,6 @@ class SingleChoiceExam extends StatelessWidget {
                   controller.listAnswersModel.length,
                   (index) => CustomSingleChoiceContainer(
                     index: index,
-                    color: const Color(0xff9FD800),
                     answerModel: controller.listAnswersModel[index],
                   ),
                 ));

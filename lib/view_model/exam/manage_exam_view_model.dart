@@ -140,6 +140,10 @@ class ManageExamViewModel extends GetxController {
   BookModel get getBookSelected => _bookSelected!;
   StartQuizModel get startQuizModel => _startQuizModel!;
   ExamsModel get examData => _examData!;
+  bool get isEmptyExam => (_examData!.data!.questions == null) ||
+          (_examData!.data!.questions!.isEmpty)
+      ? true
+      : false;
 
   void setExamData(
       {required ExamsModel examsModel,
@@ -584,6 +588,7 @@ class ManageExamViewModel extends GetxController {
 
           SnackBarHelper.instance.showMessage(
               // isCorrect is null in Short Answer Question
+              isEnglish: false,
               message: value.data!.isCorrect == null
                   ? " لم يتم الانتهاء من تطوير التصحيح بالذكاء الاصطناعي ل الاسئلة المقالية"
                   : value.data!.isCorrect!

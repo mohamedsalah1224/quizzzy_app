@@ -39,8 +39,10 @@ class SnackBarHelper {
         content: Text(
           message,
           textDirection: isEnglish ? TextDirection.ltr : TextDirection.rtl,
+          style: TextStyle(color: Colors.white),
         ),
         duration: Duration(milliseconds: milliseconds),
+
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),

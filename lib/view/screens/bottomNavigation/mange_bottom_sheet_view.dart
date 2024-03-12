@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/utils/constant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../../../view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 
@@ -28,8 +30,11 @@ class ManageBottomNavigationView
           builder: (controller) {
             return CurvedNavigationBar(
               key: bottomNavgationGlobalKey,
-              color: Color.fromRGBO(38, 140, 109, 1),
-              backgroundColor: Colors.transparent,
+              color: Get.find<ThemeViewMode>().isDarkMode()
+                  ? GeneralUtils.instance
+                      .convertColorToDark(Color.fromRGBO(38, 140, 109, 1))
+                  : const Color.fromRGBO(38, 140, 109, 1),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               animationDuration: Duration(milliseconds: 200),
               onTap: (value) {
                 controller.changeIndex(value);

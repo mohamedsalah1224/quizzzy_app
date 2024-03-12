@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/utils/app_images.dart';
 import 'package:quizzy_app/view/custom_component/custom_circular_progress_indicator.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomUpdateProfilePicture extends StatelessWidget {
   final String? imageUrl;
@@ -59,6 +61,8 @@ class CustomUpdateProfilePicture extends StatelessWidget {
               Assets.camera,
               cacheHeight: 32,
               cacheWidth: 32,
+              color:
+                  Get.find<ThemeViewMode>().isDarkMode() ? Colors.white : null,
             ),
           )
         ],

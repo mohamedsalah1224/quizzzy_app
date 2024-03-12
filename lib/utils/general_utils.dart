@@ -25,6 +25,13 @@ class GeneralUtils {
     return groupValue == 1 ? "قطاع غزة" : "الضفة الغربية";
   }
 
+  Color convertColorToDark(Color color, [double amount = .1]) {
+    var hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness - amount).clamp(0.0, 1.0))
+        .toColor();
+  }
+
   int? getAcademicYearById(
       {required List<AcademicYearModel> academicYearList,
       required String value}) {

@@ -346,5 +346,8 @@ class HomeViewModel extends GetxController {
     Get.toNamed(Routes.examView);
   }
 
+  void updateHomeView() {
+    update();
+  }
   /////////////////////////////////////////////
 }

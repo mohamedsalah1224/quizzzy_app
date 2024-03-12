@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_text.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class CustomCardExamResult extends StatelessWidget {
   final String totalQuestions;
@@ -18,13 +20,22 @@ class CustomCardExamResult extends StatelessWidget {
       width: 305.w,
       height: 250.h,
       alignment: Alignment.center,
-      decoration: BoxDecoration(boxShadow: const <BoxShadow>[
-        BoxShadow(
-            offset: Offset(0, 4),
-            spreadRadius: 0,
-            blurRadius: 4,
-            color: Color.fromRGBO(0, 0, 0, 0.50)),
-      ], borderRadius: BorderRadius.circular(30).r, color: Colors.white),
+      decoration: BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              offset: Offset(0, 4),
+              spreadRadius: 0,
+              blurRadius: 5,
+              color: Get.find<ThemeViewMode>().isDarkMode()
+                  ? Colors.white30
+                  : const Color.fromRGBO(0, 0, 0, 0.50),
+              //  color: Colors.white30
+            ),
+          ],
+          borderRadius: BorderRadius.circular(30).r,
+          color: Get.find<ThemeViewMode>().isDarkMode()
+              ? Theme.of(context).scaffoldBackgroundColor
+              : Colors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/utils/image_helper/custom_image_helper.dart';
 import 'package:quizzy_app/utils/image_helper/custom_image_viewer.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
+
+import '../../../utils/general_utils.dart';
 
 class CustomSourceImage extends StatelessWidget {
   const CustomSourceImage(
@@ -16,7 +20,10 @@ class CustomSourceImage extends StatelessWidget {
         height: 127.h,
         width: 190.w,
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Get.find<ThemeViewMode>().isDarkMode()
+              ? GeneralUtils.instance
+                  .convertColorToDark(const Color(0xff9FD800))
+              : const Color(0xff9FD800),
           borderRadius: BorderRadius.circular(12).r,
         ),
         child: Stack(

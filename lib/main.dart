@@ -13,6 +13,7 @@ import 'package:quizzy_app/Service/local/cache_subject_service.dart';
 import 'package:quizzy_app/Service/local/cache_theme_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/Service/nottification/push_notification_service.dart';
+import 'package:quizzy_app/firebase_options.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/academic_year_model.dart';
 import 'package:quizzy_app/model/book_model.dart';
@@ -26,6 +27,7 @@ import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -39,16 +41,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Platform.isAndroid
-      ? await Firebase.initializeApp(
-          options: const FirebaseOptions(
-              apiKey: "AIzaSyDdVCRDAMv1kDwJnoYkZfs68KdqXE47sT8",
-              appId: "1:357000354067:android:e16aeca42f8346b71062e6",
-              messagingSenderId: "357000354067",
-              projectId: "quizzyapp-58b44"))
-      : await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
@@ -62,7 +58,7 @@ void main() async {
   await AuthRouteService.instance.init();
   await CacheUserService.instance.init();
   await CacheSubjectService.instance.init();
-  await CacheNotificationService.instance.init();
+//  await CacheNotificationService.instance.init();
   await CacheThemeService.instance.init();
   runApp(const MyApp());
 }
@@ -78,13 +74,20 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, child) {
-        return GetMaterialApp(
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          initialRoute: Routes.initialRoute,
-          initialBinding: SplashBinding(),
-          getPages: Routes.getPages(),
-          navigatorKey: navigatorKey,
+        return GetBuilder<ThemeViewMode>(
+          init: ThemeViewMode(),
+          id: "updateTheme",
+          builder: (controller) {
+            return GetMaterialApp(
+              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              initialRoute: Routes.initialRoute,
+              initialBinding: SplashBinding(),
+              getPages: Routes.getPages(),
+              navigatorKey: navigatorKey,
+              theme: controller.themeValue,
+            );
+          },
         );
       },
     );

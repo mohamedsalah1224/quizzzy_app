@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy_app/model/Image_dimensions_model.dart';
 import 'package:quizzy_app/model/answers_model.dart';
 import 'package:quizzy_app/utils/constant/exam_costant.dart';
+import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/image_helper/custom_image_helper.dart';
 import 'package:quizzy_app/utils/image_helper/custom_image_viewer.dart';
 import 'package:quizzy_app/utils/validation.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 import '../custom_text.dart';
 
@@ -24,7 +27,7 @@ class CustomTrueFalseChoice extends StatelessWidget {
     required this.index,
     required this.answerModel,
     this.answerUserSelectedID,
-    this.color = Colors.amber,
+    this.color = const Color(0xff9FD800),
   });
 
   @override
@@ -46,7 +49,9 @@ class CustomTrueFalseChoice extends StatelessWidget {
             padding: REdgeInsets.symmetric(horizontal: 4, vertical: 4),
             decoration: BoxDecoration(
                 //rgba(0, 0, 0, 0.25)
-                color: color,
+                color: Get.find<ThemeViewMode>().isDarkMode()
+                    ? GeneralUtils.instance.convertColorToDark(color!)
+                    : color,
                 image: answerModel.answerViewFormat ==
                             ExamConstatnt.answerViewFormatIamge ||
                         answerModel.answerViewFormat ==
@@ -57,12 +62,15 @@ class CustomTrueFalseChoice extends StatelessWidget {
                           answerModel.photo!,
                         ))
                     : null,
-                boxShadow: const <BoxShadow>[
+                boxShadow: <BoxShadow>[
                   BoxShadow(
-                      offset: Offset(0, 5),
-                      spreadRadius: 0,
-                      blurRadius: 5,
-                      color: Color.fromRGBO(0, 0, 0, 0.25)),
+                    offset: Offset(0, 5),
+                    spreadRadius: 0,
+                    blurRadius: 5,
+                    color: Get.find<ThemeViewMode>().isDarkMode()
+                        ? Colors.white30
+                        : const Color.fromRGBO(0, 0, 0, 0.25),
+                  ),
                 ],
                 borderRadius: BorderRadius.circular(17).r),
             child: answerModel.answerViewFormat ==
