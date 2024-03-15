@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/attempt_answers_repository_service.dart';
+import 'package:quizzy_app/Service/local/cache_user_service.dart';
+import 'package:quizzy_app/Service/premession/permission_service.dart';
 import 'package:quizzy_app/model/exam_attempt_model.dart';
 import 'package:quizzy_app/model/exam_statistics_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
@@ -17,6 +19,7 @@ import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ExamStatisticsViewModel extends GetxController {
   bool _isLoadExamStatisticsViewPage = false;
@@ -26,7 +29,6 @@ class ExamStatisticsViewModel extends GetxController {
   ExamStatisticsModel get examStatisticsModel => _examStatisticsModel;
   ExamAttemptModel get examAttemptStatisticsInofrmation =>
       _examAttemptStatisticsInofrmation;
-
   ManageExamViewModel controllerOfMangeExamViewModel =
       Get.find<ManageExamViewModel>();
   @override
@@ -140,21 +142,28 @@ class ExamStatisticsViewModel extends GetxController {
   void convertToPdf() async {
     // var permissionStatus = await Permission.storage.status;
 
-    // switch (permissionStatus) {
-    //   case PermissionStatus.denied:
-    //   case PermissionStatus.permanentlyDenied:
-    //     //    await Permission.manageExternalStorage.request();
-    //     break;
-    //   default:
-    // }
-    // // PdfGenerator.createPdf();
-
-    PdfGenerator.createPdf(
-        examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
-    print("Create to Pdf");
+    bool isGranted = await PermissionService.instance.checkStorage();
+    if (isGranted) {
+      String path = await PdfGenerator.createPdf(
+          examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
+      debugPrint('Pdf path ; $path');
+    }
   }
 
-  void shareFile() {
-    print("Shar the File");
+  void shareFile() async {
+    String? path = await PdfGenerator.createImg(
+        examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
+    debugPrint('Image path ; $path');
+    if (path != null) {
+      await Share.shareXFiles([XFile(path)],
+          text:
+              "مشاركة نتيجة الإمتحان في مادة ${controllerOfMangeExamViewModel.getSubjectSelectedInformation.name}\n للطالب :  ${CacheUserService.instance.getUser().name}");
+    } else {
+      debugPrint('حدث خطأ أثناء المشاركة');
+    }
+  }
+
+  void topPointRoute() {
+    Get.toNamed(Routes.topPoint);
   }
 }

@@ -35,10 +35,12 @@ class PdfGenerator {
         pw.Font.ttf((await rootBundle.load("assets/fonts/Cairo-Regular.ttf")));
   }
 
-  static void createPdf(
-      {required ExamAttemptModel examAttemptStatisticsInofrmation}) async {
-    String path = (await getApplicationDocumentsDirectory()).path;
-    File file = File(path + "/5000.pdf");
+  static Future<String> createPdf(
+      {required ExamAttemptModel examAttemptStatisticsInofrmation,
+      bool convertImage = false}) async {
+    String path = (await getTemporaryDirectory()).path;
+    File file = File(
+        path + "/${DateTime.now().microsecondsSinceEpoch}examStatsticsPdf.pdf");
 
     pw.Document pdf = pw.Document();
     pdf.addPage(_createPage(
@@ -49,19 +51,11 @@ class PdfGenerator {
     //  createImg(file.path);
     print(file.path);
     // await pdfx.PdfDocument.openFile(file.path);
-    await OpenFile.open(file.path);
+    if (!convertImage) {
+      await OpenFile.open(file.path);
+    }
 
-    /*
-final pdfController = PdfController(
-  document: PdfDocument.openAsset('assets/sample.pdf'),
-);
-
-// Simple Pdf view with one render of page (loose quality on zoom)
-PdfView(
-  controller: pdfController,
-);
-
-    */
+    return file.path;
   }
 
 /*
@@ -134,11 +128,42 @@ PdfView(
 //             mainAxisSize: pw.MainAxisSize.min,
 //             crossAxisAlignment: pw.CrossAxisAlignment.end,
 //             children: [
-//               const pw.CustomStatisticsText(
-//                 text: 'اكتمل الاختبار',
-//                 numbertext: "100%",
-//                 color: Color(0xff4996BF),
+//               pw.Column(
+//       crossAxisAlignment:pw. CrossAxisAlignment.end,
+//       children: [
+//         pw.Row(
+//           children: [
+//             CustomText(
+//               text: '15',
+//               fontFamily: "DMSans",
+//               fontWeight: pw.FontWeight.w500,
+//               color: color,
+//               fontSize: 20.sp,
+//             ),
+//             pw.Text(
+//               '15',
+//                style: pw.TextStyle(
+//                  fontFamily: "DMSans",
+//               fontWeight: pw.FontWeight.,
+//               color: color,
+//             d
+//               fontSize: 20.sp,
+//                )
+//             )
+//           pw.SizedBox(height: 5),
+//             pw.Container(
+//               width: 12.r,
+//               height: 12.r,
+//               decoration: pw.BoxDecoration(
+//                 shape: pw.BoxShape.circle,
+//                 color: color,
 //               ),
+//             ),
+//           ],
+//         ),
+
+//       ],
+//     ),
 //               30.verticalSpace,
 //               CustomStatisticsText(
 //                 text: 'اجابة صحيحة',
@@ -197,7 +222,11 @@ PdfView(
 //       ],
 //     );
 //     }
-  static createImg(String path) {
-    PdfConverter.convertToImage(path);
+  static Future<String?> createImg(
+      {required ExamAttemptModel examAttemptStatisticsInofrmation}) async {
+    String path = await createPdf(
+        examAttemptStatisticsInofrmation: examAttemptStatisticsInofrmation,
+        convertImage: true);
+    return await PdfConverter.convertToImage(path);
   }
 }

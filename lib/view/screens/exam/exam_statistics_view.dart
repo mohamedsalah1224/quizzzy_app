@@ -128,13 +128,16 @@ class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
                                                   controller.goToHomePage(),
                                             ),
                                             30.verticalSpace,
-                                            const CustomStatisticsIcon(
+                                            CustomStatisticsIcon(
                                               text: 'الاعلي نقاط',
                                               color: Color(0xff5F6A6E),
                                               cacheHeight: 18,
                                               cacheWidth: 24,
                                               iconAssetPath:
                                                   Assets.highPointsStatistics,
+                                              onTap: () {
+                                                controller.topPointRoute();
+                                              },
                                             ),
                                           ],
                                         ),

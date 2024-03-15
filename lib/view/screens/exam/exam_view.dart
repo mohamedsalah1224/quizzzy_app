@@ -38,7 +38,7 @@ class ExamView extends GetView<ManageExamViewModel> {
             onPressed: () => controller.backFromExamViewPage(),
           ),
           actions: [
-            controller.isEmptyExam
+            !controller.isExamAttempt && controller.isNoQuestionExist
                 ? const SizedBox()
                 : GetBuilder<ManageExamViewModel>(
                     id: "updateTimer",

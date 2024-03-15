@@ -8,25 +8,22 @@ class SplashView extends GetView<SplashViewModel> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              Assets.imagesLogoImage,
-              cacheHeight: 132,
-              cacheWidth: 132,
-            ),
-            Image.asset(
-              Assets.imagesLogoText,
-              cacheHeight: 64,
-              cacheWidth: 168,
-            ),
-            Text("${controller.splashTextInit}"),
-          ],
-        ),
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            Assets.imagesLogoImage,
+            cacheHeight: 132,
+            cacheWidth: 132,
+          ),
+          Image.asset(
+            Assets.imagesLogoText,
+            cacheHeight: 64,
+            cacheWidth: 168,
+          ),
+          Text("${controller.splashTextInit}"),
+        ],
       ),
     );
   }

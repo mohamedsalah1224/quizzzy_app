@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdfx/pdfx.dart';
 
 class PdfConverter {
-  static convertToImage(String pdfPath) async {
+  static Future<String?> convertToImage(String pdfPath) async {
     PdfDocument doc = await PdfDocument.openFile(pdfPath);
     PdfPage page = await doc.getPage(1);
 
@@ -14,10 +14,14 @@ class PdfConverter {
 
     if (pageImg != null) {
       String path = (await getApplicationDocumentsDirectory()).path;
-      File file = File(path + "/MY_IMG.png");
+      File file = File(path +
+          "/${DateTime.now().microsecondsSinceEpoch}examStatsticsPhoto.png");
       print(file.path);
       await file.writeAsBytes(pageImg.bytes);
-      OpenFile.open(file.path);
+      // OpenFile.open(file.path);
+      return file.path;
     }
+
+    return null;
   }
 }

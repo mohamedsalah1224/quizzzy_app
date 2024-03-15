@@ -13,6 +13,7 @@ import 'package:quizzy_app/utils/binding/register_binding.dart';
 import 'package:quizzy_app/utils/binding/balance_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
 import 'package:quizzy_app/utils/binding/terms_binding.dart';
+import 'package:quizzy_app/utils/binding/top_point_binding.dart';
 import 'package:quizzy_app/utils/binding/update_account_binding.dart';
 import 'package:quizzy_app/utils/binding/update_change_password_binding.dart';
 import 'package:quizzy_app/utils/binding/verify_email_binding.dart';
@@ -39,6 +40,7 @@ import 'package:quizzy_app/view/screens/settings/terms_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_account_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_change_password_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
+import 'package:quizzy_app/view_model/exam/top_point_view.dart';
 import 'binding/bottom_navigation_binding.dart';
 import 'binding/sucess_password_changed_binding.dart';
 
@@ -75,7 +77,7 @@ class Routes {
   static const String termsView = "/termsView"; // privacy_policy
   static const String privacyPolicy = "/privacyPolicy";
   // NotificationView
-
+  static const String topPoint = "/topPoint";
   static List<GetPage<dynamic>>? getPages() => [
         GetPage(
             name: initialRoute,
@@ -167,6 +169,11 @@ class Routes {
           name: privacyPolicy,
           page: () => const PrivacyPolicyView(),
           binding: PrivacyPolicyBinding(),
+        ),
+        GetPage(
+          name: topPoint,
+          page: () => const TopPointView(),
+          binding: TopPointBinding(),
         ),
       ];
 }

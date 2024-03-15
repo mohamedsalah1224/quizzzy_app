@@ -69,7 +69,7 @@ class CustomSingleChoiceContainer extends StatelessWidget {
                     spreadRadius: 0,
                     blurRadius: 5,
                     color: Get.find<ThemeViewMode>().isDarkMode()
-                        ? Colors.white30
+                        ? Colors.white24
                         : Color.fromRGBO(0, 0, 0, 0.25),
                   ),
                 ],

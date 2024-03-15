@@ -72,12 +72,14 @@ class UpdateAccountViewModel extends GetxController {
   void _onTapSelectImage({required bool isCamera}) async {
     debugPrint('pick Image');
     XFile? pickFile;
-
+    bool isGranted;
     if (isCamera) {
-      await _checkPremissionCamera();
+      isGranted = await _checkPremissionCamera();
     } else {
-      await _checkPremissionPhoto();
+      isGranted = await _checkPremissionPhoto();
     }
+    if (!isGranted)
+      return; // if the Premission not Allowed return from this Method
     pickFile = await _pickImageService(isCamera: isCamera);
 
     if (pickFile != null) {

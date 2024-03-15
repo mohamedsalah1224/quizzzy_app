@@ -42,7 +42,7 @@ class PermissionService {
             message:
                 "يجب عليك إعطاء الصلاحية بالموافقة لكي يعمل التطبيق بدون اخطاء");
 
-        return await requestPermissions(permission);
+        return false;
       }
     }
   }
@@ -58,17 +58,20 @@ class PermissionService {
  }
   */
 
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt > 32) {
-        return await requestPermissions(Permission.manageExternalStorage);
-      } else {
-        throw Exception(
-            "Android Blow 32 not Support to call storage"); //  use default in Android Maninfist Premession (READ_EXTERNAL_STORAGE , WRITE_EXTERNAL_STORAGE)
-      }
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    if (androidInfo.version.sdkInt > 32) {
+      // return await requestPermissions(Permission.manageExternalStorage);
+      return true; /*
+
+This was Frustrating to solve myself.
+ Apparently Android 13 on Flutter does not need permission or a package to work.
+  Remove permission handler for storage and it will work just fine because in API 33
+   no such permission exist so it will always return empty. Code Below
+
+
+      */
     } else {
-      throw Exception(
-          "IOS"); // can not call ios , use native prupose like , camera , photo , video ...
+      return await requestPermissions(Permission.storage);
     }
   }
 

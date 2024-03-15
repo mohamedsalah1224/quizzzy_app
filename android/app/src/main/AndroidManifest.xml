@@ -7,6 +7,16 @@
 
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.CAMERA"/>
+<!-- used whenn open any File -->
+  <!-- for below android 13-->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- for above android 13-->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+     <!-- End-->
 
 <!-- us this for Notifications -->
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> 
@@ -92,12 +102,5 @@
     </application>
 
 
- <!-- used whenn open any File -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-    android:maxSdkVersion="28" />
-    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> check it -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-
-     <!-- End-->
+ 
 </manifest>
