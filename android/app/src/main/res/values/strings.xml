@@ -4,7 +4,6 @@
 
         <string name="app_name">QuizzyApp</string>
         <string name="facebook_app_id">869427234874301</string>
-        <string name="fb_login_protocol_scheme">fb869427234874301</string>
         <string name="facebook_client_token">62b30689b3ad25e388d6ed9d1e6bb31c</string>
         <string name="default_notification_channel_id" translatable="false">your_default_channel_id</string>
 

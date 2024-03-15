@@ -28,7 +28,8 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace "com.example.quizzy_app"
-    compileSdkVersion flutter.compileSdkVersion
+    // compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
     // minSdkVersion 21
 

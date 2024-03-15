@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "817939885808",
-    "project_id": "quizzy-app-d96db",
-    "storage_bucket": "quizzy-app-d96db.appspot.com"
+    "project_number": "674895856947",
+    "project_id": "quizzy-app-e4df1",
+    "storage_bucket": "quizzy-app-e4df1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:817939885808:android:1d8c96189834d568f2dc35",
+        "mobilesdk_app_id": "1:674895856947:android:b977e11b4093c2c368aa46",
         "android_client_info": {
           "package_name": "com.example.quizzy_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBEDuU8710tfO9LerIrnOGU907VPBIeLS8"
+          "current_key": "AIzaSyD7ZMOe_Ie2WiNRBHkc45Ea_ATYErUehT4"
         }
       ],
       "services": {

@@ -77,8 +77,8 @@ class SettingsView extends GetView<SettingsViewModel> {
                         text: 'الاشعارات',
                         imageWidget: Switch(
                           value: controller.isNotificationEnabled,
-                          onChanged: (value) {
-                            controller.updateNotification();
+                          onChanged: (value) async {
+                            await controller.updateNotification();
                           },
                         ),
                       );
@@ -104,7 +104,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                 ], // تغيير كلمة السر
               ),
             ),
-            40.verticalSpace,
+            25.verticalSpace,
             RPadding(
               padding: REdgeInsets.symmetric(horizontal: 10),
               child: Divider(),
@@ -122,19 +122,19 @@ class SettingsView extends GetView<SettingsViewModel> {
                     color: primayColor,
                     alignment: AlignmentDirectional.topEnd,
                   ),
-                  20.verticalSpace,
+                  15.verticalSpace,
                   CustomListTile(
                     onTap: () {
-                      print("Welcome");
+                      controller.privacyPolicyRoute();
+                    },
+                    text: 'سياسة الخصوصية',
+                  ),
+                  CustomListTile(
+                    onTap: () {
+                      controller.termsRoute();
                     },
                     text: 'الشروط',
                   ),
-                  // CustomListTile(
-                  //   onTap: () {
-                  //     print("Welcome");
-                  //   },
-                  //   text: 'سياسة الخصوصية',
-                  // ),
                   CustomListTile(
                       onTap: () async {
                         print("OK");

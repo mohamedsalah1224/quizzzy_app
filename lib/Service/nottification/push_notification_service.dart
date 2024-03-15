@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:quizzy_app/Service/api/repository/profile_repository.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/profile_repository_service.dart';
+import 'package:quizzy_app/Service/local/cache_notification_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 
 class PushNotificationService {
@@ -17,7 +17,16 @@ class PushNotificationService {
       print(event.notification!.body);
       print(event.data);
     });
-    await _subscribeToTopic(topicName: _topicName);
+    _firebaseMessaging.onTokenRefresh.listen((String token) async {
+      // Handle token refresh
+      print('Token refreshed: $token');
+      // Save the token to your server or update user's FCM token in the database
+
+      // updateDeviceToken();
+    });
+    if (CacheNotificationService.instance.isNotificationEnabled()) {
+      await _subscribeToTopic(topicName: _topicName);
+    }
   }
 
   Future<void> requestNotificationPermissions() async {

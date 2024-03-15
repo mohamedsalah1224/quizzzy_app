@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>817939885808-vlt2dsbb5t1bcrvbh7bk0sao8viq9uvp.apps.googleusercontent.com</string>
+	<string>674895856947-5368965r51550eug7cqf7fqlnup7kpco.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.817939885808-vlt2dsbb5t1bcrvbh7bk0sao8viq9uvp</string>
+	<string>com.googleusercontent.apps.674895856947-5368965r51550eug7cqf7fqlnup7kpco</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>674895856947-uf286tq4b13s26ualnaf7opaljrn12nn.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAd0rUburhbikI10CXDQyzwIm6MDWQ5xSI</string>
+	<string>AIzaSyDkBMDEtbCGFBhq7QUEiIuiYSiVdg-bC_M</string>
 	<key>GCM_SENDER_ID</key>
-	<string>817939885808</string>
+	<string>674895856947</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.quizzyApp</string>
 	<key>PROJECT_ID</key>
-	<string>quizzy-app-d96db</string>
+	<string>quizzy-app-e4df1</string>
 	<key>STORAGE_BUCKET</key>
-	<string>quizzy-app-d96db.appspot.com</string>
+	<string>quizzy-app-e4df1.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:817939885808:ios:aca1dc3df5a88ab6f2dc35</string>
+	<string>1:674895856947:ios:5b2ddd3b0bedc71c68aa46</string>
 </dict>
 </plist>

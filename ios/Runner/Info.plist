@@ -2,7 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
+<key>GIDClientID</key>
+<!-- TODO Replace this value: -->
+<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
+<string>674895856947-5368965r51550eug7cqf7fqlnup7kpco.apps.googleusercontent.com</string>
 
 		<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
 		<!-- Google Sign-in Section -->
@@ -15,7 +18,7 @@
 				<array>
 					<!-- TODO Replace this value: -->
 					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-					<string>com.googleusercontent.apps.357000354067-ch0brgi0m6vgib7jaic38pllgjd2g1fa</string>
+					<string>com.googleusercontent.apps.674895856947-5368965r51550eug7cqf7fqlnup7kpco</string>
 				</array>
 			</dict>
 		</array>

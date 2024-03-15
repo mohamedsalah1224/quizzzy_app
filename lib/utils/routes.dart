@@ -7,10 +7,12 @@ import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_phone_binding.dart';
 import 'package:quizzy_app/utils/binding/login_binding.dart';
 import 'package:quizzy_app/utils/binding/notification_binding.dart';
+import 'package:quizzy_app/utils/binding/privacy_policy_binding.dart';
 import 'package:quizzy_app/utils/binding/questions_type_binding.dart';
 import 'package:quizzy_app/utils/binding/register_binding.dart';
 import 'package:quizzy_app/utils/binding/balance_binding.dart';
 import 'package:quizzy_app/utils/binding/splash_binding.dart';
+import 'package:quizzy_app/utils/binding/terms_binding.dart';
 import 'package:quizzy_app/utils/binding/update_account_binding.dart';
 import 'package:quizzy_app/utils/binding/update_change_password_binding.dart';
 import 'package:quizzy_app/utils/binding/verify_email_binding.dart';
@@ -31,7 +33,9 @@ import 'package:quizzy_app/view/screens/exam/exam_statistics_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_view.dart';
 import 'package:quizzy_app/view/screens/settings/balance_view.dart';
 import 'package:quizzy_app/view/screens/settings/notification_view.dart';
+import 'package:quizzy_app/view/screens/settings/privacy_policy_view.dart';
 import 'package:quizzy_app/view/screens/settings/settings_view.dart';
+import 'package:quizzy_app/view/screens/settings/terms_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_account_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_change_password_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
@@ -67,6 +71,9 @@ class Routes {
   static const String updateChangePasswordView = "/updateChangePasswordView";
   static const String updateAccountView = "/updateAccountView";
   static const String notificationView = "/notificationView";
+
+  static const String termsView = "/termsView"; // privacy_policy
+  static const String privacyPolicy = "/privacyPolicy";
   // NotificationView
 
   static List<GetPage<dynamic>>? getPages() => [
@@ -152,5 +159,14 @@ class Routes {
             name: notificationView,
             page: () => const NotificationView(),
             binding: NotificationBinding()),
+        GetPage(
+            name: termsView,
+            page: () => const TermsView(),
+            binding: TermsBinding()),
+        GetPage(
+          name: privacyPolicy,
+          page: () => const PrivacyPolicyView(),
+          binding: PrivacyPolicyBinding(),
+        ),
       ];
 }

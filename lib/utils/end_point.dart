@@ -56,6 +56,15 @@ rechargeAccount
   static final String rechargeAccount = dotenv.get('RECHARGE_ACCOUNT');
   static final String deleteAccount = dotenv.get('DELETE_ACCOUNT');
 
+  /*
+TERMS="https://quizzy.ps/terms"
+
+PRIVACY_POLICY="https://quizzy.ps/privacy_policy"
+*/
+
+  static final String terms = dotenv.get('TERMS');
+  static final String privacyPolicy = dotenv.get('PRIVACY_POLICY');
+
 /*
 TOP_STUDENTS="/api/exams/students/top"
 EXAM_ATTEMPTS="/api/exams/exam_attempts/attempts"

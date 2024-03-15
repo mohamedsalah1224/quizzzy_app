@@ -26,13 +26,13 @@ import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 class SettingsViewModel extends GetxController {
   late User _user;
   late bool _isDarkMode;
-  bool _isNotificationEnabled = true;
+  late bool _isNotificationEnabled;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getUserFromCahce();
-    // getCurrentNotificationFromCache();
+    getCurrentNotificationFromCache();
     getCurrentTheme();
     print("Init Seetings View Model");
   }
@@ -46,7 +46,7 @@ class SettingsViewModel extends GetxController {
 
 ////////////////////////////////////////////// update Widget /////////////////////////////////////////
 
-  void updateNotification() async {
+  Future<void> updateNotification() async {
     _isNotificationEnabled = !_isNotificationEnabled;
     PushNotificationService notificationService = PushNotificationService();
     update(['updateNotification']);
@@ -152,6 +152,14 @@ class SettingsViewModel extends GetxController {
   void notificationViewPageRoute() {
     print(CacheUserService.instance.getUser().academicYearId);
     Get.toNamed(Routes.notificationView);
+  }
+
+  void privacyPolicyRoute() {
+    Get.toNamed(Routes.privacyPolicy);
+  }
+
+  void termsRoute() {
+    Get.toNamed(Routes.termsView);
   }
 
   void balanceViewRoute() {

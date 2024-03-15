@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBEDuU8710tfO9LerIrnOGU907VPBIeLS8',
-    appId: '1:817939885808:android:1d8c96189834d568f2dc35',
-    messagingSenderId: '817939885808',
-    projectId: 'quizzy-app-d96db',
-    storageBucket: 'quizzy-app-d96db.appspot.com',
+    apiKey: 'AIzaSyD7ZMOe_Ie2WiNRBHkc45Ea_ATYErUehT4',
+    appId: '1:674895856947:android:b977e11b4093c2c368aa46',
+    messagingSenderId: '674895856947',
+    projectId: 'quizzy-app-e4df1',
+    storageBucket: 'quizzy-app-e4df1.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAd0rUburhbikI10CXDQyzwIm6MDWQ5xSI',
-    appId: '1:817939885808:ios:aca1dc3df5a88ab6f2dc35',
-    messagingSenderId: '817939885808',
-    projectId: 'quizzy-app-d96db',
-    storageBucket: 'quizzy-app-d96db.appspot.com',
+    apiKey: 'AIzaSyDkBMDEtbCGFBhq7QUEiIuiYSiVdg-bC_M',
+    appId: '1:674895856947:ios:5b2ddd3b0bedc71c68aa46',
+    messagingSenderId: '674895856947',
+    projectId: 'quizzy-app-e4df1',
+    storageBucket: 'quizzy-app-e4df1.appspot.com',
     iosBundleId: 'com.example.quizzyApp',
   );
 }
