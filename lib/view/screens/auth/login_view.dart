@@ -125,74 +125,74 @@ class LoginView extends GetView<LoginViewModel> {
                   },
                 ),
                 25.verticalSpace,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Color(0xff949494),
-                        thickness: 1,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15).w,
-                      child: CustomText(
-                        text: "او عن طريق",
-                        fontFamily: "Poppins",
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Color(0xff949494),
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                10.verticalSpace,
-                SizedBox(
-                  width: 145.w,
-                  height: 50.h,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Image.asset(
-                            Assets.imagesGoogle,
-                            cacheHeight: 30,
-                            cacheWidth: 30,
-                          ),
-                          onPressed: () async {
-                            await controller.socialLoginButton(
-                                socialMediaType: SocialMediaType.google);
-                            print("Sign in with a Google");
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.apple_outlined,
-                            size: 25,
-                          ),
-                          onPressed: () async {
-                            await controller.socialLoginButton(
-                                socialMediaType: SocialMediaType.apple);
-                            print("Sign in with a Apple");
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.facebook,
-                            size: 25,
-                            color: Colors.blue,
-                          ),
-                          onPressed: () async {
-                            await controller.socialLoginButton(
-                                socialMediaType: SocialMediaType.facebook);
-                          },
-                        ),
-                      ]),
-                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Divider(
+                //         color: Color(0xff949494),
+                //         thickness: 1,
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 15).w,
+                //       child: CustomText(
+                //         text: "او عن طريق",
+                //         fontFamily: "Poppins",
+                //         fontSize: 14.sp,
+                //         fontWeight: FontWeight.w400,
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: Divider(
+                //         color: Color(0xff949494),
+                //         thickness: 1,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // 10.verticalSpace,
+                // SizedBox(
+                //   width: 145.w,
+                //   height: 50.h,
+                //   child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         IconButton(
+                //           icon: Image.asset(
+                //             Assets.imagesGoogle,
+                //             cacheHeight: 30,
+                //             cacheWidth: 30,
+                //           ),
+                //           onPressed: () async {
+                //             await controller.socialLoginButton(
+                //                 socialMediaType: SocialMediaType.google);
+                //             print("Sign in with a Google");
+                //           },
+                //         ),
+                //         IconButton(
+                //           icon: Icon(
+                //             Icons.apple_outlined,
+                //             size: 25,
+                //           ),
+                //           onPressed: () async {
+                //             await controller.socialLoginButton(
+                //                 socialMediaType: SocialMediaType.apple);
+                //             print("Sign in with a Apple");
+                //           },
+                //         ),
+                //         IconButton(
+                //           icon: Icon(
+                //             Icons.facebook,
+                //             size: 25,
+                //             color: Colors.blue,
+                //           ),
+                //           onPressed: () async {
+                //             await controller.socialLoginButton(
+                //                 socialMediaType: SocialMediaType.facebook);
+                //           },
+                //         ),
+                //       ]),
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -218,7 +218,7 @@ class LoginView extends GetView<LoginViewModel> {
                       fontSize: 10.sp,
                       color: Get.find<ThemeViewMode>().isDarkMode()
                           ? Colors.white38
-                          : const Color(0xff000000),
+                          : const Color(0xff414141),
                       alignment: AlignmentDirectional.topEnd,
                     ),
                   ],

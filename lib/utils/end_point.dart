@@ -61,10 +61,10 @@ TERMS="https://quizzy.ps/terms"
 
 PRIVACY_POLICY="https://quizzy.ps/privacy_policy"
 */
-
+// CONTACT_US
   static final String terms = dotenv.get('TERMS');
   static final String privacyPolicy = dotenv.get('PRIVACY_POLICY');
-
+  static final String contactUs = dotenv.get('CONTACT_US');
 /*
 TOP_STUDENTS="/api/exams/students/top"
 EXAM_ATTEMPTS="/api/exams/exam_attempts/attempts"

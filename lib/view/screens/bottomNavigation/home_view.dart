@@ -68,7 +68,7 @@ class HomeView extends GetView<HomeViewModel> {
                   print(CacheUserService.instance.getUser()!.phone);
                   print(CacheUserService.instance.getUser()!.username);
                   print(CacheUserService.instance.getUser()!.id);
-
+                  print(CacheUserService.instance.getUser().photo);
                   // await CacheSubjectService.instance.deleteSubjects();
 
                   // await SocialRepositoryMangerService()

@@ -30,7 +30,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                 );
               },
             ),
-            25.verticalSpace,
+            20.verticalSpace,
             RPadding(
               padding: REdgeInsets.symmetric(horizontal: 10),
               child: const Divider(),
@@ -48,7 +48,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                     color: primayColor,
                     alignment: AlignmentDirectional.topEnd,
                   ),
-                  20.verticalSpace,
+                  10.verticalSpace,
                   CustomListTile(
                     onTap: () {
                       controller.updateAccountViewRoute();
@@ -104,7 +104,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                 ], // تغيير كلمة السر
               ),
             ),
-            25.verticalSpace,
+            15.verticalSpace,
             RPadding(
               padding: REdgeInsets.symmetric(horizontal: 10),
               child: Divider(),
@@ -122,7 +122,7 @@ class SettingsView extends GetView<SettingsViewModel> {
                     color: primayColor,
                     alignment: AlignmentDirectional.topEnd,
                   ),
-                  15.verticalSpace,
+                  10.verticalSpace,
                   CustomListTile(
                     onTap: () {
                       controller.privacyPolicyRoute();
@@ -134,6 +134,12 @@ class SettingsView extends GetView<SettingsViewModel> {
                       controller.termsRoute();
                     },
                     text: 'الشروط',
+                  ),
+                  CustomListTile(
+                    onTap: () {
+                      controller.contactUsRoute();
+                    },
+                    text: 'اتصل بنا',
                   ),
                   CustomListTile(
                       onTap: () async {

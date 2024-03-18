@@ -11,6 +11,7 @@ import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/view_model/auth/forget_password_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class IdentifyEmailViewModel extends GetxController {
   late String email;
@@ -24,9 +25,11 @@ class IdentifyEmailViewModel extends GetxController {
   final defaultPinTheme = PinTheme(
     width: 56,
     height: 56,
-    textStyle: const TextStyle(
+    textStyle: TextStyle(
       fontSize: 22,
-      color: Color.fromRGBO(30, 60, 87, 1),
+      color: Get.find<ThemeViewMode>().isDarkMode()
+          ? Colors.white
+          : const Color.fromRGBO(30, 60, 87, 1),
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(12).r,
@@ -38,7 +41,7 @@ class IdentifyEmailViewModel extends GetxController {
   void onInit() {
     super.onInit();
     email = Get.arguments;
-    print("Veify Email Page");
+    print("Veify IdentifyEmailViewModel Page");
   }
 
   @override

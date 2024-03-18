@@ -36,7 +36,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: const Color.fromRGBO(0, 0, 0, 0.7),
+                // color: const Color.fromRGBO(0, 0, 0, 0.7),
               ),
               CustomText(
                 maxLines: 1,
@@ -44,7 +44,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: const Color.fromRGBO(0, 0, 0, 0.7),
+                // color: const Color.fromRGBO(0, 0, 0, 0.7),
               ),
               30.verticalSpace,
               Form(
@@ -79,7 +79,7 @@ class VerifyEmailView extends GetView<VerifyEmailViewModel> {
                     fontFamily: "inter",
                     fontWeight: FontWeight.w400,
                     fontSize: 16.sp,
-                    color: const Color.fromRGBO(0, 0, 0, 0.7),
+                    // color: const Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                   5.horizontalSpace,
                   TextButton(

@@ -15,8 +15,8 @@ class SplashViewModel extends GetxController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-
-    Timer(const Duration(seconds: 2), () async {
+    //   await PushNotificationService().initPushNotification();
+    Timer(const Duration(milliseconds: 1), () async {
       bool result = AuthRouteService.instance.readRoute();
       debugPrint("-" * 50);
       debugPrint("Route Exit : $result");

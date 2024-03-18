@@ -26,7 +26,10 @@ class UpdateAccountViewModel extends GetxController {
   late TextEditingController _userNameController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String? get imageUrl => _user.photo;
+  String? get imageUrl => (_user.photo != null &&
+          _user.photo != "https://quizzy.ps/images/students/avatar.png")
+      ? _user.photo
+      : null;
   String? get filePath => _filePath;
   TextEditingController get nameController => _nameController;
   TextEditingController get userNameController => _userNameController;

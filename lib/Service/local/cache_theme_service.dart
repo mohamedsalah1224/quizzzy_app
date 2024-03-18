@@ -15,7 +15,7 @@ class CacheThemeService {
   }
 
   bool isDarkTheme() {
-    bool result = myBox.get(_key, defaultValue: true)!;
+    bool result = myBox.get(_key, defaultValue: false)!;
 
     return result;
   }

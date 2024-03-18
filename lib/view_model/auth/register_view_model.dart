@@ -12,6 +12,7 @@ import 'package:quizzy_app/model/auth_model.dart';
 import 'package:quizzy_app/model/register_model.dart';
 import 'package:quizzy_app/model/social_login_model.dart';
 import 'package:quizzy_app/utils/constant/app_list_data.dart';
+import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/general_utils.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
 import 'package:quizzy_app/utils/validation.dart';
@@ -247,6 +248,7 @@ class RegisterViewModel extends GetxController {
   void logIn() async {
     if (continueRegisterFormKey.currentState!.validate()) {
       bool isSucessProcess = false;
+      DialogHelper.showLoading();
 
       if (isSocial) {
         // call register the information of the Social
@@ -272,6 +274,7 @@ class RegisterViewModel extends GetxController {
         // call Registr End Point
         isSucessProcess = await _registerService();
       }
+      DialogHelper.hideLoading();
       if (isSucessProcess) Get.offAllNamed(Routes.loginView);
     }
   }
@@ -311,6 +314,7 @@ class RegisterViewModel extends GetxController {
           .showMessage(message: response.message!, milliseconds: 1000);
       return true;
     } catch (e) {
+      DialogHelper.hideLoading();
       SnackBarHelper.instance
           .showMessage(message: e.toString(), milliseconds: 2000, erro: true);
     }

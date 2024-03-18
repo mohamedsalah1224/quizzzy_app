@@ -105,11 +105,16 @@ class CustomSingleChoiceContainer extends StatelessWidget {
                 : const SizedBox(),
           ),
           context.read<SingleChoiceExamViewModel>().selectedIndex == index
-              ? const RPadding(
+              ? RPadding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.check_circle,
-                    color: Colors.white,
+                    color: answerModel.answerViewFormat ==
+                                ExamConstatnt.answerViewFormatIamge ||
+                            answerModel.answerViewFormat ==
+                                ExamConstatnt.answerViewFormatTextImage
+                        ? Colors.black
+                        : Colors.white,
                     size: 30,
                   ),
                 )

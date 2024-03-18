@@ -336,6 +336,8 @@ class HomeViewModel extends GetxController {
       Get.find<ManageExamViewModel>().setExamData(
           examsModel: ExamsModel(
               data: ExamModel(
+                  subjectId: value.data!.examAttempt!.subjectId,
+                  type: value.data!.examAttempt!.exam!.type,
                   questions: value.data!.unsolvedQuestions,
                   id: value.data!.examAttempt!.exam!
                       .id)), // used when make a RepetionExam

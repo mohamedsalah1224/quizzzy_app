@@ -1,6 +1,7 @@
 // import 'package:get/get.dart';
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:quizzy_app/utils/binding/contact_us_binding.dart';
 import 'package:quizzy_app/utils/binding/exam_statistics_binding.dart';
 import 'package:quizzy_app/utils/binding/forget_password_binding.dart';
 import 'package:quizzy_app/utils/binding/identify_email_binding.dart';
@@ -30,9 +31,11 @@ import 'package:quizzy_app/view/screens/auth/login_view.dart';
 import 'package:quizzy_app/view/screens/auth/register_view.dart';
 import 'package:quizzy_app/view/screens/auth/sucess_password_changed_view.dart';
 import 'package:quizzy_app/view/screens/auth/verify_email_view.dart';
-import 'package:quizzy_app/view/screens/exam/exam_statistics_view.dart';
+import 'package:quizzy_app/view/screens/exam/examStatstics/exam_statistics_view.dart';
+import 'package:quizzy_app/view/screens/exam/examStatstics/top_point_view.dart';
 import 'package:quizzy_app/view/screens/exam/exam_view.dart';
 import 'package:quizzy_app/view/screens/settings/balance_view.dart';
+import 'package:quizzy_app/view/screens/settings/contact_us_view.dart';
 import 'package:quizzy_app/view/screens/settings/notification_view.dart';
 import 'package:quizzy_app/view/screens/settings/privacy_policy_view.dart';
 import 'package:quizzy_app/view/screens/settings/settings_view.dart';
@@ -40,7 +43,6 @@ import 'package:quizzy_app/view/screens/settings/terms_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_account_view.dart';
 import 'package:quizzy_app/view/screens/settings/update_change_password_view.dart';
 import 'package:quizzy_app/view/screens/splash_view.dart';
-import 'package:quizzy_app/view_model/exam/top_point_view.dart';
 import 'binding/bottom_navigation_binding.dart';
 import 'binding/sucess_password_changed_binding.dart';
 
@@ -76,6 +78,7 @@ class Routes {
 
   static const String termsView = "/termsView"; // privacy_policy
   static const String privacyPolicy = "/privacyPolicy";
+  static const String contactUs = "/contactUs";
   // NotificationView
   static const String topPoint = "/topPoint";
   static List<GetPage<dynamic>>? getPages() => [
@@ -174,6 +177,11 @@ class Routes {
           name: topPoint,
           page: () => const TopPointView(),
           binding: TopPointBinding(),
+        ),
+        GetPage(
+          name: contactUs, // contact_us_binding
+          page: () => const ContactUsView(),
+          binding: ContactUsBinding(),
         ),
       ];
 }

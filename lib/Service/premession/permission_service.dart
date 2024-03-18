@@ -61,8 +61,9 @@ class PermissionService {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     if (androidInfo.version.sdkInt > 32) {
       // return await requestPermissions(Permission.manageExternalStorage);
-      return true; /*
-
+      return true;
+      /*
+  return true;
 This was Frustrating to solve myself.
  Apparently Android 13 on Flutter does not need permission or a package to work.
   Remove permission handler for storage and it will work just fine because in API 33

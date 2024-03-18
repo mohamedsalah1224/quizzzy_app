@@ -1,21 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:quizzy_app/Service/api/repository_implementaion_service/attempt_answers_repository_service.dart';
 import 'package:quizzy_app/Service/local/cache_user_service.dart';
 import 'package:quizzy_app/Service/premession/permission_service.dart';
 import 'package:quizzy_app/model/exam_attempt_model.dart';
 import 'package:quizzy_app/model/exam_statistics_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
-import 'package:quizzy_app/utils/pdf_helper/pdf_converter_to_image.dart';
+
 import 'package:quizzy_app/utils/pdf_helper/pdf_generator.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
-import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_text.dart';
-import 'package:quizzy_app/view/screens/bottomNavigation/mange_bottom_sheet_view.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/home_view_model.dart';
 import 'package:quizzy_app/view_model/bottomNavigation/mange_bottom_navigation_view_model.dart';
 import 'package:quizzy_app/view_model/exam/manage_exam_view_model.dart';
@@ -141,23 +139,30 @@ class ExamStatisticsViewModel extends GetxController {
 
   void convertToPdf() async {
     // var permissionStatus = await Permission.storage.status;
-
+    DialogHelper.showLoading();
     bool isGranted = await PermissionService.instance.checkStorage();
     if (isGranted) {
       String path = await PdfGenerator.createPdf(
           examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
       debugPrint('Pdf path ; $path');
     }
+    DialogHelper.hideLoading();
   }
 
   void shareFile() async {
+    DialogHelper.showLoading();
     String? path = await PdfGenerator.createImg(
         examAttemptStatisticsInofrmation: _examAttemptStatisticsInofrmation);
+
+    String subjectName = controllerOfMangeExamViewModel.getsubjectName(
+        controllerOfMangeExamViewModel.examData.data!.subjectId!);
+    //  await OpenFile.open(path);
+    DialogHelper.hideLoading();
     debugPrint('Image path ; $path');
     if (path != null) {
       await Share.shareXFiles([XFile(path)],
           text:
-              "مشاركة نتيجة الإمتحان في مادة ${controllerOfMangeExamViewModel.getSubjectSelectedInformation.name}\n للطالب :  ${CacheUserService.instance.getUser().name}");
+              "مشاركة نتيجة الإمتحان في مادة ${subjectName}\n للطالب :  ${CacheUserService.instance.getUser().name}");
     } else {
       debugPrint('حدث خطأ أثناء المشاركة');
     }

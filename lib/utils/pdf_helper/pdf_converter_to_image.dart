@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:open_file/open_file.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfx/pdfx.dart';
 
@@ -18,7 +18,7 @@ class PdfConverter {
           "/${DateTime.now().microsecondsSinceEpoch}examStatsticsPhoto.png");
       print(file.path);
       await file.writeAsBytes(pageImg.bytes);
-      // OpenFile.open(file.path);
+
       return file.path;
     }
 

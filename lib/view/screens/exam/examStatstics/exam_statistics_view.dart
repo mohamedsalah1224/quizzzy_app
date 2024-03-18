@@ -9,8 +9,7 @@ import 'package:quizzy_app/view/custom_component/exam_statistics/custom_card_exa
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_circle_sum_of_points_inofrmation.dart';
 import 'package:quizzy_app/view/custom_component/exam_statistics/custom_statistics_icon.dart';
 import 'package:quizzy_app/view_model/exam/exam_statistics_view_model.dart';
-
-import '../../../view_model/utils/theme/theme_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class ExamStatisticsView extends GetView<ExamStatisticsViewModel> {
   const ExamStatisticsView({super.key});

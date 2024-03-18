@@ -39,10 +39,19 @@ class SettingsViewModel extends GetxController {
 
 //////////////////////////////////////////////// Getter ////////////////////////////////////////////
   String get name => _user.name?.trim() ?? "";
-  String get emailOrPhone => _user.phone?.trim() ?? _user.email?.trim() ?? "";
-  String? get photo => _user.photo;
+  String get emailOrPhone =>
+      _user.phone?.trim() ??
+      _user.email?.trim() ??
+      "Sign in with ${_user.providerType}";
+  String? get photo => (_user.photo != null &&
+          _user.photo != "https://quizzy.ps/images/students/avatar.png")
+      ? _user.photo
+      : null;
   bool get isDarkMode => _isDarkMode;
   bool get isNotificationEnabled => _isNotificationEnabled;
+
+  bool isUserHasPhoto() => (_user.photo != null &&
+      _user.photo != "https://quizzy.ps/images/students/avatar.png");
 
 ////////////////////////////////////////////// update Widget /////////////////////////////////////////
 
@@ -150,12 +159,16 @@ class SettingsViewModel extends GetxController {
   }
 
   void notificationViewPageRoute() {
-    print(CacheUserService.instance.getUser().academicYearId);
-    Get.toNamed(Routes.notificationView);
+    // print(CacheUserService.instance.getUser().academicYearId);
+    // Get.toNamed(Routes.notificationView);
   }
 
   void privacyPolicyRoute() {
     Get.toNamed(Routes.privacyPolicy);
+  }
+
+  void contactUsRoute() {
+    Get.toNamed(Routes.contactUs);
   }
 
   void termsRoute() {

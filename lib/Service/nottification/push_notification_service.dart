@@ -8,7 +8,7 @@ class PushNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static const String _topicName = "general";
   Future<void> initPushNotification() async {
-    await requestNotificationPermissions();
+    requestNotificationPermissions();
     FirebaseMessaging.onMessage.listen((event) {
       print(event.messageType);
       print(event.messageId);
@@ -17,19 +17,19 @@ class PushNotificationService {
       print(event.notification!.body);
       print(event.data);
     });
-    _firebaseMessaging.onTokenRefresh.listen((String token) async {
-      // Handle token refresh
-      print('Token refreshed: $token');
-      // Save the token to your server or update user's FCM token in the database
+    // _firebaseMessaging.onTokenRefresh.listen((String token) async {
+    //   // Handle token refresh
+    //   print('Token refreshed: $token');
+    //   // Save the token to your server or update user's FCM token in the database
 
-      // updateDeviceToken();
-    });
+    //   // updateDeviceToken();
+    // });
     if (CacheNotificationService.instance.isNotificationEnabled()) {
       await _subscribeToTopic(topicName: _topicName);
     }
   }
 
-  Future<void> requestNotificationPermissions() async {
+  void requestNotificationPermissions() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,

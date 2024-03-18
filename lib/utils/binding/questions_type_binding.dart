@@ -3,8 +3,7 @@ import 'package:quizzy_app/view_model/exam/exam_type/compare_choice_exam_view_mo
 import 'package:quizzy_app/view_model/exam/exam_type/multiple_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/single_choice_exam_view_model.dart';
 import 'package:quizzy_app/view_model/exam/exam_type/true_false_exam_view_model.dart';
-import 'package:quizzy_app/view_model/media/audio_view_model.dart';
-import 'package:quizzy_app/view_model/media/video_view_model.dart';
+
 import 'dart:math' as Math;
 
 class QuestionsTypeBinding implements Bindings {

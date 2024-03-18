@@ -121,11 +121,16 @@ class CustomMultipleChoiceContainer extends StatelessWidget {
                   : const SizedBox(),
             ),
             isActive
-                ? const RPadding(
+                ? RPadding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(
                       Icons.check_circle,
-                      color: Colors.white,
+                      color: answerModel.answerViewFormat ==
+                                  ExamConstatnt.answerViewFormatIamge ||
+                              answerModel.answerViewFormat ==
+                                  ExamConstatnt.answerViewFormatTextImage
+                          ? Colors.black
+                          : Colors.white,
                       size: 30,
                     ),
                   )

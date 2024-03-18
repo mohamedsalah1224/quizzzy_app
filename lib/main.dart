@@ -47,8 +47,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await dotenv.load(fileName: ".env");
-  await Hive.initFlutter();
+
+  await Future.wait([dotenv.load(fileName: ".env"), Hive.initFlutter()]);
 
   Hive.registerAdapter(AcademicYearModelAdapter());
   Hive.registerAdapter(UserAdapter());
@@ -56,12 +56,13 @@ void main() async {
   Hive.registerAdapter(DataSubjectModelAdapter());
   Hive.registerAdapter(BookModelAdapter());
   Hive.registerAdapter(ImageDimensionsModelAdapter());
-  await AuthRouteService.instance.init();
-  await CacheUserService.instance.init();
-  await CacheSubjectService.instance.init();
-  await CacheNotificationService.instance.init();
-  await CacheThemeService.instance.init();
-  await PushNotificationService().initPushNotification();
+  await Future.wait([
+    AuthRouteService.instance.init(),
+    CacheUserService.instance.init(),
+    CacheSubjectService.instance.init(),
+    CacheNotificationService.instance.init(),
+    CacheThemeService.instance.init()
+  ]);
 
   runApp(const MyApp());
 }

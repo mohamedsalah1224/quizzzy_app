@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/exam_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/questions_repository_service.dart';
 import 'package:quizzy_app/Service/api/repository_implementaion_service/subjects_repository_service.dart';
+import 'package:quizzy_app/Service/local/cache_subject_service.dart';
 import 'package:quizzy_app/model/answer_question_model.dart';
 import 'package:quizzy_app/model/book_model.dart';
 import 'package:quizzy_app/model/data_subject_model.dart';
@@ -751,6 +752,16 @@ class ManageExamViewModel extends GetxController {
 
   //////////////////////////////////// Service ///////////////////////////////////
   ///
+  ///
+
+  String getsubjectName(int id) {
+    return CacheSubjectService.instance
+        .getSubjects()!
+        .data!
+        .firstWhere((element) => (element.id == id),
+            orElse: () => DataSubjectModel(id: null))
+        .name!;
+  }
 
   Future<SendNoteOrWrongToQuestionModel> _sendNoteAndWrongQuestion(
       {required String notes,

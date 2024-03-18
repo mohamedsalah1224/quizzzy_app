@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:pinput/pinput.dart';
 import 'package:quizzy_app/view_model/auth/identify_email_view_model.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 import '../../custom_component/custom_button.dart';
 import '../../custom_component/custom_text.dart';
 
@@ -44,7 +45,7 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                       alignment: AlignmentDirectional.topEnd,
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
-                      color: Color.fromRGBO(0, 0, 0, 0.7),
+                      // color:Get.find<ThemeViewMode>().isDarkMode()? Colors.white ?  Color.fromRGBO(0, 0, 0, 0.7),
                     ),
                   ),
                   5.horizontalSpace,
@@ -54,7 +55,7 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                     alignment: AlignmentDirectional.topEnd,
                     fontWeight: FontWeight.w400,
                     fontSize: 14.sp,
-                    color: Color.fromRGBO(0, 0, 0, 0.7),
+                    // color: Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                 ],
               ),
@@ -97,7 +98,6 @@ class IdentifyEmailView extends GetView<IdentifyEmailViewModel> {
                     fontFamily: "inter",
                     fontWeight: FontWeight.w400,
                     fontSize: 16.sp,
-                    color: Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                   5.horizontalSpace,
                   TextButton(

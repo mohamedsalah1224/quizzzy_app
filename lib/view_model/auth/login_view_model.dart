@@ -275,19 +275,25 @@ class LoginViewModel extends GetxController {
 
   Future<void> registerInformationOfSocial(
       {required SocialLoginModel socialLoginModel}) async {
-    AuthModel? autModel =
-        await _loginBySocialService(socialLoginModel: socialLoginModel);
-    if (autModel == null) return; // if any erro Occur
+    try {
+      AuthModel? autModel =
+          await _loginBySocialService(socialLoginModel: socialLoginModel);
+      DialogHelper.hideLoading();
+      if (autModel == null) return; // if any erro Occur
 
-    CacheUserService.instance
-        .updateUser(user: autModel.data!.user!); // to Cache User
-    // // check Veify Phone or Not
+      CacheUserService.instance
+          .updateUser(user: autModel.data!.user!); // to Cache User
+      // // check Veify Phone or Not
 
-    if (!autModel.data!.user!.phoneVerified!) {
-      Get.offAllNamed(Routes.verifyPhoneView,
-          arguments: autModel.data!.user!.phone);
-    } else {
-      Get.offAllNamed(Routes.bottomNavgation);
+      if (!autModel.data!.user!.phoneVerified!) {
+        Get.offAllNamed(Routes.verifyPhoneView,
+            arguments: autModel.data!.user!.phone);
+      } else {
+        Get.offAllNamed(Routes.bottomNavgation);
+      }
+    } catch (e) {
+      DialogHelper.hideLoading();
+      SnackBarHelper.instance.showMessage(message: e.toString(), erro: true);
     }
   }
 }

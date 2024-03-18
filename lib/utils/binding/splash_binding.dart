@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:quizzy_app/view_model/bottomNavigation/account_view_model.dart';
 import 'package:quizzy_app/view_model/splash_view_model.dart';
 
 class SplashBinding implements Bindings {

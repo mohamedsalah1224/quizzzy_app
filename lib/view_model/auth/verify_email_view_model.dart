@@ -11,6 +11,7 @@ import 'package:quizzy_app/model/resend_verify_email_model.dart';
 import 'package:quizzy_app/utils/dialog_helper.dart';
 import 'package:quizzy_app/utils/routes.dart';
 import 'package:quizzy_app/utils/snack_bar_helper.dart';
+import 'package:quizzy_app/view_model/utils/theme/theme_view_model.dart';
 
 class VerifyEmailViewModel extends GetxController {
   int length = 6;
@@ -24,9 +25,11 @@ class VerifyEmailViewModel extends GetxController {
   final defaultPinTheme = PinTheme(
     width: 56,
     height: 56,
-    textStyle: const TextStyle(
+    textStyle: TextStyle(
       fontSize: 22,
-      color: Color.fromRGBO(30, 60, 87, 1),
+      color: Get.find<ThemeViewMode>().isDarkMode()
+          ? Colors.white
+          : const Color.fromRGBO(30, 60, 87, 1),
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(12).r,
@@ -40,7 +43,7 @@ class VerifyEmailViewModel extends GetxController {
 
     _email = Get.arguments; // to get the Phone Number
 
-    reSendCode();
+    // reSendCode();
   }
 
   @override

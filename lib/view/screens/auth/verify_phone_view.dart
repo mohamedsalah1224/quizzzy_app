@@ -36,7 +36,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: Color.fromRGBO(0, 0, 0, 0.7),
+                //  color: Color.fromRGBO(0, 0, 0, 0.7),
               ),
               CustomText(
                 maxLines: 1,
@@ -44,7 +44,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                 fontFamily: "Segoe",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.sp,
-                color: Color.fromRGBO(0, 0, 0, 0.7),
+                //  color: Color.fromRGBO(0, 0, 0, 0.7),
               ),
               30.verticalSpace,
               Form(
@@ -78,7 +78,7 @@ class VerifyPhoneView extends GetView<VerifyPhoneViewModel> {
                     fontFamily: "inter",
                     fontWeight: FontWeight.w400,
                     fontSize: 16.sp,
-                    color: Color.fromRGBO(0, 0, 0, 0.7),
+                    //  color: Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                   5.horizontalSpace,
                   TextButton(
